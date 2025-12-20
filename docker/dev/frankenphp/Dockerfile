@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:php8.4 AS frankenphp_upstream
+FROM dunglas/frankenphp:php8.5 AS frankenphp_upstream
 
 FROM frankenphp_upstream AS frankenphp_base
 
@@ -36,17 +36,15 @@ RUN mkdir -p /data/caddy \
 RUN install-php-extensions \
     @composer \
     pdo_pgsql \
-    redis \
     opcache \
     intl \
-    zip \
-    amqp
+    zip
 
 # entrypoint
-COPY --link --chmod=755 docker/dev/frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY --link --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 # Caddyfile
-COPY --link docker/dev/frankenphp/Caddyfile /etc/caddy/Caddyfile
+COPY --link frankenphp/Caddyfile /etc/caddy/Caddyfile
 
 HEALTHCHECK --start-period=60s CMD curl -f http://localhost:2019/metrics || exit 1
 
@@ -61,7 +59,7 @@ FROM frankenphp_base AS frankenphp_dev
 RUN groupadd -g ${DOCKER_GID} docker && usermod -aG docker ${APP_USER}
 
 # Configure PHP
-COPY --link docker/dev/php.ini-dev /usr/local/etc/php/php.ini
+COPY --link php.ini-dev /usr/local/etc/php/php.ini
 
 ENV APP_ENV=dev XDEBUG_MODE=off
 
@@ -74,7 +72,7 @@ RUN set -eux; \
 		xdebug \
 	;
 
-COPY --link docker/dev/frankenphp/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
+COPY --link frankenphp/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
 
 ENTRYPOINT ["docker-entrypoint"]
 
