@@ -122,8 +122,8 @@ services:
       - ../../backend/composer.json:/app/composer.json
       - ../../backend/composer.lock:/app/composer.lock
       - ../../backend/.env:/app/.env
-      - ../../backend/.env.dev:/app/.env.dev
-      - ../../backend/.env.test:/app/.env.test
+      - ../../backend/.env.dev:/app/.env.dev.local
+      - ../../backend/.env.test:/app/.env.test.local
       - ../../backend/phpunit.xml:/app/phpunit.xml
       - ../../backend/phpstan.dist.neon:/app/phpstan.dist.neon
 

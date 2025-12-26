@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:php8.5 AS frankenphp_upstream
+FROM dunglas/frankenphp:php8.4 AS frankenphp_upstream
 
 FROM frankenphp_upstream AS frankenphp_base
 
@@ -38,7 +38,8 @@ RUN install-php-extensions \
     pdo_pgsql \
     opcache \
     intl \
-    zip
+    zip \
+    amqp
 
 # entrypoint
 COPY --link --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
