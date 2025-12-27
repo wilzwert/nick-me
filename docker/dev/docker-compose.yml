@@ -122,13 +122,14 @@ services:
       - ../../backend/composer.json:/app/composer.json
       - ../../backend/composer.lock:/app/composer.lock
       - ../../backend/.env:/app/.env
-      - ../../backend/.env.dev:/app/.env.dev.local
-      - ../../backend/.env.test:/app/.env.test.local
-      - ../../backend/phpunit.xml:/app/phpunit.xml
+      - ../../backend/.env.dev.local:/app/.env.dev.local
+      - ../../backend/.env.test:/app/.env.test
+      - ../../backend/phpunit.dist.xml:/app/phpunit.dist.xml
       - ../../backend/phpstan.dist.neon:/app/phpstan.dist.neon
+      - ../../backend/resources:/app/resources
 
 
-      # bad performance when mounting vendor on windows machines
+      # bad performance when mounting vendor on Windows machines
       - ../../backend/vendor:/app/vendor:delegated
       # Windows (WSL) / Linux
       # Mounting docker socket is necessary to enable TestContainers to create containers

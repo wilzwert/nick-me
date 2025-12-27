@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Word;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -12,14 +13,18 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 class WordRepository extends ServiceEntityRepository implements WordRepositoryInterface
 {
 
-    public function findBySlug($slug): ?Word
+    public function __construct(ManagerRegistry $registry)
     {
-        // TODO: Implement findBySlug() method.
-        return null;
+        parent::__construct($registry,Word::class);
     }
 
-    public function save(Word $word): void
+    public function findBySlug($slug): ?Word
     {
-        // TODO: Implement save() method.
+        return parent::findOneBy(['slug' => $slug]);
+    }
+
+    public function findById(int $id): ?Word
+    {
+        return parent::find($id);
     }
 }

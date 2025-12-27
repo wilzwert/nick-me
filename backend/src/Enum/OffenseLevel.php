@@ -19,7 +19,7 @@ enum OffenseLevel: int
 
     public static function fromString(string $value): self
     {
-        $normalized = strtoupper(preg_replace('/[^a-z_]/', '_', $value));
+        $normalized = strtoupper(preg_replace('/[^A-Za-z_]/', '_', $value));
 
         return match ($normalized) {
             'LOW' => self::LOW,
@@ -27,7 +27,21 @@ enum OffenseLevel: int
             'HIGH' => self::HIGH,
             'VERY_HIGH' => self::VERY_HIGH,
             'MAX' => self::MAX,
-            default => throw new \InvalidArgumentException("Unknown offense level: {$value}"),
+            default => throw new \InvalidArgumentException("Unknown offense level: {$normalized}"),
         };
+    }
+
+    /**
+     * @return array<OffenseLevel>
+     */
+    public static function all(): array
+    {
+        return [
+            self::LOW,
+            self::MEDIUM,
+            self::HIGH,
+            self::VERY_HIGH,
+            self::MAX
+        ];
     }
 }
