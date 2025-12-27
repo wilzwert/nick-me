@@ -7,14 +7,20 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "symfony/console": "8.0.*",
-        "symfony/dotenv": "8.0.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "8.0.*",
-        "symfony/runtime": "8.0.*",
-        "symfony/yaml": "8.0.*"
-    },
-    "require-dev": {
+        "doctrine/doctrine-bundle": "^3.2.1",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
+        "doctrine/orm": "^3.6",
+        "symfony/amqp-messenger": "7.4.*",
+        "symfony/cache": "7.4.*",
+        "symfony/console": "7.4.*",
+        "symfony/dotenv": "7.4.*",
+        "symfony/flex": "^2.10",
+        "symfony/framework-bundle": "7.4.*",
+        "symfony/mailer": "7.4.*",
+        "symfony/messenger": "7.4.*",
+        "symfony/rate-limiter": "7.4.*",
+        "symfony/runtime": "7.4.*",
+        "symfony/yaml": "7.4.*"
     },
     "config": {
         "allow-plugins": {
@@ -65,7 +71,17 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "8.0.*"
+            "require": "7.4.*"
         }
+    },
+    "require-dev": {
+        "dama/doctrine-test-bundle": "^8.4",
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
+        "esi/phpunit-coverage-check": "^3.0",
+        "friendsofphp/php-cs-fixer": "^3.92",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^12.5",
+        "symfony/http-client": "^7.4",
+        "testcontainers/testcontainers": "^1.0"
     }
 }

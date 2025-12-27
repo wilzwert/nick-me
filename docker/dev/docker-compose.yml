@@ -15,6 +15,7 @@
 #  depends_on:
 #    - ampq
 #    - db
+#    - redis
 #  restart: unless-stopped
 #  healthcheck:
 #    test: ''
@@ -24,6 +25,7 @@
 #    - messenger
 #    - db
 #    - mail
+#    - cache
 
 services:
   mail:
@@ -59,6 +61,17 @@ services:
       - ./postgresql_data:/var/lib/postgresql/data
     networks:
       - db
+
+  redis:
+    image: redis:7
+    container_name: "${APP_NAME}-redis"
+    restart: unless-stopped
+    # uncomment if you want to directly access your redis container for data visualization...
+    # Change port if necessary, e.g. if you host already exposes another redis container on the same port
+    # ports:
+    #  - "6379:6379"
+    networks:
+      - cache
 
   ampq:
     image: rabbitmq:4-management
@@ -109,8 +122,8 @@ services:
       - ../../backend/composer.json:/app/composer.json
       - ../../backend/composer.lock:/app/composer.lock
       - ../../backend/.env:/app/.env
-      - ../../backend/.env.dev:/app/.env.dev
-      - ../../backend/.env.test:/app/.env.test
+      - ../../backend/.env.dev:/app/.env.dev.local
+      - ../../backend/.env.test:/app/.env.test.local
       - ../../backend/phpunit.xml:/app/phpunit.xml
       - ../../backend/phpstan.dist.neon:/app/phpstan.dist.neon
 
@@ -141,11 +154,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - app
       - messenger
       - db
       - mail
+      - cache
 
 # TODO consumers will be implemented later
 #  consumer-async:
@@ -170,4 +186,6 @@ networks:
   messenger:
     driver: bridge
   mail:
+    driver: bridge
+  cache:
     driver: bridge
