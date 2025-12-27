@@ -2,10 +2,92 @@
 
 namespace App\Dto\Command;
 
+use App\Enum\OffenseLevel;
+use App\Enum\QualifierPosition;
+use App\Enum\WordStatus;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Enum\Lang;
+use App\Enum\WordGender;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 /**
  * @author Wilhelm Zwertvaegher
  */
 class MaintainWordCommand
 {
+    public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Length(min: 2)]
+        private readonly string $label,
+        private readonly WordGender $gender,
+        private readonly Lang $lang,
+        private readonly OffenseLevel $offenseLevel,
+        private readonly WordStatus $status,
+        private readonly bool $asSubject = false,
+        private readonly bool $asQualifier = false,
+        private readonly ?QualifierPosition $qualifierPosition = null,
+        private ?int $wordId = null
+    ) {
+    }
 
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if ($this->asQualifier && empty($this->qualifierPosition)) {
+            $context->buildViolation('Qualifier position cannot be empty when creating a qualifier.')
+                ->atPath('qualifierPosition')
+                ->addViolation();
+        }
+    }
+
+    public function setWordId(int $wordId): self
+    {
+        $this->wordId = $wordId;
+        return $this;
+    }
+
+    public function getWordId(): ?int
+    {
+        return $this->wordId;
+    }
+
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    public function getGender(): WordGender
+    {
+        return $this->gender;
+    }
+
+    public function getLang(): Lang
+    {
+        return $this->lang;
+    }
+
+    public function getOffenseLevel(): OffenseLevel
+    {
+        return $this->offenseLevel;
+    }
+
+    public function getStatus(): WordStatus
+    {
+        return $this->status;
+    }
+
+    public function isAsSubject(): bool
+    {
+        return $this->asSubject;
+    }
+
+    public function isAsQualifier(): bool
+    {
+        return $this->asQualifier;
+    }
+
+    public function getQualifierPosition(): ?QualifierPosition
+    {
+        return $this->qualifierPosition;
+    }
 }

@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'subject')]
+#[ORM\UniqueConstraint(name: 'uq_subject_word', columns: ['word_id'])]
 class Subject
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
@@ -27,5 +28,12 @@ class Subject
         $this->word = $word;
     }
 
-    public function getWord(): Word { return $this->word; }
+    public function getWord(): Word {
+        return $this->word;
+    }
+
+    public function getUsageCount(): int {
+        return $this->usageCount;
+    }
+
 }

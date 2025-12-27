@@ -10,10 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 
 #[ORM\Entity]
-#[ORM\Table(
-    name: 'qualifier',
-    uniqueConstraints: [new ORM\UniqueConstraint(name: 'uq_qualifier_word', columns: ['word_id'])]
-)]
+#[ORM\Table(name: 'qualifier')]
+#[ORM\UniqueConstraint(name: 'uq_qualifier_word', columns: ['word_id'])]
 class Qualifier
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
@@ -35,6 +33,23 @@ class Qualifier
         $this->position = $position;
     }
 
-    public function getWord(): Word { return $this->word; }
-    public function getPosition(): QualifierPosition { return $this->position; }
+    public function getWord(): Word
+    {
+        return $this->word;
+    }
+    public function getPosition(): QualifierPosition
+    {
+        return $this->position;
+    }
+
+    public function getUsageCount(): int
+    {
+        return $this->usageCount;
+    }
+
+    public function setPosition(QualifierPosition $position): Qualifier
+    {
+        $this->position = $position;
+        return $this;
+    }
 }

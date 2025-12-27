@@ -11,5 +11,6 @@ interface WordRepositoryInterface
 {
     public function findBySlug($slug): ?Word;
 
-    public function save(Word $word): void;
+    public function findById(int $id): ?Word;
+
 }
