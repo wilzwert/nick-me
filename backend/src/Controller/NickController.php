@@ -30,7 +30,8 @@ class NickController extends AbstractController
     ): JsonResponse
     {
         return $this->json(
-            ($this->generateNick)(new RandomWordRequest(), Response::HTTP_OK)
+            ($this->generateNick)($request),
+            Response::HTTP_OK
         );
     }
 

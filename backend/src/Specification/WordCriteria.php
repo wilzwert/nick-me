@@ -21,7 +21,7 @@ readonly class WordCriteria
     /**
      * @param Lang $lang
      * @param WordType|null $wordType
-     * @param array<EnumCriteria> $enumCriteria
+     * @param array<EnumCriterion> $enumCriteria
      * @param array|null $exclusions
      */
     public function __construct(
@@ -43,7 +43,7 @@ readonly class WordCriteria
     }
 
     /**
-     * @return array<EnumCriteria>
+     * @return array<EnumCriterion>
      * */
     public function getEnumCriteria(): array
     {

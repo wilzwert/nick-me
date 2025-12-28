@@ -5,15 +5,16 @@ namespace App\UseCase;
 use App\Dto\Request\RandomWordRequest;
 use App\Dto\Response\NickDto;
 use App\Dto\Response\NickWordDto;
+use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
 use App\Enum\WordType;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
 use App\Service\Formatter\WordFormatterInterface;
 use App\Specification\GenderConstraintType;
-use App\Specification\GenderCriteria;
+use App\Specification\GenderCriterion;
 use App\Specification\OffenseConstraintType;
-use App\Specification\OffenseLevelCriteria;
+use App\Specification\OffenseLevelCriterion;
 use App\Specification\WordCriteria;
 
 /**
@@ -33,10 +34,10 @@ class GenerateNick implements GenerateNickInterface
         // get a Subject according to OffenseLevel and Gender
         $criteria = [];
         if ($command->getGender()) {
-            $criteria[] = new GenderCriteria($command->getGender(), GenderConstraintType::EXACT);
+            $criteria[] = new GenderCriterion($command->getGender(), GenderConstraintType::EXACT);
         }
         if($command->getOffenseLevel()) {
-            $criteria[] = new OffenseLevelCriteria($command->getOffenseLevel(), OffenseConstraintType::EXACT);
+            $criteria[] = new OffenseLevelCriterion($command->getOffenseLevel(), OffenseConstraintType::EXACT);
         }
         $subject = $this->subjectService->findOneRandomly(
             new WordCriteria(
@@ -56,13 +57,13 @@ class GenerateNick implements GenerateNickInterface
                 $command->getLang(),
                 WordType::QUALIFIER,
                 [
-                    new GenderCriteria(
+                    new GenderCriterion(
                         $subject->getWord()->getGender(),
                         GenderConstraintType::RELAXED,
                     ),
-                    new OffenseLevelCriteria(
+                    new OffenseLevelCriterion(
                         $subject->getWord()->getOffenseLevel(),
-                        OffenseConstraintType::LTE,
+                        $command->getOffenseLevel() === OffenseLevel::MAX ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE,
                     )
                 ],
                 $exclusions
@@ -70,12 +71,17 @@ class GenerateNick implements GenerateNickInterface
         );
 
         // build the nick dto
+        $targetGender = $command->getGender() ?? $subject->getWord()->getGender();
         $words = [
-            new NickWordDto($subject->getWord()->getId(), $this->formatter->formatLabel($subject->getWord(), $subject->getWord()->getGender()), WordType::fromClass($subject::class))
+            new NickWordDto(
+                $subject->getWord()->getId(),
+                $this->formatter->formatLabel($subject->getWord(), $targetGender),
+                WordType::fromClass($subject::class)
+            )
         ];
         $qualifierWordDto = new NickWordDto(
             $qualifier->getWord()->getId(),
-            $this->formatter->formatLabel($qualifier->getWord(), $qualifier->getWord()->getGender()),
+            $this->formatter->formatLabel($qualifier->getWord(), $targetGender),
             WordType::fromClass($qualifier::class));
         if($qualifier->getPosition() === QualifierPosition::AFTER) {
             $words[] = $qualifierWordDto;
