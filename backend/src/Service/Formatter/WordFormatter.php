@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 class WordFormatter implements WordFormatterInterface
 {
     /**
-     * @var array<FormatterStrategyInterface>
+     * @var array<class-string, FormatterStrategyInterface>
      */
     private array $formatters;
 
@@ -25,15 +25,16 @@ class WordFormatter implements WordFormatterInterface
         #[AutowireIterator('app.formatter_strategy')]
         iterable $formatters
     ) {
-        $this->formatters = iterator_to_array($formatters);
+        foreach ($formatters as $formatter) {
+            $this->formatters[$formatter->getLang()->value] = $formatter;
+        }
+
     }
 
     public function formatLabel(Word $word, WordGender $gender): string
     {
-        foreach ($this->formatters as $formatter) {
-            if ($formatter->supports($word)) {
-                return $formatter->format($word, $gender);
-            }
+        if (isset($this->formatters[$word->getLang()->value])) {
+            return $this->formatters[$word->getLang()->value]->format($word, $gender);
         }
         return $word->getLabel();
     }
