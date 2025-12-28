@@ -13,9 +13,9 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('app.formatter_strategy')]
 class FrenchFormatterStrategy implements FormatterStrategyInterface {
 
-    public function supports(Word $word): bool
+    public function getLang(): Lang
     {
-        return Lang::FR === $word->getLang();
+        return Lang::FR;
     }
 
     public function format(Word $word, WordGender $gender): string

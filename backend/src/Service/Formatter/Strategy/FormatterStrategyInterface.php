@@ -11,7 +11,7 @@ use App\Enum\WordGender;
  */
 interface FormatterStrategyInterface
 {
-    public function supports(Word $word): bool;
+    public function getLang(): Lang;
 
     public function format(Word $word, WordGender $gender): string;
 }
