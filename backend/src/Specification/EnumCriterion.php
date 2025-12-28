@@ -6,7 +6,7 @@ namespace App\Specification;
  * @template T
  * @author Wilhelm Zwertvaegher
  */
-interface EnumCriteria
+interface EnumCriterion
 {
     /**
      * @return array<T>

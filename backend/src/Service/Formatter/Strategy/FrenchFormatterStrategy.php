@@ -18,10 +18,10 @@ class FrenchFormatterStrategy implements FormatterStrategyInterface {
         return Lang::FR;
     }
 
-    public function format(Word $word, WordGender $gender): string
+    public function format(Word $word, WordGender $targetGender): string
     {
         // sadly, we assume that we don't need to do anything when the target gender is not female
-        if($gender != WordGender::F) {
+        if($targetGender != WordGender::F) {
             return $word->getLabel();
         }
 
@@ -39,7 +39,7 @@ class FrenchFormatterStrategy implements FormatterStrategyInterface {
         );
         foreach ($rules as $source => $target) {
             if (str_ends_with($word->getLabel(), $source)) {
-                return preg_replace("/{$source}/", $target, $word->getLabel());
+                return preg_replace("/{$source}$/", $target, $word->getLabel());
             }
         }
 

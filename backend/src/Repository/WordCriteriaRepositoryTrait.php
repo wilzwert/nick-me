@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Specification\Sort;
 use App\Specification\WordCriteria;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
 trait WordCriteriaRepositoryTrait
@@ -16,7 +15,7 @@ trait WordCriteriaRepositoryTrait
 
         foreach ($criteria->getEnumCriteria() as $i => $enumCriteria) {
             if($enumCriteria->shouldApply()) {
-                $qb->andWhere($enumCriteria->getField()." IN (:values{$i})")
+                $qb->andWhere("{$wordAlias}.".$enumCriteria->getField()." IN (:values{$i})")
                     ->setParameter("values{$i}", $enumCriteria->getAllowedValues());
             }
         }
@@ -28,11 +27,14 @@ trait WordCriteriaRepositoryTrait
 
         if ($sort === Sort::RANDOM) {
             $qb2 = clone $qb;
-            $qb2->select("MIN({$wordAlias}.id) AS min, MAX({$wordAlias}.id) AS max");
-            $result = $qb2->getQuery()->getSingleResult();
-            $randomPossibleId = rand($result['min'], $result['max']);
-            $qb->andWhere('word.id >= :random_id')
-                ->setParameter('random_id', $randomPossibleId);
+            $count = (int) $qb2
+                ->select("COUNT({$wordAlias}.id)")
+                ->getQuery()
+                ->getSingleScalarResult();
+            if ($count > 0) {
+                $offset = random_int(0, $count - 1);
+                $qb->setFirstResult($offset);
+            }
         }
 
         $qb->setMaxResults(1);

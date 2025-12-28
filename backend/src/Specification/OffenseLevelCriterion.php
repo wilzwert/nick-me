@@ -5,10 +5,10 @@ namespace App\Specification;
 use App\Enum\OffenseLevel;
 
 /**
- * @implements EnumCriteria<OffenseLevel>
+ * @implements EnumCriterion<OffenseLevel>
  * @author Wilhelm Zwertvaegher
  */
-readonly class OffenseLevelCriteria implements EnumCriteria
+readonly class OffenseLevelCriterion implements EnumCriterion
 {
 
     public function __construct(
@@ -20,7 +20,7 @@ readonly class OffenseLevelCriteria implements EnumCriteria
 
 
     /**
-     * @return array<EnumCriteria>
+     * @return array<EnumCriterion>
      */
     public function getAllowedValues(): array
     {
@@ -43,7 +43,7 @@ readonly class OffenseLevelCriteria implements EnumCriteria
 
     public function getField(): string
     {
-        return 'word.offenseLevel';
+        return 'offenseLevel';
     }
 
     public function shouldApply(): bool

@@ -13,5 +13,5 @@ interface FormatterStrategyInterface
 {
     public function getLang(): Lang;
 
-    public function format(Word $word, WordGender $gender): string;
+    public function format(Word $word, WordGender $targetGender): string;
 }
