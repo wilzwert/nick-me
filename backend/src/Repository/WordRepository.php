@@ -18,7 +18,7 @@ class WordRepository extends ServiceEntityRepository implements WordRepositoryIn
         parent::__construct($registry,Word::class);
     }
 
-    public function findBySlug($slug): ?Word
+    public function findBySlug(string $slug): ?Word
     {
         return parent::findOneBy(['slug' => $slug]);
     }

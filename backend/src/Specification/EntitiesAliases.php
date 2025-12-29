@@ -7,6 +7,9 @@ namespace App\Specification;
  */
 class EntitiesAliases
 {
+    /**
+     * @var array<class-string, string>
+     */
     private readonly array $aliases;
 
     public function __construct(...$args)

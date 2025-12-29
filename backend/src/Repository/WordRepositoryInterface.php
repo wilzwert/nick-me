@@ -9,7 +9,7 @@ use App\Entity\Word;
  */
 interface WordRepositoryInterface
 {
-    public function findBySlug($slug): ?Word;
+    public function findBySlug(string $slug): ?Word;
 
     public function findById(int $id): ?Word;
 
