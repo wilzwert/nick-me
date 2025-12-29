@@ -7,9 +7,10 @@ use App\Entity\Word;
 use App\Specification\WordCriteria;
 
 /**
+ * @extends GrammaticalRoleServiceInterface<Subject>
  * @author Wilhelm Zwertvaegher
  */
-interface SubjectServiceInterface
+interface SubjectServiceInterface extends GrammaticalRoleServiceInterface
 {
     /**
      * @return Subject

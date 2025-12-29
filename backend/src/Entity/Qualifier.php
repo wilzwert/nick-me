@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'qualifier')]
 #[ORM\UniqueConstraint(name: 'uq_qualifier_word', columns: ['word_id'])]
-class Qualifier
+class Qualifier implements GrammaticalRole
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
     private int $id;

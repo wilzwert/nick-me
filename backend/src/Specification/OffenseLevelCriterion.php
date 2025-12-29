@@ -2,6 +2,7 @@
 
 namespace App\Specification;
 
+use App\Entity\Word;
 use App\Enum\OffenseLevel;
 
 /**
@@ -32,13 +33,20 @@ readonly class OffenseLevelCriterion implements EnumCriterion
             return [$this->offenseLevel];
         }
 
-        return match ($this->offenseLevel) {
-            OffenseLevel::LOW => [OffenseLevel::LOW],
-            OffenseLevel::MEDIUM => [OffenseLevel::LOW, OffenseLevel::MEDIUM],
-            OffenseLevel::HIGH => [OffenseLevel::LOW, OffenseLevel::MEDIUM, OffenseLevel::HIGH],
-            OffenseLevel::VERY_HIGH => [OffenseLevel::LOW, OffenseLevel::MEDIUM, OffenseLevel::HIGH, OffenseLevel::VERY_HIGH],
-            OffenseLevel::MAX => [OffenseLevel::LOW, OffenseLevel::MEDIUM, OffenseLevel::HIGH, OffenseLevel::VERY_HIGH, OffenseLevel::MAX]
+        // create result for LT constraint
+        $result = match ($this->offenseLevel) {
+            OffenseLevel::LOW => [],
+            OffenseLevel::MEDIUM => [OffenseLevel::LOW],
+            OffenseLevel::HIGH => [OffenseLevel::LOW, OffenseLevel::MEDIUM],
+            OffenseLevel::VERY_HIGH => [OffenseLevel::LOW, OffenseLevel::MEDIUM, OffenseLevel::HIGH],
+            OffenseLevel::MAX => [OffenseLevel::LOW, OffenseLevel::MEDIUM, OffenseLevel::HIGH, OffenseLevel::VERY_HIGH]
         };
+
+        if ( $this->offenseConstraintType == OffenseConstraintType::LTE) {
+            // add current offenselevel to allow equality
+            $result[] = $this->offenseLevel;
+        }
+        return $result;
     }
 
     public function getField(): string
@@ -49,5 +57,10 @@ readonly class OffenseLevelCriterion implements EnumCriterion
     public function shouldApply(): bool
     {
         return !empty($this->offenseLevel);
+    }
+
+    public function getTargetEntity(): string
+    {
+        return Word::class;
     }
 }

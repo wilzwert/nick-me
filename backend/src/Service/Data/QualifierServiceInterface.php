@@ -8,9 +8,10 @@ use App\Specification\MaintainQualifierSpec;
 use App\Specification\WordCriteria;
 
 /**
+ * @extends GrammaticalRoleServiceInterface<Qualifier>
  * @author Wilhelm Zwertvaegher
  */
-interface QualifierServiceInterface
+interface QualifierServiceInterface extends GrammaticalRoleServiceInterface
 {
     /**
      * @return Qualifier

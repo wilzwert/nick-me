@@ -6,7 +6,7 @@ use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
 use App\Enum\WordStatus;
-use App\Enum\WordType;
+use App\Enum\GrammaticalRoleType;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -20,7 +20,7 @@ final readonly class FullWordDto
      * @param Lang $lang
      * @param OffenseLevel $offenseLevel
      * @param WordStatus $status
-     * @param array<value-of<WordType>, QualifierDto|SubjectDto> $types
+     * @param array<value-of<GrammaticalRoleType>, QualifierDto|SubjectDto> $types
      */
     public function __construct(
         public int        $id,

@@ -5,7 +5,7 @@ namespace App\Specification;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
-use App\Enum\WordType;
+use App\Enum\GrammaticalRoleType;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -16,19 +16,19 @@ use App\Enum\WordType;
  *  - exclusions : a list a word ids to exclude
  *
  */
-readonly class WordCriteria
+class WordCriteria
 {
     /**
      * @param Lang $lang
-     * @param WordType|null $wordType
-     * @param array<EnumCriterion> $enumCriteria
+     * @param GrammaticalRoleType|null $grammaticalRole
+     * @param array<Criterion> $criteria
      * @param array|null $exclusions
      */
     public function __construct(
-        private Lang $lang = Lang::FR,
-        private ?WordType $wordType = null,
-        private array $enumCriteria = [],
-        private ?array $exclusions
+        private readonly Lang                 $lang = Lang::FR,
+        private readonly ?GrammaticalRoleType $grammaticalRole = null,
+        private array $criteria = [],
+        private readonly array $exclusions = []
     ) {
     }
 
@@ -37,21 +37,26 @@ readonly class WordCriteria
         return $this->lang;
     }
 
-    private function getWordType(): WordType
+    private function getGrammaticalRole(): GrammaticalRoleType
     {
-        return $this->wordType;
+        return $this->grammaticalRole;
     }
 
     /**
-     * @return array<EnumCriterion>
+     * @return array<Criterion>
      * */
-    public function getEnumCriteria(): array
+    public function getCriteria(): array
     {
-        return $this->enumCriteria;
+        return $this->criteria;
     }
 
     public function getExclusions(): array
     {
         return $this->exclusions;
+    }
+
+    public function addCriterion(Criterion $criterion): void
+    {
+        $this->criteria[] = $criterion;
     }
 }

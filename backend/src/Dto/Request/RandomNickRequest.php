@@ -9,39 +9,32 @@ use App\Enum\GrammaticalRoleType;
 
 /**
  * @author Wilhelm Zwertvaegher
- * Parameters for word retrieval (i.e. replace a word in a generated nick)
+ * Parameters for random word / nick retrieval
  *  - Lang
- *  - WordType
  *  - OffenseLevel (maybe null)
  *  - WordGender (maybe null)
  *  - exclusions : a list a word ids to exclude
  *
  */
-readonly class RandomWordRequest
+readonly class RandomNickRequest
 {
     private ?array $exclusions;
 
     public function __construct(
-        private int                 $previousId,
-        private GrammaticalRoleType $role,
-        private WordGender         $gender,
-        private OffenseLevel       $offenseLevel = OffenseLevel::HIGH,
-        string                      $exclusions = '',
+        private Lang $lang = Lang::FR,
+        private WordGender $gender = WordGender::AUTO,
+        private ?OffenseLevel $offenseLevel = null,
+        string $exclusions = '',
     ) {
         $this->exclusions = !empty($exclusions) ? explode(',', $exclusions) : [];
     }
 
-    public function getPreviousId(): int
+    public function getLang(): Lang
     {
-        return $this->previousId;
+        return $this->lang;
     }
 
-    public function getGrammaticalRole(): GrammaticalRoleType
-    {
-        return $this->role;
-    }
-
-    public function getGender(): ?WordGender
+    public function getGender(): WordGender
     {
         return $this->gender;
     }
@@ -55,9 +48,5 @@ readonly class RandomWordRequest
     {
         return $this->exclusions;
     }
-
-
-
-
 
 }
