@@ -2,6 +2,7 @@
 
 namespace App\Specification;
 
+use Closure;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -10,6 +11,9 @@ use Doctrine\ORM\QueryBuilder;
 class DefaultCriterionConverter implements CriterionConverter
 {
 
+    /**
+     * @var array<class-string<Criterion>, Closure>
+     */
     private array $builders;
 
     public function __construct()

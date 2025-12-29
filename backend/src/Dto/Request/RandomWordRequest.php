@@ -19,7 +19,10 @@ use App\Enum\GrammaticalRoleType;
  */
 readonly class RandomWordRequest
 {
-    private ?array $exclusions;
+    /**
+     * @var list<int>
+     */
+    private array $exclusions;
 
     public function __construct(
         private int                 $previousId,
@@ -51,6 +54,9 @@ readonly class RandomWordRequest
         return $this->offenseLevel;
     }
 
+    /**
+     * @return list<int>
+     */
     public function getExclusions(): array
     {
         return $this->exclusions;

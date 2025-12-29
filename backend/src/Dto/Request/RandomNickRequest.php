@@ -18,7 +18,10 @@ use App\Enum\GrammaticalRoleType;
  */
 readonly class RandomNickRequest
 {
-    private ?array $exclusions;
+    /**
+     * @var list<int>
+     */
+    private array $exclusions;
 
     public function __construct(
         private Lang $lang = Lang::FR,
@@ -44,6 +47,9 @@ readonly class RandomNickRequest
         return $this->offenseLevel;
     }
 
+    /**
+     * @return list<int>
+     */
     public function getExclusions(): array
     {
         return $this->exclusions;

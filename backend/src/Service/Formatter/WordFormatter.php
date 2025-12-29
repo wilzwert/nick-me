@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 class WordFormatter implements WordFormatterInterface
 {
     /**
-     * @var array<class-string, FormatterStrategyInterface>
+     * @var array<string, FormatterStrategyInterface>
      */
     private array $formatters;
 
