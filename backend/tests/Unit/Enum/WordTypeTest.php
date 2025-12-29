@@ -4,7 +4,7 @@ namespace App\Tests\Unit\Enum;
 
 use App\Entity\Qualifier;
 use App\Entity\Subject;
-use App\Enum\WordType;
+use App\Enum\GrammaticalRoleType;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -27,13 +27,13 @@ class WordTypeTest extends TestCase
     #[Test]
     public function shouldFindForClass(string $expectedValue, string $className): void
     {
-        self::assertEquals($expectedValue, WordType::fromClass($className)->value);
+        self::assertEquals($expectedValue, GrammaticalRoleType::fromClass($className)->value);
     }
 
     #[Test]
     public function whenUnknownWordType_thenShouldThrowInvalidArgumentException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        WordType::fromClass('unknown');
+        GrammaticalRoleType::fromClass('unknown');
     }
 }

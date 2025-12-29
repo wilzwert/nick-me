@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'subject')]
 #[ORM\UniqueConstraint(name: 'uq_subject_word', columns: ['word_id'])]
-class Subject
+class Subject implements GrammaticalRole
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
     private int $id;

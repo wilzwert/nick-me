@@ -2,8 +2,8 @@
 
 namespace App\Tests\Integration\UseCase;
 
-use App\Dto\Request\RandomWordRequest;
-use App\Enum\WordType;
+use App\Dto\Request\RandomNickRequest;
+use App\Enum\GrammaticalRoleType;
 use App\UseCase\GenerateNickInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -18,9 +18,9 @@ class GenerateNickIT extends KernelTestCase
     {
         self::bootKernel();
         $useCase = static::getContainer()->get(GenerateNickInterface::class);
-        $result = ($useCase)(new RandomWordRequest());
+        $result = ($useCase)(new RandomNickRequest());
 
-        self::assertEquals($result->words[0]->type, WordType::SUBJECT);
-        self::assertEquals($result->words[1]->type, WordType::QUALIFIER);
+        self::assertEquals($result->words[0]->type, GrammaticalRoleType::SUBJECT);
+        self::assertEquals($result->words[1]->type, GrammaticalRoleType::QUALIFIER);
     }
 }

@@ -2,10 +2,14 @@
 
 namespace App\Service\Data;
 
+use App\Entity\GrammaticalRole;
 use App\Entity\Subject;
 use App\Entity\Word;
+use App\Enum\GrammaticalRoleType;
 use App\Repository\SubjectRepositoryInterface;
 use App\Specification\Sort;
+use App\Specification\ValueCriterion;
+use App\Specification\ValueCriterionCheck;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -50,5 +54,30 @@ class SubjectService implements SubjectServiceInterface
     {
         return $this->repository->findOne($criteria, Sort::RANDOM);
 
+    }
+
+    public function getGrammaticalRole(): GrammaticalRoleType
+    {
+        return GrammaticalRoleType::SUBJECT;
+    }
+
+    /**
+     * @param int $wordId
+     * @return ?Subject
+     */
+    public function findByWordId(int $wordId): ?GrammaticalRole
+    {
+        return $this->repository->findByWordId($wordId);
+    }
+
+    public function findAnother(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
+    {
+        if (! $other instanceof Subject) {
+            throw new \LogicException('Cannot find another Subject because $other param is not an instance of Subject');
+        }
+
+        $criteria->addCriterion(new ValueCriterion(Subject::class, 'id', $other->getWord()->getId(), ValueCriterionCheck::NEQ));
+
+        return $this->repository->findOne($criteria);
     }
 }

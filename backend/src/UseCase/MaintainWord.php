@@ -6,7 +6,7 @@ use App\Dto\Command\MaintainWordCommand;
 use App\Dto\Response\FullWordDto;
 use App\Dto\Response\QualifierDto;
 use App\Dto\Response\SubjectDto;
-use App\Enum\WordType;
+use App\Enum\GrammaticalRoleType;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
 use App\Service\Data\WordServiceInterface;
@@ -20,10 +20,10 @@ use Doctrine\ORM\EntityManagerInterface;
 class MaintainWord implements MaintainWordInterface
 {
     public function __construct(
-        private readonly WordServiceInterface $wordService,
-        private readonly SubjectServiceInterface $subjectService,
+        private readonly WordServiceInterface      $wordService,
+        private readonly SubjectServiceInterface   $subjectService,
         private readonly QualifierServiceInterface $qualifierService,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface    $entityManager
 
     ) {
     }
@@ -75,11 +75,11 @@ class MaintainWord implements MaintainWordInterface
         // and finally, build and return the Dto
         $types = [];
         if (isset($qualifier)) {
-            $types[WordType::QUALIFIER->value] = new QualifierDto($qualifier->getUsageCount(), $qualifier->getPosition());
+            $types[GrammaticalRoleType::QUALIFIER->value] = new QualifierDto($qualifier->getUsageCount(), $qualifier->getPosition());
         }
 
         if (isset($subject)) {
-            $types[WordType::SUBJECT->value] = new SubjectDto($subject->getUsageCount());
+            $types[GrammaticalRoleType::SUBJECT->value] = new SubjectDto($subject->getUsageCount());
         }
 
         return new FullWordDto(
