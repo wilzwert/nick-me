@@ -75,7 +75,7 @@ class QualifierService implements QualifierServiceInterface
         return $this->repository->findByWordId($wordId);
     }
 
-    public function findAnother(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
+    public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
     {
         if (! $other instanceof Qualifier) {
             throw new \LogicException('Cannot find another qualifier because $other param is not an instance of Qualifier');
