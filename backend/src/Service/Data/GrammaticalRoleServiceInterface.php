@@ -27,7 +27,7 @@ interface GrammaticalRoleServiceInterface
      * @param T $other
      * @return ?T
      */
-    public function findAnother(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole;
+    public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole;
 
     /**
      * Increments a grammatical role usages count

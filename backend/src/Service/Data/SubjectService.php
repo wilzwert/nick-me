@@ -70,7 +70,7 @@ class SubjectService implements SubjectServiceInterface
         return $this->repository->findByWordId($wordId);
     }
 
-    public function findAnother(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
+    public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
     {
         if (! $other instanceof Subject) {
             throw new \LogicException('Cannot find another Subject because $other param is not an instance of Subject');

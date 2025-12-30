@@ -20,28 +20,31 @@ use App\Specification\GenderCriterion;
 use App\Specification\OffenseConstraintType;
 use App\Specification\OffenseLevelCriterion;
 use App\Specification\WordCriteria;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
-class GetWord implements GetWordInterface
+readonly class GetWord implements GetWordInterface
 {
     /**
      * @template T of GrammaticalRole
      * @var array<string, GrammaticalRoleServiceInterface<T>>
      */
-    private readonly array $services;
+    private array $services;
 
     /**
      * @template T of GrammaticalRole
      * @param iterable<GrammaticalRoleServiceInterface<T>> $services
      * @param WordFormatterInterface $formatter
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         #[AutowireIterator('app.word_type_data_service')]
-        iterable $services,
-        private readonly WordFormatterInterface $formatter
+        iterable                       $services,
+        private WordFormatterInterface $formatter,
+        private EntityManagerInterface $entityManager
     ) {
         $servicesByWordType = [];
         foreach ($services as $service) {
@@ -73,8 +76,9 @@ class GetWord implements GetWordInterface
             $request->getExclusions()
         );
 
-        $new = $service->findAnother($previous, $wordCriteria);
+        $new = $service->findSimilar($previous, $wordCriteria);
         $service->incrementUsageCount($new);
+        $this->entityManager->flush();
 
         // build the nick word dto
         $targetGender = $request->getGender() ?? $new->getWord()->getGender();
