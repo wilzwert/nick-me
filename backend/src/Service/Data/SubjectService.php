@@ -80,4 +80,14 @@ class SubjectService implements SubjectServiceInterface
 
         return $this->repository->findOne($criteria);
     }
+
+    /**
+     * @param Subject $grammaticalRole
+     * @return void
+     */
+    public function incrementUsageCount(GrammaticalRole $grammaticalRole): void
+    {
+        $grammaticalRole->incrementUsageCount();
+        $this->save($grammaticalRole);
+    }
 }

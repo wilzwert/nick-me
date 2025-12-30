@@ -50,7 +50,7 @@ class GenerateNick implements GenerateNickInterface
      * @return WordGender
      * @throws RandomException
      */
-    private function setGeneratedGender(RandomNickRequest $request, Subject $subject): WordGender
+    private function computeTargetGender(RandomNickRequest $request, Subject $subject): WordGender
     {
         // in case a non-auto gender has been explicitly asked, we have to respect it
         if ($request->getGender() !== WordGender::AUTO) {
@@ -67,8 +67,11 @@ class GenerateNick implements GenerateNickInterface
     {
         // get a Subject according to OffenseLevel and Gender
         $criteria = [];
-        if ($request->getGender()) {
-            $criteria[] = new GenderCriterion($request->getGender(), GenderConstraintType::EXACT);
+        if ($request->getGender() && $request->getGender() !== WordGender::AUTO) {
+            $criteria[] = new GenderCriterion(
+                $request->getGender(),
+                GenderConstraintType::EXACT
+            );
         }
         if($request->getOffenseLevel()) {
             $criteria[] = new OffenseLevelCriterion($request->getOffenseLevel(), OffenseConstraintType::EXACT);
@@ -83,7 +86,7 @@ class GenerateNick implements GenerateNickInterface
             )
         );
 
-        $targetGender = $this->setGeneratedGender($request, $subject);
+        $targetGender = $this->computeTargetGender($request, $subject);
 
         $exclusions = $request->getExclusions();
         $exclusions[] = $subject->getWord()->getId();
@@ -106,6 +109,10 @@ class GenerateNick implements GenerateNickInterface
                 $exclusions
             )
         );
+
+        // increment usages count
+        $this->subjectService->incrementUsageCount($subject);
+        $this->qualifierService->incrementUsageCount($qualifier);
 
         // build the nick dto
         $words = [

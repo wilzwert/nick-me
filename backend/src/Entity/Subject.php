@@ -32,8 +32,14 @@ class Subject implements GrammaticalRole
         return $this->word;
     }
 
-    public function getUsageCount(): int {
+    public function getUsageCount(): int
+    {
         return $this->usageCount;
+    }
+
+    public function incrementUsageCount(): void
+    {
+        $this->usageCount++;
     }
 
 }

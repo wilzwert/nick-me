@@ -87,5 +87,15 @@ class QualifierService implements QualifierServiceInterface
 
         return $this->repository->findOne($criteria);
     }
+
+    /**
+     * @param Qualifier $grammaticalRole
+     * @return void
+     */
+    public function incrementUsageCount(GrammaticalRole $grammaticalRole): void
+    {
+        $grammaticalRole->incrementUsageCount();
+        $this->save($grammaticalRole);
+    }
 }
 

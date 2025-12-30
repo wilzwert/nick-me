@@ -52,4 +52,9 @@ class Qualifier implements GrammaticalRole
         $this->position = $position;
         return $this;
     }
+
+    public function incrementUsageCount(): void
+    {
+        $this->usageCount++;
+    }
 }

@@ -43,7 +43,7 @@ class LoadBaseDataCommand extends Command
         foreach ($reader->getRecordsAsObject(CsvSubject::class) as $record) {
             $fullWordDto = ($this->maintainWord)(
                 new MaintainWordCommand(
-                    $record->label,
+                    trim($record->label),
                     WordGender::fromString($record->gender),
                     Lang::FR,
                     OffenseLevel::fromString($record->offenseLevel ?? 'MEDIUM'),
@@ -62,7 +62,7 @@ class LoadBaseDataCommand extends Command
         foreach ($reader->getRecordsAsObject(CsvQualifier::class) as $record) {
             $fullWordDto = ($this->maintainWord)(
                 new MaintainWordCommand(
-                    $record->label,
+                    trim($record->label),
                     WordGender::fromString($record->gender ?? 'AUTO'),
                     Lang::FR,
                     OffenseLevel::fromString($record->offenseLevel ?? 'MEDIUM'),
