@@ -28,4 +28,11 @@ interface GrammaticalRoleServiceInterface
      * @return ?T
      */
     public function findAnother(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole;
+
+    /**
+     * Increments a grammatical role usages count
+     * @param GrammaticalRole $grammaticalRole
+     * @return void
+     */
+    public function incrementUsageCount(GrammaticalRole $grammaticalRole): void;
 }

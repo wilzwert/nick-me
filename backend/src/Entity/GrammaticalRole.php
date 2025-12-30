@@ -9,4 +9,7 @@ interface GrammaticalRole
 {
     public function getWord(): Word;
 
+    public function getUsageCount(): int;
+
+    public function incrementUsageCount(): void;
 }
