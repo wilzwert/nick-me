@@ -57,6 +57,11 @@ class Nick
         return $this->qualifier;
     }
 
+    public function incrementUsageCount(): void
+    {
+        $this->usageCount++;
+    }
+
 
 
 }
