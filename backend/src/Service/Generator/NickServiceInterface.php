@@ -14,4 +14,6 @@ interface NickServiceInterface
     public function generateNick(GenerateNickCommand $command) :NickGenerationResult;
 
     public function save(Nick $nick): void;
+
+    public function incrementUsageCount(Nick $nick): void;
 }

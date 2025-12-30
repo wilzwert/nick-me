@@ -130,4 +130,9 @@ class NickService implements NickServiceInterface
     {
         // TODO: Implement save() method.
     }
+
+    public function incrementUsageCount(Nick $nick): void
+    {
+        $nick->incrementUsageCount();
+    }
 }
