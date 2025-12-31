@@ -3,16 +3,19 @@
 namespace App\Service\Generator;
 
 use App\Dto\Command\GenerateNickCommand;
-use App\Dto\Request\RandomNickRequest;
-use App\Dto\Result\NickGenerationResult;
+use App\Dto\Result\GeneratedNickData;
+use App\Dto\Result\GeneratedNickWord;
 use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
+use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
+use App\Service\Data\NickService;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
+use App\Service\Formatter\WordFormatterInterface;
 use App\Specification\GenderConstraintType;
 use App\Specification\GenderCriterion;
 use App\Specification\OffenseConstraintType;
@@ -23,18 +26,15 @@ use Random\RandomException;
 /**
  * @author Wilhelm Zwertvaegher
  */
-class NickService implements NickServiceInterface
+class NickGeneratorService implements NickGeneratorServiceInterface
 {
+
     public function __construct(
         private readonly SubjectServiceInterface   $subjectService,
-        private readonly QualifierServiceInterface $qualifierService
+        private readonly QualifierServiceInterface $qualifierService,
+        private readonly WordFormatterInterface    $formatter,
+        private readonly NickService $nickService
     ){
-    }
-
-    private function generateHash(Subject $subject, Qualifier $qualifier): string
-    {
-        // TODO
-        return hash('sha256', '');
     }
 
     /**
@@ -49,7 +49,7 @@ class NickService implements NickServiceInterface
      * would have to choose a default gender, because reloading the subject or qualifier or a nick would produce gender compatible words
      * And we do not want to choose a gender as default, so by default we will randomly choose between M and F
      * TL;DR ; a Nick's target Gender cannot be AUTO, it MUST be a defined GENDER
-     * @param RandomNickRequest $request
+     * @param GenerateNickCommand $command
      * @param Subject $subject
      * @return WordGender
      * @throws RandomException
@@ -57,31 +57,67 @@ class NickService implements NickServiceInterface
     private function computeTargetGender(GenerateNickCommand $command, Subject $subject): WordGender
     {
         // in case a non-auto gender has been explicitly asked, we have to respect it
-        if ($command->getGender() !== WordGender::AUTO) {
+        if ($command->getGender() !== null && $command->getGender() !== WordGender::AUTO) {
             return $command->getGender();
         }
 
+        // in other cases, Gender depends on the found Subject gender
         return match ($subject->getWord()->getGender()) {
+            // neutral is randomly forced to M or F to increase possibilities, otherwise it would be very limited
+            // because in some languages neutral words are rare
+            // in any case, having a random M or F target gender will still allow NEUTRAL qualifiers
             WordGender::AUTO, WordGender::NEUTRAL => random_int(0, 1) === 1 ? WordGender::M : WordGender::F,
             default => $subject->getWord()->getGender(),
         };
     }
 
-
-    public function generateNick(GenerateNickCommand $command): NickGenerationResult
+    private function buildGeneratedNick(Subject $subject, Qualifier $qualifier, WordGender $targetGender): GeneratedNickData
     {
+        // build the generated nick data
+        $words = [
+            new GeneratedNickWord(
+                $subject->getWord()->getId(),
+                $this->formatter->formatLabel($subject->getWord(), $targetGender),
+                GrammaticalRoleType::fromClass($subject::class)
+            )
+        ];
+        $qualifierWord = new GeneratedNickWord(
+            $qualifier->getWord()->getId(),
+            $this->formatter->formatLabel($qualifier->getWord(), $targetGender),
+            GrammaticalRoleType::fromClass($qualifier::class));
+        if($qualifier->getPosition() === QualifierPosition::AFTER) {
+            $words[] = $qualifierWord;
+        }
+        else {
+            array_unshift($words, $qualifierWord);
+        }
 
+        $label = implode(' ', array_map(fn (GeneratedNickWord $word) => $word->label, $words));
+        $nick = $this->nickService->getOrCreate(
+            $subject,
+            $qualifier,
+            $targetGender,
+            $subject->getWord()->getOffenseLevel(),
+            $label
+        );
+
+        return new GeneratedNickData(
+            $nick->getTargetGender(),
+            $nick->getOffenseLevel(),
+            $nick,
+            $words
+        );
+    }
+
+    public function generateNick(GenerateNickCommand $command): GeneratedNickData
+    {
         // get a Subject according to OffenseLevel and Gender
         $criteria = [];
-        if ($command->getGender() && $command->getGender() !== WordGender::AUTO) {
-            $criteria[] = new GenderCriterion(
-                $command->getGender(),
-                GenderConstraintType::EXACT
-            );
-        }
-        if($command->getOffenseLevel()) {
-            $criteria[] = new OffenseLevelCriterion($command->getOffenseLevel(), OffenseConstraintType::EXACT);
-        }
+        $criteria[] = new GenderCriterion(
+            $command->getGender(),
+            GenderConstraintType::EXACT
+        );
+        $criteria[] = new OffenseLevelCriterion($command->getOffenseLevel(), OffenseConstraintType::EXACT);
 
         $subject = $this->subjectService->findOneRandomly(
             new WordCriteria(
@@ -91,7 +127,6 @@ class NickService implements NickServiceInterface
                 $command->getExclusions()
             )
         );
-
         $targetGender = $this->computeTargetGender($command, $subject);
 
         $exclusions = $command->getExclusions();
@@ -115,24 +150,7 @@ class NickService implements NickServiceInterface
                 $exclusions
             )
         );
-        return new NickGenerationResult(
-            $targetGender,
-            new Nick(
-                $this->generateHash($subject, $qualifier),
-                'TODOLabel',
-                $subject,
-                $qualifier
-            )
-        );
-    }
 
-    public function save(Nick $nick): void
-    {
-        // TODO: Implement save() method.
-    }
-
-    public function incrementUsageCount(Nick $nick): void
-    {
-        $nick->incrementUsageCount();
+        return $this->buildGeneratedNick($subject, $qualifier, $targetGender);
     }
 }

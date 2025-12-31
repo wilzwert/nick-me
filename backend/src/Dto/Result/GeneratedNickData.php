@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Dto\Result;
+
+use App\Entity\Nick;
+use App\Enum\Lang;
+use App\Enum\OffenseLevel;
+use App\Enum\WordGender;
+
+/**
+ * @author Wilhelm Zwertvaegher
+ */
+readonly class GeneratedNickData
+{
+    /**
+     * @param WordGender $targetGender
+     * @param OffenseLevel $targetOffenseLevel
+     * @param Nick $nick
+     * @param list<GeneratedNickWord> $words
+     */
+    public function __construct(
+        private WordGender $targetGender,
+        private OffenseLevel $targetOffenseLevel,
+        private Nick $nick,
+        private array $words
+    ) {
+    }
+
+    public function getTargetGender(): WordGender
+    {
+        return $this->targetGender;
+    }
+
+    public function getTargetOffenseLevel(): OffenseLevel
+    {
+        return $this->targetOffenseLevel;
+    }
+
+    public function getNick(): Nick
+    {
+        return $this->nick;
+    }
+
+    public function getWords(): array
+    {
+        return $this->words;
+    }
+}
