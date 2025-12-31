@@ -25,7 +25,7 @@ readonly class GenderCriterion implements EnumCriterion
     public function getAllowedValues(): array
     {
         // TODO this should not be removed because GenderCriterion does not apply when gender is not set
-        if (null === $this->gender) {
+        if (null === $this->gender || $this->gender === WordGender::AUTO) {
             return WordGender::all();
         }
 

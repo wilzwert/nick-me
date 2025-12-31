@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Dto\Command\GenerateNickCommand;
 use App\Dto\Request\RandomNickRequest;
 use App\Dto\Response\NickDto;
+use App\Dto\Response\NickWordDto;
+use App\Dto\Result\GeneratedNickWord;
 use App\UseCase\GenerateNickInterface;
 use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,8 +32,27 @@ class NickController extends AbstractController
         RandomNickRequest $request,
     ): JsonResponse
     {
+        $generateNickCommand = new GenerateNickCommand(
+            $request->getLang(),
+            $request->getGender(),
+            $request->getOffenseLevel(),
+            $request->getExclusions()
+        );
+        $generatedNickData = ($this->generateNick)($generateNickCommand);
+
         return $this->json(
-            ($this->generateNick)($request),
+            new NickDto(
+                $generatedNickData->getTargetGender(),
+                $generatedNickData->getTargetOffenseLevel(),
+                array_map(
+                    fn (GeneratedNickWord $word) => new NickWordDto(
+                        $word->id,
+                        $word->label,
+                        $word->type
+                    ),
+                    $generatedNickData->getWords()
+                )
+            ),
             Response::HTTP_OK
         );
     }

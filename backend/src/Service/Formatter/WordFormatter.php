@@ -28,14 +28,19 @@ class WordFormatter implements WordFormatterInterface
         foreach ($formatters as $formatter) {
             $this->formatters[$formatter->getLang()->value] = $formatter;
         }
+    }
 
+    public function applyCommonFormat(string $label): string
+    {
+        return ucfirst(strtolower($label));
     }
 
     public function formatLabel(Word $word, WordGender $gender): string
     {
-        if (isset($this->formatters[$word->getLang()->value])) {
-            return $this->formatters[$word->getLang()->value]->format($word, $gender);
-        }
-        return $word->getLabel();
+        return $this->applyCommonFormat(
+            isset($this->formatters[$word->getLang()->value]) ?
+                $this->formatters[$word->getLang()->value]->format($word, $gender) :
+                $word->getLabel()
+        );
     }
 }

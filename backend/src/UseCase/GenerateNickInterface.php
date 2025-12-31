@@ -2,14 +2,14 @@
 
 namespace App\UseCase;
 
-use App\Dto\Request\RandomNickRequest;
-use App\Dto\Response\NickDto;
+use App\Dto\Command\GenerateNickCommand;
+use App\Dto\Result\GeneratedNickData;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
 interface GenerateNickInterface
 {
-    public function __invoke(RandomNickRequest $request): NickDto;
+    public function __invoke(GenerateNickCommand $generateNickCommand): GeneratedNickData;
 
 }

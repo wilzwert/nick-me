@@ -3,26 +3,13 @@
 namespace App\UseCase;
 
 use App\Dto\Command\GenerateNickCommand;
-use App\Dto\Request\RandomNickRequest;
-use App\Dto\Response\NickDto;
-use App\Dto\Response\NickWordDto;
-use App\Entity\Subject;
-use App\Enum\OffenseLevel;
-use App\Enum\QualifierPosition;
-use App\Enum\GrammaticalRoleType;
-use App\Enum\WordGender;
+use App\Dto\Result\GeneratedNickData;
+use App\Service\Data\NickService;
+use App\Service\Data\NickServiceInterface;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
-use App\Service\Formatter\WordFormatterInterface;
-use App\Service\Generator\NickService;
-use App\Specification\GenderConstraintType;
-use App\Specification\GenderCriterion;
-use App\Specification\OffenseConstraintType;
-use App\Specification\OffenseLevelCriterion;
-use App\Specification\WordCriteria;
+use App\Service\Generator\NickGeneratorServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Random\RandomException;
-use function PHPUnit\Framework\callback;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -30,28 +17,21 @@ use function PHPUnit\Framework\callback;
 class GenerateNick implements GenerateNickInterface
 {
     public function __construct(
-        private readonly NickService               $nickService,
-        private readonly SubjectServiceInterface   $subjectService,
-        private readonly QualifierServiceInterface $qualifierService,
-        private readonly WordFormatterInterface    $formatter,
-        private readonly EntityManagerInterface    $entityManager
+        private readonly NickGeneratorServiceInterface $nickGeneratorService,
+        private readonly NickServiceInterface $nickService,
+        private readonly SubjectServiceInterface       $subjectService,
+        private readonly QualifierServiceInterface     $qualifierService,
+        private readonly EntityManagerInterface        $entityManager
     ) {
     }
 
-    public function __invoke(RandomNickRequest $request): NickDto
+    public function __invoke(GenerateNickCommand $generateNickCommand): GeneratedNickData
     {
 
-        $generateNickCommand = new GenerateNickCommand(
-            $request->getLang(),
-            $request->getGender(),
-            $request->getOffenseLevel(),
-            $request->getExclusions()
-        );
+        $nickGenerationResult = $this->nickGeneratorService->generateNick($generateNickCommand);
 
-        $nickGenerationResult = $this->nickService->generateNick($generateNickCommand);
         $nick = $nickGenerationResult->getNick();
-        $targetGender = $nickGenerationResult->getTargetGender();
-        $nick->incrementUsageCount();
+        $this->nickService->incrementUsageCount($nick);
         $this->nickService->save($nick);
 
         // increment usages count
@@ -60,25 +40,6 @@ class GenerateNick implements GenerateNickInterface
 
         $this->entityManager->flush();
 
-        // build the nick dto
-        $words = [
-            new NickWordDto(
-                $nick->getSubject()->getWord()->getId(),
-                $this->formatter->formatLabel($nick->getSubject()->getWord(), $targetGender),
-                GrammaticalRoleType::fromClass($nick->getSubject()::class)
-            )
-        ];
-        $qualifierWordDto = new NickWordDto(
-            $nick->getQualifier()->getWord()->getId(),
-            $this->formatter->formatLabel($nick->getQualifier()->getWord(), $targetGender),
-            GrammaticalRoleType::fromClass($nick->getQualifier()::class));
-        if($nick->getQualifier()->getPosition() === QualifierPosition::AFTER) {
-            $words[] = $qualifierWordDto;
-        }
-        else {
-            array_unshift($words, $qualifierWordDto);
-        }
-
-        return new NickDto($targetGender, $nick->getSubject()->getWord()->getOffenseLevel(), $words);
+        return $nickGenerationResult;
     }
 }
