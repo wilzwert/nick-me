@@ -107,7 +107,7 @@ class GetWordIT extends KernelTestCase
     public function shouldRandomlyPickGenderedOrAutoQualifier(WordGender $targetGender, array $expectedLabels): void
     {
         $labels = [];
-        for ($retries = 0; $retries < 10; $retries++) {
+        for ($retries = 0; $retries < 30; $retries++) {
             $result = ($this->underTest)(new RandomWordRequest(
                 previousId: 1,
                 role: GrammaticalRoleType::QUALIFIER,
@@ -124,9 +124,9 @@ class GetWordIT extends KernelTestCase
         self::assertEqualsCanonicalizing($expectedLabels, array_keys($labels));
 
         // FIXME : on a small amount of retries, random distribution should not be tested this way
-        // here, we only check that with 10 retries, each label appears at least 3 times
+        // here, we only check that with 30 retries, each label appears 10 to 20 times
         foreach ($labels as $count) {
-            self::assertTrue(abs($count-5) <= 2);
+            self::assertTrue(abs($count-$retries/2) <= 5);
         }
     }
 }

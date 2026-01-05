@@ -6,6 +6,7 @@ use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
 use App\Repository\WordCriteriaRepositoryTrait;
+use App\Specification\DefaultCriterionConverter;
 use App\Specification\GenderConstraintType;
 use App\Specification\GenderCriterion;
 use App\Specification\OffenseConstraintType;
@@ -23,8 +24,18 @@ class WordCriteriaRepositoryTraitTest extends TestCase
 
     use WordCriteriaRepositoryTrait;
 
+    protected function setUp(): void
+    {
+        $this->criterionConverter = new DefaultCriterionConverter();
+    }
+
     private function assertCommonBehaviour(MockObject&QueryBuilder $queryBuilder): void
     {
+
+        $queryBuilder->expects($this->once())
+            ->method('getDQLPart')
+            ->willReturn([]);
+
         // check the randomization is handled
         $queryBuilder->expects($this->once())
             ->method('setFirstResult')
