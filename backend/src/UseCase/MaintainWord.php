@@ -3,6 +3,8 @@
 namespace App\UseCase;
 
 use App\Dto\Command\MaintainWordCommand;
+use App\Dto\Properties\MaintainQualifierProperties;
+use App\Dto\Properties\MaintainWordProperties;
 use App\Dto\Response\FullWordDto;
 use App\Dto\Response\QualifierDto;
 use App\Dto\Response\SubjectDto;
@@ -10,8 +12,6 @@ use App\Enum\GrammaticalRoleType;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
 use App\Service\Data\WordServiceInterface;
-use App\Specification\MaintainQualifierSpec;
-use App\Specification\MaintainWordSpec;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -33,7 +33,7 @@ class MaintainWord implements MaintainWordInterface
         $this->entityManager->beginTransaction();
 
         // create or update base word
-        $spec = new MaintainWordSpec(
+        $spec = new MaintainWordProperties(
             $maintainWordCommand->getLabel(),
             $maintainWordCommand->getGender(),
             $maintainWordCommand->getLang(),
@@ -52,7 +52,7 @@ class MaintainWord implements MaintainWordInterface
         if ($spec->isAsQualifier()) {
            $qualifier = $this->qualifierService->createOrUpdate(
                $word,
-               new MaintainQualifierSpec(
+               new MaintainQualifierProperties(
                    $spec->getQualifierPosition()
                )
            );

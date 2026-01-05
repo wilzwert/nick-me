@@ -2,9 +2,10 @@
 
 namespace App\Service\Data;
 
+use App\Dto\Properties\MaintainWordProperties;
 use App\Entity\Word;
+use App\Exception\WordNotFoundException;
 use App\Repository\WordRepositoryInterface;
-use App\Specification\MaintainWordSpec;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -21,28 +22,36 @@ class WordService implements WordServiceInterface
     }
 
 
-    public function createOrUpdate(MaintainWordSpec $spec): Word
+    /**
+     * @throws WordNotFoundException
+     */
+    public function createOrUpdate(MaintainWordProperties $spec): Word
     {
         $slug = strtolower($this->slugger->slug($spec->getLabel()));
         if ($id = $spec->getWordId()) {
             $word = $this->wordRepository->findById($id);
+            if (!$word) {
+                throw new WordNotFoundException();
+            }
         }
         else {
             $word = $this->wordRepository->findBySlug($slug);
         }
 
+        $label = ucwords(strtolower($spec->getLabel()));
+
         if ($word) {
             $word->setSlug($slug);
-            $word->setLabel($spec->getLabel());
+            $word->setLabel($label);
             $word->setGender($spec->getGender());
             $word->setLang($spec->getLang());
             $word->setOffenseLevel($spec->getOffenseLevel());
             $word->setStatus($spec->getStatus());
         }
         else {
-            $word =new Word(
+            $word = new Word(
                 slug: $slug,
-                label: $spec->getLabel(),
+                label: $label,
                 gender: $spec->getGender(),
                 lang: $spec->getLang(),
                 offenseLevel: $spec->getOffenseLevel(),

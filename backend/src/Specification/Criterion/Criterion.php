@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Specification;
+namespace App\Specification\Criterion;
 
 use App\Entity\GrammaticalRole;
 use App\Entity\Word;
@@ -15,7 +15,5 @@ interface Criterion
      */
     public function getTargetEntity(): string;
     public function getField(): string;
-
-
     public function shouldApply(): bool;
 }

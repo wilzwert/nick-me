@@ -86,5 +86,16 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
+
+        // update sequences to allow further creation with auto id generation
+        $manager->getConnection()->executeStatement(
+            "SELECT setval(pg_get_serial_sequence('word','id'), (SELECT MAX(id) FROM word))"
+        );
+        $manager->getConnection()->executeStatement(
+            "SELECT setval(pg_get_serial_sequence('subject','id'), (SELECT MAX(id) FROM subject))"
+        );
+        $manager->getConnection()->executeStatement(
+            "SELECT setval(pg_get_serial_sequence('qualifier','id'), (SELECT MAX(id) FROM qualifier))"
+        );
     }
 }

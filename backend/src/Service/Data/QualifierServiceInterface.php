@@ -2,9 +2,9 @@
 
 namespace App\Service\Data;
 
+use App\Dto\Properties\MaintainQualifierProperties;
 use App\Entity\Qualifier;
 use App\Entity\Word;
-use App\Specification\MaintainQualifierSpec;
 use App\Specification\WordCriteria;
 
 /**
@@ -18,7 +18,7 @@ interface QualifierServiceInterface extends GrammaticalRoleServiceInterface
      */
     public function findOneRandomly(WordCriteria $criteria): Qualifier;
 
-    public function createOrUpdate(Word $word, MaintainQualifierSpec $command): Qualifier;
+    public function createOrUpdate(Word $word, MaintainQualifierProperties $command): Qualifier;
 
     public function deleteIfExists(int $wordId): void;
 

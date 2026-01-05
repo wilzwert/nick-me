@@ -2,6 +2,10 @@
 
 namespace App\Specification;
 
+use App\Specification\Criterion\Criterion;
+use App\Specification\Criterion\EnumCriterion;
+use App\Specification\Criterion\ValueCriterion;
+use App\Specification\Criterion\ValuesCriterion;
 use Closure;
 use Doctrine\ORM\QueryBuilder;
 
@@ -26,7 +30,12 @@ class DefaultCriterionConverter implements CriterionConverter
             ValueCriterion::class => function (QueryBuilder $qb, ValueCriterion $criterion, int $criterionIndex, EntitiesAliases $aliases) {
                 $qb->andWhere($aliases->getAlias($criterion->getTargetEntity())."." . $criterion->getField() . "  ".$criterion->getCheck()->value." :value{$criterionIndex}")
                     ->setParameter("value{$criterionIndex}", $criterion->getValue());
+            },
+            ValuesCriterion::class => function (QueryBuilder $qb, ValuesCriterion $criterion, int $criterionIndex, EntitiesAliases $aliases) {
+                $qb->andWhere($aliases->getAlias($criterion->getTargetEntity())."." . $criterion->getField() . "  ".$criterion->getCheck()->value." (:values{$criterionIndex})")
+                    ->setParameter("values{$criterionIndex}", $criterion->getValues());
             }
+
         ];
     }
 

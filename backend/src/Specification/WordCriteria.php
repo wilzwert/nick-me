@@ -2,10 +2,9 @@
 
 namespace App\Specification;
 
-use App\Enum\Lang;
-use App\Enum\OffenseLevel;
-use App\Enum\WordGender;
 use App\Enum\GrammaticalRoleType;
+use App\Enum\Lang;
+use App\Specification\Criterion\Criterion;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -22,13 +21,11 @@ class WordCriteria
      * @param Lang $lang
      * @param GrammaticalRoleType|null $grammaticalRole
      * @param array<Criterion> $criteria
-     * @param array|null $exclusions
      */
     public function __construct(
         private readonly Lang                 $lang = Lang::FR,
         private readonly ?GrammaticalRoleType $grammaticalRole = null,
-        private array $criteria = [],
-        private readonly array $exclusions = []
+        private array $criteria = []
     ) {
     }
 
@@ -48,11 +45,6 @@ class WordCriteria
     public function getCriteria(): array
     {
         return $this->criteria;
-    }
-
-    public function getExclusions(): array
-    {
-        return $this->exclusions;
     }
 
     public function addCriterion(Criterion $criterion): void

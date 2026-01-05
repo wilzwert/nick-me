@@ -8,7 +8,6 @@ use App\Entity\Word;
 use App\Exception\NoWordFoundException;
 use App\Specification\CriterionConverter;
 use App\Specification\EntitiesAliases;
-use App\Specification\EnumCriterion;
 use App\Specification\Sort;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\QueryBuilder;
@@ -45,11 +44,6 @@ trait WordCriteriaRepositoryTrait
             ->setParameter('lang', $criteria->getLang());
 
         $this->criterionConverter->applyAll($qb, $criteria->getCriteria(), $aliases);
-
-        if (count($criteria->getExclusions())) {
-            $qb->andWhere($aliases->getAlias(Word::class).".id NOT IN (:exclusions)")
-                ->setParameter('exclusions', $criteria->getExclusions());
-        }
 
         if ($sort === Sort::RANDOM) {
             $count = (int) $qb

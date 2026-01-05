@@ -5,9 +5,9 @@ namespace App\Service\Generator;
 use App\Dto\Command\GenerateNickCommand;
 use App\Dto\Result\GeneratedNickData;
 use App\Dto\Result\GeneratedNickWord;
-use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
+use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
@@ -16,10 +16,12 @@ use App\Service\Data\NickService;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
 use App\Service\Formatter\WordFormatterInterface;
-use App\Specification\GenderConstraintType;
-use App\Specification\GenderCriterion;
-use App\Specification\OffenseConstraintType;
-use App\Specification\OffenseLevelCriterion;
+use App\Specification\Criterion\GenderConstraintType;
+use App\Specification\Criterion\GenderCriterion;
+use App\Specification\Criterion\OffenseConstraintType;
+use App\Specification\Criterion\OffenseLevelCriterion;
+use App\Specification\Criterion\ValuesCriterion;
+use App\Specification\Criterion\ValuesCriterionCheck;
 use App\Specification\WordCriteria;
 use Random\RandomException;
 
@@ -118,13 +120,15 @@ class NickGeneratorService implements NickGeneratorServiceInterface
             GenderConstraintType::EXACT
         );
         $criteria[] = new OffenseLevelCriterion($command->getOffenseLevel(), OffenseConstraintType::EXACT);
+        if (count($command->getExclusions())) {
+            $criteria = new ValuesCriterion(Word::class, 'id', $command->getExclusions(), ValuesCriterionCheck::NOT_IN);
+        }
 
         $subject = $this->subjectService->findOneRandomly(
             new WordCriteria(
                 $command->getLang(),
                 GrammaticalRoleType::SUBJECT,
-                $criteria,
-                $command->getExclusions()
+                $criteria
             )
         );
         $targetGender = $this->computeTargetGender($command, $subject);
@@ -132,22 +136,24 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         $exclusions = $command->getExclusions();
         $exclusions[] = $subject->getWord()->getId();
 
+        $criteria = [
+            new GenderCriterion(
+                $targetGender,
+                GenderConstraintType::RELAXED,
+            ),
+            new OffenseLevelCriterion(
+                $subject->getWord()->getOffenseLevel(),
+                $command->getOffenseLevel() === OffenseLevel::MAX ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE,
+            ),
+            new ValuesCriterion(Word::class, 'id', $exclusions, ValuesCriterionCheck::NOT_IN)
+        ];
+
         // get a Qualifier according to the Subject's OffenseLevel and Gender
         $qualifier = $this->qualifierService->findOneRandomly(
             new WordCriteria(
                 $command->getLang(),
                 GrammaticalRoleType::QUALIFIER,
-                [
-                    new GenderCriterion(
-                        $targetGender,
-                        GenderConstraintType::RELAXED,
-                    ),
-                    new OffenseLevelCriterion(
-                        $subject->getWord()->getOffenseLevel(),
-                        $command->getOffenseLevel() === OffenseLevel::MAX ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE,
-                    )
-                ],
-                $exclusions
+                $criteria
             )
         );
 
