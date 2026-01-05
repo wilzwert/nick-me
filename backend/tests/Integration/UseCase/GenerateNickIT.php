@@ -64,9 +64,8 @@ class GenerateNickIT extends KernelTestCase
         self::assertEquals($words[0]->type, GrammaticalRoleType::SUBJECT);
         self::assertEquals($words[1]->type, GrammaticalRoleType::QUALIFIER);
 
-        // randomly computed
+        // randomly computed MUST NOT be AUTO or NEUTRAL
         self::assertNotEquals(WordGender::AUTO, $result->getTargetGender());
         self::assertNotEquals(WordGender::NEUTRAL, $result->getTargetGender());
-
     }
 }
