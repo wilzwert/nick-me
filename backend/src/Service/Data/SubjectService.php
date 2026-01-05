@@ -7,9 +7,9 @@ use App\Entity\Subject;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Repository\SubjectRepositoryInterface;
+use App\Specification\Criterion\ValueCriterion;
+use App\Specification\Criterion\ValueCriterionCheck;
 use App\Specification\Sort;
-use App\Specification\ValueCriterion;
-use App\Specification\ValueCriterionCheck;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\EntityManagerInterface;
 

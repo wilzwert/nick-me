@@ -2,23 +2,19 @@
 
 namespace App\UseCase;
 
-use App\Dto\Request\RandomNickRequest;
 use App\Dto\Request\RandomWordRequest;
-use App\Dto\Response\NickDto;
 use App\Dto\Response\NickWordDto;
 use App\Entity\GrammaticalRole;
-use App\Enum\OffenseLevel;
-use App\Enum\QualifierPosition;
+use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
-use App\Enum\WordGender;
-use App\Service\Data\QualifierServiceInterface;
-use App\Service\Data\SubjectServiceInterface;
 use App\Service\Data\GrammaticalRoleServiceInterface;
 use App\Service\Formatter\WordFormatterInterface;
-use App\Specification\GenderConstraintType;
-use App\Specification\GenderCriterion;
-use App\Specification\OffenseConstraintType;
-use App\Specification\OffenseLevelCriterion;
+use App\Specification\Criterion\GenderConstraintType;
+use App\Specification\Criterion\GenderCriterion;
+use App\Specification\Criterion\OffenseConstraintType;
+use App\Specification\Criterion\OffenseLevelCriterion;
+use App\Specification\Criterion\ValuesCriterion;
+use App\Specification\Criterion\ValuesCriterionCheck;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
@@ -69,11 +65,14 @@ readonly class GetWord implements GetWordInterface
                 ($request->getGrammaticalRole() === GrammaticalRoleType::SUBJECT ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE)
             );
         }
+        if (count($request->getExclusions())) {
+            $criteria[] = new ValuesCriterion(Word::class, 'id', $request->getExclusions(), ValuesCriterionCheck::NOT_IN);
+        }
+
         $wordCriteria = new WordCriteria(
             $previous->getWord()->getLang(),
             $request->getGrammaticalRole(),
-            $criteria,
-            $request->getExclusions()
+            $criteria
         );
 
         $new = $service->findSimilar($previous, $wordCriteria);

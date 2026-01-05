@@ -2,6 +2,7 @@
 
 namespace App\Specification;
 
+use App\Specification\Criterion\Criterion;
 use Doctrine\ORM\QueryBuilder;
 
 /**

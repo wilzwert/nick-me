@@ -2,15 +2,15 @@
 
 namespace App\Service\Data;
 
+use App\Dto\Properties\MaintainWordProperties;
 use App\Entity\Word;
-use App\Specification\MaintainWordSpec;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
 interface WordServiceInterface
 {
-    public function createOrUpdate(MaintainWordSpec $spec): Word;
+    public function createOrUpdate(MaintainWordProperties $spec): Word;
 
     public function save(Word $word): void;
 }

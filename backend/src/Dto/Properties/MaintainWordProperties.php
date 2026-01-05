@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Specification;
+namespace App\Dto\Properties;
 
+use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
-use App\Enum\WordStatus;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Enum\Lang;
 use App\Enum\WordGender;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use App\Enum\WordStatus;
 
 /**
+ * DTO used to pass properties to a service to maintain a Word
  * @author Wilhelm Zwertvaegher
  */
-readonly class MaintainWordSpec
+readonly class MaintainWordProperties
 {
     public function __construct(
         private string             $label,

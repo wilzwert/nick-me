@@ -2,17 +2,16 @@
 
 namespace App\Service\Data;
 
+use App\Dto\Properties\MaintainQualifierProperties;
 use App\Entity\GrammaticalRole;
 use App\Entity\Qualifier;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Repository\QualifierRepositoryInterface;
-use App\Specification\MaintainQualifierSpec;
-use App\Specification\ValueCriterion;
-use App\Specification\ValueCriterionCheck;
+use App\Specification\Criterion\ValueCriterion;
+use App\Specification\Criterion\ValueCriterionCheck;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -25,7 +24,7 @@ class QualifierService implements QualifierServiceInterface
     {
     }
 
-    public function createOrUpdate(Word $word, MaintainQualifierSpec $command): Qualifier
+    public function createOrUpdate(Word $word, MaintainQualifierProperties $command): Qualifier
     {
         $qualifier = $this->repository->findByWordId($word->getId());
         if ($qualifier) {

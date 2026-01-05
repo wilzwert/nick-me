@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Specification;
+namespace App\Specification\Criterion;
 
 /**
  * @template T

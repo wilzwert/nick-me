@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Specification;
+namespace App\Specification\Criterion;
 
 use App\Entity\Word;
 use App\Enum\OffenseLevel;
@@ -43,7 +43,7 @@ readonly class OffenseLevelCriterion implements EnumCriterion
         };
 
         if ( $this->offenseConstraintType == OffenseConstraintType::LTE) {
-            // add current offenselevel to allow equality
+            // add current OffenseLevel to allow equality
             $result[] = $this->offenseLevel;
         }
         return $result;
