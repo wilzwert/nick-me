@@ -18,13 +18,18 @@ use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-    public function __construct(private EntityManagerInterface $manager)
-    {
-    }
 
     public function load(ObjectManager $manager): void
     {
-        $classMetadata = $this->manager->getClassMetadata(Word::class);
+        $classMetadata = $manager->getClassMetadata(Word::class);
+        $classMetadata->setIdGenerator(new AssignedGenerator());
+        $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+
+        $classMetadata = $manager->getClassMetadata(Subject::class);
+        $classMetadata->setIdGenerator(new AssignedGenerator());
+        $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+
+        $classMetadata = $manager->getClassMetadata(Qualifier::class);
         $classMetadata->setIdGenerator(new AssignedGenerator());
         $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
@@ -49,9 +54,9 @@ class AppFixtures extends Fixture
             ['id' => 4, 'slug' => 'heretique', 'label' => 'Hérétique', 'gender' => WordGender::NEUTRAL, 'asSubject' => true],
 
             ['id' => 5, 'slug' => 'peureux', 'label' => 'Peureux', 'gender' => WordGender::AUTO, 'asQualifier' => true],
-            ['id' => 6, 'slug' => 'indiscrete', 'label' => 'Indiscrète', 'gender' => WordGender::F, 'asSubject' => true],
-            ['id' => 7, 'slug' => 'interrogateur', 'label' => 'Interrogateur', 'gender' => WordGender::M, 'asSubject' => true],
-            ['id' => 8, 'slug' => 'fataliste', 'label' => 'Fataliste', 'gender' => WordGender::NEUTRAL, 'asSubject' => true],
+            ['id' => 6, 'slug' => 'indiscrete', 'label' => 'Indiscrète', 'gender' => WordGender::F, 'asQualifier' => true],
+            ['id' => 7, 'slug' => 'interrogateur', 'label' => 'Interrogateur', 'gender' => WordGender::M, 'asQualifier' => true],
+            ['id' => 8, 'slug' => 'fataliste', 'label' => 'Fataliste', 'gender' => WordGender::NEUTRAL, 'asQualifier' => true],
         ];
 
         foreach ($wordsToCreate as $wordToCreate) {

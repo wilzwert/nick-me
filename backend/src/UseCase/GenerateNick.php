@@ -31,10 +31,9 @@ class GenerateNick implements GenerateNickInterface
         $nickGenerationResult = $this->nickGeneratorService->generateNick($generateNickCommand);
 
         $nick = $nickGenerationResult->getNick();
-        $this->nickService->incrementUsageCount($nick);
-        $this->nickService->save($nick);
 
         // increment usages count
+        $this->nickService->incrementUsageCount($nick);
         $this->subjectService->incrementUsageCount($nick->getSubject());
         $this->qualifierService->incrementUsageCount($nick->getQualifier());
 
