@@ -12,7 +12,13 @@ use App\Specification\EnumCriterion;
 use App\Specification\Sort;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\QueryBuilder;
+use Random\RandomException;
 use Symfony\Contracts\Service\Attribute\Required;
+
+/**
+ * Trait allowing WordCriteria to be applied on a QueryBuilder
+ * @author Wilhelm Zwertvaegher
+ */
 
 trait WordCriteriaRepositoryTrait
 {
@@ -24,6 +30,10 @@ trait WordCriteriaRepositoryTrait
         $this->criterionConverter = $criterionConverter;
     }
 
+    /**
+     * @throws NoWordFoundException
+     * @throws RandomException
+     */
     protected function applyWordCriteria(QueryBuilder $qb, WordCriteria $criteria, Sort $sort = Sort::RANDOM, ?EntitiesAliases $aliases = null): void
     {
         if (null === $aliases) {
@@ -63,5 +73,4 @@ trait WordCriteriaRepositoryTrait
 
         $qb->setMaxResults(1);
     }
-
 }

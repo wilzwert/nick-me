@@ -81,7 +81,8 @@ class QualifierService implements QualifierServiceInterface
             throw new \LogicException('Cannot find another qualifier because $other param is not an instance of Qualifier');
         }
 
-        $criteria->addCriterion(new ValueCriterion(Qualifier::class, 'id', $other->getWord()->getId(), ValueCriterionCheck::NEQ));
+        $criteria->addCriterion(new ValueCriterion(Word::class, 'id', $other->getWord()->getId(), ValueCriterionCheck::NEQ));
+
         // add qualifier position to criteria
         $criteria->addCriterion(new ValueCriterion(Qualifier::class, 'position', $other->getPosition(), ValueCriterionCheck::EQ));
 

@@ -39,9 +39,9 @@ class SubjectService implements SubjectServiceInterface
 
     public function deleteIfExists(int $wordId): void
     {
-        $qualifier = $this->repository->findByWordId($wordId);
-        if ($qualifier) {
-            $this->entityManager->remove($qualifier);
+        $subject = $this->repository->findByWordId($wordId);
+        if ($subject) {
+            $this->entityManager->remove($subject);
         }
     }
 
@@ -73,10 +73,10 @@ class SubjectService implements SubjectServiceInterface
     public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
     {
         if (! $other instanceof Subject) {
-            throw new \LogicException('Cannot find another Subject because $other param is not an instance of Subject');
+            throw new \LogicException('Cannot find another subject because $other param is not an instance of Subject');
         }
 
-        $criteria->addCriterion(new ValueCriterion(Subject::class, 'id', $other->getWord()->getId(), ValueCriterionCheck::NEQ));
+        $criteria->addCriterion(new ValueCriterion(Word::class, 'id', $other->getWord()->getId(), ValueCriterionCheck::NEQ));
 
         return $this->repository->findOne($criteria);
     }
