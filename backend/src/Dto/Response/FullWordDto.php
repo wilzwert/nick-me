@@ -16,6 +16,7 @@ final readonly class FullWordDto
     /**
      * @param int $id
      * @param string $label
+     * @param string $slug
      * @param WordGender $gender
      * @param Lang $lang
      * @param OffenseLevel $offenseLevel
@@ -25,6 +26,7 @@ final readonly class FullWordDto
     public function __construct(
         public int        $id,
         public string     $label,
+        public string     $slug,
         public WordGender $gender,
         public Lang       $lang,
         public OffenseLevel $offenseLevel,
