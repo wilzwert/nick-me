@@ -10,12 +10,14 @@ use App\Enum\WordGender;
 use App\Enum\QualifierPosition;
 use App\Enum\Lang;
 use App\Enum\WordStatus;
+use App\Service\Data\WordSluggerInterface;
 use App\UseCase\MaintainWord;
 use League\Csv\Reader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -24,7 +26,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:load-base-data')]
 class LoadBaseDataCommand extends Command
 {
-    public function __construct(private readonly MaintainWord $maintainWord)
+    public function __construct(
+        private readonly MaintainWord $maintainWord,
+        private readonly WordSluggerInterface $wordSlugger,
+        #[Autowire('%base_data.subject_csv%')]
+        private readonly string $subjectCsvPath,
+        #[Autowire('%base_data.qualifier_csv%')]
+        private readonly string $qualifierCsvPath
+    )
     {
         parent::__construct();
     }
@@ -37,8 +46,13 @@ class LoadBaseDataCommand extends Command
         $output->writeln('Loading base data...');
         $output->writeln('Loading subjects...');
 
-        $reader = Reader::from(__DIR__ . '/../../resources/data/subject.csv');
+        if (!$append) {
+            // TODO : implement data deletion before loading
+        }
+
+        $reader = Reader::from($this->subjectCsvPath);
         $reader->setHeaderOffset(0);
+        $subjectsSlugs = [];
 
         foreach ($reader->getRecordsAsObject(CsvSubject::class) as $record) {
             $fullWordDto = ($this->maintainWord)(
@@ -52,14 +66,17 @@ class LoadBaseDataCommand extends Command
                 )
             );
             $output->writeln("Created subject {$fullWordDto->label} with word_id {$fullWordDto->id}");
+            $subjectsSlugs[] = $fullWordDto->slug;
         }
 
         $output->writeln('Loading qualifiers...');
 
-        $reader = Reader::from(__DIR__ . '/../../resources/data/qualifier.csv');
+        $reader = Reader::from($this->qualifierCsvPath);
         $reader->setHeaderOffset(0);
 
         foreach ($reader->getRecordsAsObject(CsvQualifier::class) as $record) {
+            $slug = $this->wordSlugger->slug($record->label);
+
             $fullWordDto = ($this->maintainWord)(
                 new MaintainWordCommand(
                     trim($record->label),
@@ -67,7 +84,7 @@ class LoadBaseDataCommand extends Command
                     Lang::FR,
                     OffenseLevel::fromString($record->offenseLevel ?? 'MEDIUM'),
                     WordStatus::APPROVED,
-                    false,
+                    in_array($slug, $subjectsSlugs),
                     true,
                     QualifierPosition::from($record->position ?? 'after')
                 )

@@ -38,7 +38,7 @@ class GenerateNicksCommand extends Command
         #[Option('Target gender.')] ?string $targetGenderStr = null
     ): int
     {
-        $targetLang = $offenseLevel = $targetGender = null;
+        $offenseLevel = $targetGender = null;
 
         if (!ctype_digit($numberOfNicksToGenerateStr)) {
             throw new \InvalidArgumentException('Number of nicks to generate must be an integer');
@@ -72,19 +72,14 @@ class GenerateNicksCommand extends Command
             throw new \InvalidArgumentException('Target lang must be a known value of Lang enum');
         }
 
-
-
-
         $io = new SymfonyStyle($input, $output);
 
         $numberOfNicksToGenerate = (int)$numberOfNicksToGenerateStr;
-
 
         $output->writeln("Generating {$numberOfNicksToGenerate} nicks");
         $io->section('Nicks generation');
         $io->comment('Warming up services...');
 
-        $offenseLevel = $offenseLevelStr ? OffenseLevel::from((int)$offenseLevelStr) : null;
         // first generation to warm up services and DI
         ($this->generateNick)(new GenerateNickCommand($targetLang, $targetGender, $offenseLevel));
 
@@ -118,8 +113,6 @@ class GenerateNicksCommand extends Command
             ['Min duration' => sprintf('%.2f ms', min($durations))],
             ['Max duration' => sprintf('%.2f ms', max($durations))],
         );
-
-        // $output->writeln("Generated {$numberOfNicksToGenerate} in {$event->getDuration()} ms (average ".(array_sum($durations) / count($durations))." ms)");
 
         return Command::SUCCESS;
     }
