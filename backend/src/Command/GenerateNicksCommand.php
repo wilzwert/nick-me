@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Dto\Command\GenerateNickCommand;
 use App\Enum\OffenseLevel;
 use App\Enum\Lang;
+use App\Enum\WordGender;
 use App\UseCase\GenerateNickInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
@@ -58,7 +59,7 @@ class GenerateNicksCommand extends Command
 
         if (null !== $targetGenderStr) {
             try {
-                $targetGender = OffenseLevel::from($targetGenderStr);
+                $targetGender = WordGender::from($targetGenderStr);
             }
             catch (\ValueError $exception) {
                 throw new \InvalidArgumentException('Gender must be a known value of WordGender enum');
