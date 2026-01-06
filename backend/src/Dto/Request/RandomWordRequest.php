@@ -6,6 +6,7 @@ use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
 use App\Enum\GrammaticalRoleType;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -31,7 +32,15 @@ readonly class RandomWordRequest
         private OffenseLevel       $offenseLevel = OffenseLevel::HIGH,
         string                      $exclusions = '',
     ) {
-        $this->exclusions = !empty($exclusions) ? explode(',', $exclusions) : [];
+        $exclusionsStrArray = explode(',', $exclusions);
+        $exclusionsIntArray = [];
+        foreach ($exclusionsStrArray as $exclusion) {
+            if( !filter_var($exclusion, FILTER_VALIDATE_INT) ) {
+                throw new ValidatorException('Exclusions must be integers');
+            }
+            $exclusionsIntArray[] = (int)$exclusion;
+        }
+        $this->exclusions = $exclusionsIntArray;
     }
 
     public function getPreviousId(): int

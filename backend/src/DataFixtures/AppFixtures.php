@@ -19,17 +19,41 @@ use Doctrine\Persistence\ObjectManager;
 class AppFixtures extends Fixture
 {
 
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
+
+    /**
+     * Description of words, subjects and qualifiers to create
+     * @return list<array>
+     */
+    private function getWordsToCreate(): array
+    {
+        return [
+            ['id' => 1, 'slug' => 'coquin', 'label' => 'Coquin', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::AUTO, 'asSubject' => true, 'asQualifier' => true],
+
+            ['id' => 2, 'slug' => 'banane', 'label' => 'Banane', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::F, 'asSubject' => true],
+            ['id' => 3, 'slug' => 'camembert', 'label' => 'Camembert', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::M, 'asSubject' => true],
+            ['id' => 4, 'slug' => 'heretique', 'label' => 'Hérétique', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::NEUTRAL, 'asSubject' => true],
+
+            ['id' => 5, 'slug' => 'peureux', 'label' => 'Peureux', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::AUTO, 'asQualifier' => true],
+            ['id' => 6, 'slug' => 'indiscrete', 'label' => 'Indiscrète', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::F, 'asQualifier' => true],
+            ['id' => 7, 'slug' => 'interrogateur', 'label' => 'Interrogateur', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::M, 'asQualifier' => true],
+            ['id' => 8, 'slug' => 'fataliste', 'label' => 'Fataliste', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::NEUTRAL, 'asQualifier' => true],
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
-        $classMetadata = $manager->getClassMetadata(Word::class);
+        $classMetadata = $this->entityManager->getClassMetadata(Word::class);
         $classMetadata->setIdGenerator(new AssignedGenerator());
         $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
-        $classMetadata = $manager->getClassMetadata(Subject::class);
+        $classMetadata = $this->entityManager->getClassMetadata(Subject::class);
         $classMetadata->setIdGenerator(new AssignedGenerator());
         $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
-        $classMetadata = $manager->getClassMetadata(Qualifier::class);
+        $classMetadata = $this->entityManager->getClassMetadata(Qualifier::class);
         $classMetadata->setIdGenerator(new AssignedGenerator());
         $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
@@ -45,28 +69,16 @@ class AppFixtures extends Fixture
         $qualifierIdReflectionProperty = $reflectionClass->getProperty('id');
         $qualifierIdReflectionProperty->setAccessible(true);
 
-        // description of words, subjects and qualifiers to create
-        $wordsToCreate = [
-            ['id' => 1, 'slug' => 'coquin', 'label' => 'Coquin', 'gender' => WordGender::AUTO, 'asSubject' => true, 'asQualifier' => true],
-
-            ['id' => 2, 'slug' => 'banane', 'label' => 'Banane', 'gender' => WordGender::F, 'asSubject' => true],
-            ['id' => 3, 'slug' => 'camembert', 'label' => 'Camembert', 'gender' => WordGender::M, 'asSubject' => true],
-            ['id' => 4, 'slug' => 'heretique', 'label' => 'Hérétique', 'gender' => WordGender::NEUTRAL, 'asSubject' => true],
-
-            ['id' => 5, 'slug' => 'peureux', 'label' => 'Peureux', 'gender' => WordGender::AUTO, 'asQualifier' => true],
-            ['id' => 6, 'slug' => 'indiscrete', 'label' => 'Indiscrète', 'gender' => WordGender::F, 'asQualifier' => true],
-            ['id' => 7, 'slug' => 'interrogateur', 'label' => 'Interrogateur', 'gender' => WordGender::M, 'asQualifier' => true],
-            ['id' => 8, 'slug' => 'fataliste', 'label' => 'Fataliste', 'gender' => WordGender::NEUTRAL, 'asQualifier' => true],
-        ];
+        $wordsToCreate =$this->getWordsToCreate();
 
         foreach ($wordsToCreate as $wordToCreate) {
             $word = new Word(
                 slug: $wordToCreate['slug'],
                 label: $wordToCreate['label'],
                 gender: $wordToCreate['gender'],
-                lang: $wordToCreate['lang'] ?? Lang::FR,
-                offenseLevel: $wordToCreate['offenseLevel'] ?? OffenseLevel::MEDIUM,
-                status: $wordToCreate['status'] ?? WordStatus::APPROVED
+                lang: $wordToCreate['lang'],
+                offenseLevel: $wordToCreate['offenseLevel'],
+                status: WordStatus::APPROVED
             );
 
             $wordIdReflectionProperty->setValue($word, $wordToCreate['id']);
@@ -88,13 +100,13 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         // update sequences to allow further creation with auto id generation
-        $manager->getConnection()->executeStatement(
+        $this->entityManager->getConnection()->executeStatement(
             "SELECT setval(pg_get_serial_sequence('word','id'), (SELECT MAX(id) FROM word))"
         );
-        $manager->getConnection()->executeStatement(
+        $this->entityManager->getConnection()->executeStatement(
             "SELECT setval(pg_get_serial_sequence('subject','id'), (SELECT MAX(id) FROM subject))"
         );
-        $manager->getConnection()->executeStatement(
+        $this->entityManager->getConnection()->executeStatement(
             "SELECT setval(pg_get_serial_sequence('qualifier','id'), (SELECT MAX(id) FROM qualifier))"
         );
     }

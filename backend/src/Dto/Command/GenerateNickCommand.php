@@ -11,6 +11,12 @@ use App\Enum\WordGender;
  */
 readonly class GenerateNickCommand
 {
+    /**
+     * @param Lang $lang
+     * @param WordGender|null $gender
+     * @param OffenseLevel|null $offenseLevel
+     * @param list<int> $exclusions
+     */
     public function __construct(
         private Lang $lang,
         private ?WordGender $gender = null,
@@ -34,6 +40,9 @@ readonly class GenerateNickCommand
         return $this->offenseLevel;
     }
 
+    /**
+     * @return list<int>
+     */
     public function getExclusions(): array
     {
         return $this->exclusions;

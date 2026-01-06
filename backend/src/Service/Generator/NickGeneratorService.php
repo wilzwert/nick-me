@@ -127,7 +127,6 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         $subject = $this->subjectService->findOneRandomly(
             new WordCriteria(
                 $command->getLang(),
-                GrammaticalRoleType::SUBJECT,
                 $criteria
             )
         );
@@ -152,7 +151,6 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         $qualifier = $this->qualifierService->findOneRandomly(
             new WordCriteria(
                 $command->getLang(),
-                GrammaticalRoleType::QUALIFIER,
                 $criteria
             )
         );

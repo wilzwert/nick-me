@@ -19,12 +19,10 @@ class WordCriteria
 {
     /**
      * @param Lang $lang
-     * @param GrammaticalRoleType|null $grammaticalRole
      * @param array<Criterion> $criteria
      */
     public function __construct(
-        private readonly Lang                 $lang = Lang::FR,
-        private readonly ?GrammaticalRoleType $grammaticalRole = null,
+        private readonly Lang $lang = Lang::FR,
         private array $criteria = []
     ) {
     }
@@ -32,11 +30,6 @@ class WordCriteria
     public function getLang(): Lang
     {
         return $this->lang;
-    }
-
-    private function getGrammaticalRole(): GrammaticalRoleType
-    {
-        return $this->grammaticalRole;
     }
 
     /**

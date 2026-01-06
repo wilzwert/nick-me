@@ -41,6 +41,9 @@ readonly class GeneratedNickData
         return $this->nick;
     }
 
+    /**
+     * @return list<GeneratedNickWord>
+     */
     public function getWords(): array
     {
         return $this->words;
