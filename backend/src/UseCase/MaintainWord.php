@@ -85,6 +85,7 @@ class MaintainWord implements MaintainWordInterface
         return new FullWordDto(
             $word->getId(),
             $word->getLabel(),
+            $word->getSlug(),
             $word->getGender(),
             $word->getLang(),
             $word->getOffenseLevel(),
