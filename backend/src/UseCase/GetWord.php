@@ -20,18 +20,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
+ * @template T of GrammaticalRole
  * @author Wilhelm Zwertvaegher
  */
 readonly class GetWord implements GetWordInterface
 {
     /**
-     * @template T of GrammaticalRole
      * @var array<string, GrammaticalRoleServiceInterface<T>>
      */
     private array $services;
 
     /**
-     * @template T of GrammaticalRole
      * @param iterable<GrammaticalRoleServiceInterface<T>> $services
      * @param WordFormatterInterface $formatter
      * @param EntityManagerInterface $entityManager
@@ -71,7 +70,6 @@ readonly class GetWord implements GetWordInterface
 
         $wordCriteria = new WordCriteria(
             $previous->getWord()->getLang(),
-            $request->getGrammaticalRole(),
             $criteria
         );
 

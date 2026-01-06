@@ -13,7 +13,7 @@ readonly class ValuesCriterion implements Criterion
     /**
      * @param class-string<Word|GrammaticalRole> $targetEntity
      * @param string $field
-     * @param array $values
+     * @param list<mixed> $values
      * @param ValuesCriterionCheck $check
      */
     public function __construct(
@@ -29,6 +29,9 @@ readonly class ValuesCriterion implements Criterion
         return $this->field;
     }
 
+    /**
+     * @return list<mixed>
+     */
     public function getValues(): array
     {
         return $this->values;

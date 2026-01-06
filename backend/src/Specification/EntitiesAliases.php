@@ -12,6 +12,9 @@ class EntitiesAliases
      */
     private readonly array $aliases;
 
+    /**
+     * @param string ...$args
+     */
     public function __construct(...$args)
     {
         $aliases = [];

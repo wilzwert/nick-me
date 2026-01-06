@@ -41,14 +41,10 @@ readonly class GenderCriterion implements EnumCriterion
         }
 
         return match ($this->gender) {
-            // asking for NEUTRAL should always return NEUTRAL words only, even in relaxed mode
-            WordGender::NEUTRAL => [WordGender::NEUTRAL],
-            // AUTO implies a word can be M, F, NEUTRAL or AUTO gendered
-            WordGender::AUTO => WordGender::all(),
             // AUTO and NEUTRAL are compatible with F
             WordGender::F => [WordGender::F, WordGender::AUTO, WordGender::NEUTRAL],
             // AUTO and NEUTRAL are compatible with M
-            WordGender::M => [WordGender::M, WordGender::AUTO, WordGender::NEUTRAL],
+            WordGender::M => [WordGender::M, WordGender::AUTO, WordGender::NEUTRAL]
         };
     }
 

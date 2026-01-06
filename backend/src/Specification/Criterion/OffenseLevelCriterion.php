@@ -21,7 +21,7 @@ readonly class OffenseLevelCriterion implements EnumCriterion
 
 
     /**
-     * @return array<EnumCriterion>
+     * @return array<OffenseLevel>
      */
     public function getAllowedValues(): array
     {
