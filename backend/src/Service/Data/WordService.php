@@ -17,7 +17,7 @@ class WordService implements WordServiceInterface
     public function __construct(
         private readonly WordRepositoryInterface $wordRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly SluggerInterface $slugger,
+        private readonly WordSluggerInterface $slugger,
     ) {
     }
 
@@ -27,7 +27,7 @@ class WordService implements WordServiceInterface
      */
     public function createOrUpdate(MaintainWordProperties $spec): Word
     {
-        $slug = strtolower($this->slugger->slug($spec->getLabel()));
+        $slug = $this->slugger->slug($spec->getLabel());
         if ($id = $spec->getWordId()) {
             $word = $this->wordRepository->findById($id);
             if (!$word) {
