@@ -2,9 +2,7 @@
 
 namespace App\Tests\Bootstrap\Container;
 
-use App\Tests\Bootstrap\Container\AbstractTestContainerHandler;
 use Testcontainers\Container\GenericContainer;
-use Testcontainers\Modules\RedisContainer;
 use Testcontainers\Wait\WaitForHostPort;
 use Testcontainers\Wait\WaitForLog;
 
@@ -33,8 +31,8 @@ final class RabbitMqContainerHandler extends AbstractTestContainerHandler
         $inspect = $this->container->getClient()->containerInspect($this->container->getId());
         $ports = $inspect->getNetworkSettings()->getPorts();
         $lookupPort = sprintf('%s/tcp', self::RABBITMQ_PORT);
-        if (!empty($ports[$lookupPort]) &&!empty($ports[$lookupPort][0]) && !empty($ports[$lookupPort][0]->getHostPort())) {
-            return (int)$ports[$lookupPort][0]->getHostPort();
+        if (!empty($ports[$lookupPort]) && !empty($ports[$lookupPort][0]) && !empty($ports[$lookupPort][0]->getHostPort())) {
+            return (int) $ports[$lookupPort][0]->getHostPort();
         }
 
         return parent::getFirstMappedPort();

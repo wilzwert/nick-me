@@ -15,17 +15,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @author Wilhelm Zwertvaegher
  */
-
 class CustomRequestQueryValueResolver implements ValueResolverInterface
 {
-    /**
-     * @param RequestFactory $requestFactory
-     */
     public function __construct(
         private readonly RequestFactory $requestFactory,
         private readonly ValidatorInterface $validator,
-    )
-    {
+    ) {
     }
 
     private function enumConversionExceptionToViolation(ConversionException $e): ConstraintViolation
@@ -59,7 +54,7 @@ class CustomRequestQueryValueResolver implements ValueResolverInterface
         }
 
         return new ConstraintViolation(
-            message: "Invalid type.",
+            message: 'Invalid type.',
             messageTemplate: null,
             parameters: [],
             root: null,
@@ -69,8 +64,6 @@ class CustomRequestQueryValueResolver implements ValueResolverInterface
     }
 
     /**
-     * @param Request $request
-     * @param ArgumentMetadata $argument
      * @return iterable<\App\Dto\Request\Request>
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
@@ -79,7 +72,7 @@ class CustomRequestQueryValueResolver implements ValueResolverInterface
             return [];
         }
 
-        if (!$argument->getType() || !is_a($argument->getType(), \App\Dto\Request\Request::class, allow_string: true )) {
+        if (!$argument->getType() || !is_a($argument->getType(), \App\Dto\Request\Request::class, allow_string: true)) {
             return [];
         }
 
@@ -88,24 +81,14 @@ class CustomRequestQueryValueResolver implements ValueResolverInterface
         try {
             $dto = $this->requestFactory->fromParameters($argument->getType(), $request->query->all());
             $violations = $this->validator->validate($dto);
-        }
-        catch (ConversionException $e) {
+        } catch (ConversionException $e) {
             $violations->add($this->enumConversionExceptionToViolation($e));
-        }
-        catch (\TypeError $e) {
+        } catch (\TypeError $e) {
             $violations->add($this->typeErrorToViolation($e));
         }
 
-        if($violations->count() > 0) {
-            throw HttpException::fromStatusCode(
-                422,
-                implode("\n",
-                    array_map(
-                        static fn ($e) => $e->getMessage(),
-                        iterator_to_array($violations)
-                    )
-                ),
-                new ValidationFailedException(null, $violations));
+        if ($violations->count() > 0) {
+            throw HttpException::fromStatusCode(422, implode("\n", array_map(static fn ($e) => $e->getMessage(), iterator_to_array($violations))), new ValidationFailedException(null, $violations));
         }
 
         return $dto ? [$dto] : [];

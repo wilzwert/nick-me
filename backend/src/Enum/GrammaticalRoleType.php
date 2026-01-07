@@ -15,14 +15,13 @@ enum GrammaticalRoleType: string implements Enum
 
     /**
      * @param class-string $className
-     * @return GrammaticalRoleType
      */
     public static function fromClass(string $className): GrammaticalRoleType
     {
         return match ($className) {
             Subject::class => self::SUBJECT,
             Qualifier::class => self::QUALIFIER,
-            default => throw new \InvalidArgumentException('Unknown class: ' . $className)
+            default => throw new \InvalidArgumentException('Unknown class: '.$className),
         };
     }
 

@@ -7,7 +7,6 @@ use App\Entity\Word;
 use App\Exception\WordNotFoundException;
 use App\Repository\WordRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -21,7 +20,6 @@ class WordService implements WordServiceInterface
     ) {
     }
 
-
     /**
      * @throws WordNotFoundException
      */
@@ -33,8 +31,7 @@ class WordService implements WordServiceInterface
             if (!$word) {
                 throw new WordNotFoundException();
             }
-        }
-        else {
+        } else {
             $word = $this->wordRepository->findBySlug($slug);
         }
 
@@ -47,8 +44,7 @@ class WordService implements WordServiceInterface
             $word->setLang($spec->getLang());
             $word->setOffenseLevel($spec->getOffenseLevel());
             $word->setStatus($spec->getStatus());
-        }
-        else {
+        } else {
             $word = new Word(
                 slug: $slug,
                 label: $label,
@@ -60,6 +56,7 @@ class WordService implements WordServiceInterface
         }
 
         $this->save($word);
+
         return $word;
     }
 

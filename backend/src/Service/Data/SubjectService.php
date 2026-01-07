@@ -18,7 +18,6 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class SubjectService implements SubjectServiceInterface
 {
-
     public function __construct(
         private readonly SubjectRepositoryInterface $repository,
         private readonly EntityManagerInterface $entityManager)
@@ -27,7 +26,6 @@ class SubjectService implements SubjectServiceInterface
 
     public function createOrUpdate(Word $word): Subject
     {
-
         $subject = $this->repository->findByWordId($word->getId());
         if (!$subject) {
             $subject = new Subject($word);
@@ -53,7 +51,6 @@ class SubjectService implements SubjectServiceInterface
     public function findOneRandomly(WordCriteria $criteria): Subject
     {
         return $this->repository->findOne($criteria, Sort::RANDOM);
-
     }
 
     public function getGrammaticalRole(): GrammaticalRoleType
@@ -62,7 +59,6 @@ class SubjectService implements SubjectServiceInterface
     }
 
     /**
-     * @param int $wordId
      * @return ?Subject
      */
     public function findByWordId(int $wordId): ?GrammaticalRole
@@ -72,7 +68,7 @@ class SubjectService implements SubjectServiceInterface
 
     public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
     {
-        if (! $other instanceof Subject) {
+        if (!$other instanceof Subject) {
             throw new \LogicException('Cannot find another subject because $other param is not an instance of Subject');
         }
 
@@ -83,7 +79,6 @@ class SubjectService implements SubjectServiceInterface
 
     /**
      * @param Subject $grammaticalRole
-     * @return void
      */
     public function incrementUsageCount(GrammaticalRole $grammaticalRole): void
     {

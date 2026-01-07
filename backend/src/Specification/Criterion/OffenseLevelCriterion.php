@@ -7,18 +7,16 @@ use App\Enum\OffenseLevel;
 
 /**
  * @implements EnumCriterion<OffenseLevel>
+ *
  * @author Wilhelm Zwertvaegher
  */
 readonly class OffenseLevelCriterion implements EnumCriterion
 {
-
     public function __construct(
         private ?OffenseLevel $offenseLevel = null,
-        private ?OffenseConstraintType $offenseConstraintType = OffenseConstraintType::LTE
-    )
-    {
+        private ?OffenseConstraintType $offenseConstraintType = OffenseConstraintType::LTE,
+    ) {
     }
-
 
     /**
      * @return array<OffenseLevel>
@@ -29,7 +27,7 @@ readonly class OffenseLevelCriterion implements EnumCriterion
             return OffenseLevel::cases();
         }
 
-        if ($this->offenseConstraintType == OffenseConstraintType::EXACT) {
+        if (OffenseConstraintType::EXACT == $this->offenseConstraintType) {
             return [$this->offenseLevel];
         }
 
@@ -39,13 +37,14 @@ readonly class OffenseLevelCriterion implements EnumCriterion
             OffenseLevel::MEDIUM => [OffenseLevel::LOW],
             OffenseLevel::HIGH => [OffenseLevel::LOW, OffenseLevel::MEDIUM],
             OffenseLevel::VERY_HIGH => [OffenseLevel::LOW, OffenseLevel::MEDIUM, OffenseLevel::HIGH],
-            OffenseLevel::MAX => [OffenseLevel::LOW, OffenseLevel::MEDIUM, OffenseLevel::HIGH, OffenseLevel::VERY_HIGH]
+            OffenseLevel::MAX => [OffenseLevel::LOW, OffenseLevel::MEDIUM, OffenseLevel::HIGH, OffenseLevel::VERY_HIGH],
         };
 
-        if ( $this->offenseConstraintType == OffenseConstraintType::LTE) {
+        if (OffenseConstraintType::LTE == $this->offenseConstraintType) {
             // add current OffenseLevel to allow equality
             $result[] = $this->offenseLevel;
         }
+
         return $result;
     }
 

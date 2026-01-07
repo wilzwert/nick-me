@@ -19,9 +19,7 @@ class TestContainersStartSubscriber implements ExecutionStartedSubscriber
     private bool $containersStarted = false;
 
     /**
-     * @param TestSuiteService $suiteService
      * @param array<TestContainerHandler> $containerHandlers
-     * @param Filesystem $fs
      */
     public function __construct(
         private TestSuiteService $suiteService,
@@ -39,13 +37,13 @@ class TestContainersStartSubscriber implements ExecutionStartedSubscriber
             $container = null;
             foreach ($this->containerHandlers as $handler) {
                 try {
-                    fwrite(STDOUT, "Starting " . $handler::class . PHP_EOL);
+                    fwrite(STDOUT, 'Starting '.$handler::class.PHP_EOL);
                     $container = $handler->start();
-                    fwrite(STDOUT, "Started " . $handler::class . PHP_EOL);
+                    fwrite(STDOUT, 'Started '.$handler::class.PHP_EOL);
                     $envVars = array_merge($envVars, $handler->getEnvVars());
-                    fwrite(STDOUT, "Collected env from " . $handler::class . PHP_EOL);
+                    fwrite(STDOUT, 'Collected env from '.$handler::class.PHP_EOL);
                 } catch (\Throwable $e) {
-                    fwrite(STDERR, "Failed to start " . $handler::class . ' : '.$e->getMessage(). PHP_EOL);
+                    fwrite(STDERR, 'Failed to start '.$handler::class.' : '.$e->getMessage().PHP_EOL);
                     if (isset($container)) {
                         $containerId = $container->getId();
                         fwrite(STDOUT, "Container logs:\n");
@@ -61,7 +59,7 @@ class TestContainersStartSubscriber implements ExecutionStartedSubscriber
                 putenv($envVar);
             }
 
-            fwrite(STDOUT, "Writing to .env.test.local ".implode("\n", $envVars).PHP_EOL);
+            fwrite(STDOUT, 'Writing to .env.test.local '.implode("\n", $envVars).PHP_EOL);
             $envFile = '.env.test.local';
             $this->fs->dumpFile($envFile, implode("\n", $envVars));
             $dotenv = new Dotenv();

@@ -34,21 +34,19 @@ readonly class DoctrineFixturesSubscriber implements ExecutionStartedSubscriber
             throw new \Exception('Db container MUST be started before loading test fixtures.');
         }
 
-
         $env = [
             'DATABASE_URL' => getenv('DATABASE_URL'),
         ];
 
         try {
-            fwrite(STDOUT, 'Creating database' . PHP_EOL);
+            fwrite(STDOUT, 'Creating database'.PHP_EOL);
             $this->runSymfonyCommand('doctrine:database:create --env=test --if-not-exists', $env);
-            fwrite(STDOUT, 'Creating schema' . PHP_EOL);
+            fwrite(STDOUT, 'Creating schema'.PHP_EOL);
             $this->runSymfonyCommand('doctrine:schema:create --env=test --no-interaction', $env);
-            fwrite(STDOUT, 'Loading fixtures' . PHP_EOL);
+            fwrite(STDOUT, 'Loading fixtures'.PHP_EOL);
             $this->runSymfonyCommand('doctrine:fixtures:load --env=test --no-interaction', $env);
-        }
-        catch (\Exception $e) {
-            fwrite(STDERR, $e->getMessage() . PHP_EOL);
+        } catch (\Exception $e) {
+            fwrite(STDERR, $e->getMessage().PHP_EOL);
             throw $e;
         }
     }
@@ -60,8 +58,8 @@ readonly class DoctrineFixturesSubscriber implements ExecutionStartedSubscriber
     {
         $process = Process::fromShellCommandline("php bin/console {$cmd}", null, $env);
         $process->mustRun();
-        if(!$process->isSuccessful()) {
-            throw new \Exception('Failed to execute command: ' . $process->getErrorOutput());
+        if (!$process->isSuccessful()) {
+            throw new \Exception('Failed to execute command: '.$process->getErrorOutput());
         }
     }
 }

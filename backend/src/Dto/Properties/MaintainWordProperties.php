@@ -9,21 +9,22 @@ use App\Enum\WordGender;
 use App\Enum\WordStatus;
 
 /**
- * DTO used to pass properties to a service to maintain a Word
+ * DTO used to pass properties to a service to maintain a Word.
+ *
  * @author Wilhelm Zwertvaegher
  */
 readonly class MaintainWordProperties
 {
     public function __construct(
-        private string             $label,
-        private WordGender         $gender,
-        private Lang               $lang,
-        private OffenseLevel       $offenseLevel,
-        private WordStatus         $status,
-        private bool               $asSubject = false,
-        private bool               $asQualifier = false,
+        private string $label,
+        private WordGender $gender,
+        private Lang $lang,
+        private OffenseLevel $offenseLevel,
+        private WordStatus $status,
+        private bool $asSubject = false,
+        private bool $asQualifier = false,
         private ?QualifierPosition $qualifierPosition = null,
-        private ?int               $wordId = null
+        private ?int $wordId = null,
     ) {
     }
 

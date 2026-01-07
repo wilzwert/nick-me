@@ -5,8 +5,6 @@ namespace App\Dto\Request;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
-use App\Enum\GrammaticalRoleType;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -15,14 +13,10 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  *  - OffenseLevel (maybe null)
  *  - WordGender (maybe null)
  *  - exclusions : a list a word ids to exclude
- *
  */
 readonly class RandomNickRequest implements Request
 {
-   /**
-     * @param Lang $lang
-     * @param WordGender $gender
-     * @param OffenseLevel|null $offenseLevel
+    /**
      * @param list<int> $exclusions
      */
     public function __construct(

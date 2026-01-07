@@ -2,7 +2,6 @@
 
 namespace App\Specification;
 
-use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
 use App\Specification\Criterion\Criterion;
 
@@ -13,17 +12,15 @@ use App\Specification\Criterion\Criterion;
  *  - OffenseLevel (maybe null)
  *  - WordGender (maybe null)
  *  - exclusions : a list a word ids to exclude
- *
  */
 class WordCriteria
 {
     /**
-     * @param Lang $lang
      * @param array<Criterion> $criteria
      */
     public function __construct(
         private readonly Lang $lang = Lang::FR,
-        private array $criteria = []
+        private array $criteria = [],
     ) {
     }
 

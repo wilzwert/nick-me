@@ -7,16 +7,15 @@ use App\Enum\WordGender;
 
 /**
  * @implements EnumCriterion<WordGender>
+ *
  * @author Wilhelm Zwertvaegher
  */
 readonly class GenderCriterion implements EnumCriterion
 {
-
     public function __construct(
         private ?WordGender $gender = null,
-        private ?GenderConstraintType $genderConstraintType = GenderConstraintType::RELAXED
-    )
-    {
+        private ?GenderConstraintType $genderConstraintType = GenderConstraintType::RELAXED,
+    ) {
     }
 
     /**
@@ -25,17 +24,17 @@ readonly class GenderCriterion implements EnumCriterion
     public function getAllowedValues(): array
     {
         // TODO this should be removed because GenderCriterion does not apply when gender is not set
-        if (null === $this->gender || $this->gender === WordGender::AUTO) {
+        if (null === $this->gender || WordGender::AUTO === $this->gender) {
             return WordGender::cases();
         }
 
         // asking for NEUTRAL always requires a word to be NEUTRAL only
         // M, F or AUTO are compatible because they have a defined gender by definition
-        if ($this->gender === WordGender::NEUTRAL) {
+        if (WordGender::NEUTRAL === $this->gender) {
             return [WordGender::NEUTRAL];
         }
 
-        if($this->genderConstraintType == GenderConstraintType::EXACT) {
+        if (GenderConstraintType::EXACT == $this->genderConstraintType) {
             // asking for a non-neutral gender in EXACT mode implies compatibility with AUTO words that can be M or F
             return [$this->gender, WordGender::AUTO];
         }
@@ -44,7 +43,7 @@ readonly class GenderCriterion implements EnumCriterion
             // AUTO and NEUTRAL are compatible with F
             WordGender::F => [WordGender::F, WordGender::AUTO, WordGender::NEUTRAL],
             // AUTO and NEUTRAL are compatible with M
-            WordGender::M => [WordGender::M, WordGender::AUTO, WordGender::NEUTRAL]
+            WordGender::M => [WordGender::M, WordGender::AUTO, WordGender::NEUTRAL],
         };
     }
 

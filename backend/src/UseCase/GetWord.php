@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
  * @template T of GrammaticalRole
+ *
  * @author Wilhelm Zwertvaegher
  */
 readonly class GetWord implements GetWordInterface
@@ -32,14 +33,12 @@ readonly class GetWord implements GetWordInterface
 
     /**
      * @param iterable<GrammaticalRoleServiceInterface<T>> $services
-     * @param WordFormatterInterface $formatter
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         #[AutowireIterator('app.word_type_data_service')]
-        iterable                       $services,
+        iterable $services,
         private WordFormatterInterface $formatter,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
         $servicesByWordType = [];
         foreach ($services as $service) {
@@ -58,10 +57,10 @@ readonly class GetWord implements GetWordInterface
         if ($request->getGender()) {
             $criteria[] = new GenderCriterion($request->getGender(), GenderConstraintType::EXACT);
         }
-        if($request->getOffenseLevel()) {
+        if ($request->getOffenseLevel()) {
             $criteria[] = new OffenseLevelCriterion(
                 $request->getOffenseLevel(),
-                ($request->getGrammaticalRoleType() === GrammaticalRoleType::SUBJECT ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE)
+                GrammaticalRoleType::SUBJECT === $request->getGrammaticalRoleType() ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE
             );
         }
         if (count($request->getExclusions())) {
@@ -79,6 +78,7 @@ readonly class GetWord implements GetWordInterface
 
         // build the nick word dto
         $targetGender = $request->getGender() ?? $new->getWord()->getGender();
+
         return new NickWordDto(
             $new->getWord()->getId(),
             $this->formatter->formatLabel($new->getWord(), $targetGender),

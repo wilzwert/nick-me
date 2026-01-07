@@ -2,11 +2,10 @@
 
 namespace App\Dto\Request;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
-use App\Enum\GrammaticalRoleType;
-use Symfony\Component\Validator\Exception\ValidatorException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -16,24 +15,19 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  *  - OffenseLevel (maybe null)
  *  - WordGender (maybe null)
  *  - exclusions : a list a word ids to exclude
- *
  */
 class RandomWordRequest implements Request
 {
     /**
-     * @param int $previousId
-     * @param GrammaticalRoleType $role
-     * @param WordGender $gender
-     * @param OffenseLevel $offenseLevel
      * @param list<int> $exclusions
      */
     public function __construct(
         #[Assert\Type('integer')]
-        private int                 $previousId,
+        private int $previousId,
         private GrammaticalRoleType $role,
-        private WordGender         $gender,
-        private OffenseLevel       $offenseLevel = OffenseLevel::HIGH,
-        private array                      $exclusions = [],
+        private WordGender $gender,
+        private OffenseLevel $offenseLevel = OffenseLevel::HIGH,
+        private array $exclusions = [],
     ) {
     }
 
@@ -64,9 +58,4 @@ class RandomWordRequest implements Request
     {
         return $this->exclusions;
     }
-
-
-
-
-
 }

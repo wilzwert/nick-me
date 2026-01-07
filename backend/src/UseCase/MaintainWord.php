@@ -20,11 +20,10 @@ use Doctrine\ORM\EntityManagerInterface;
 class MaintainWord implements MaintainWordInterface
 {
     public function __construct(
-        private readonly WordServiceInterface      $wordService,
-        private readonly SubjectServiceInterface   $subjectService,
+        private readonly WordServiceInterface $wordService,
+        private readonly SubjectServiceInterface $subjectService,
         private readonly QualifierServiceInterface $qualifierService,
-        private readonly EntityManagerInterface    $entityManager
-
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -50,27 +49,24 @@ class MaintainWord implements MaintainWordInterface
 
         // handle qualifier and / or subject creation/update or removal
         if ($spec->isAsQualifier()) {
-           $qualifier = $this->qualifierService->createOrUpdate(
-               $word,
-               new MaintainQualifierProperties(
-                   $spec->getQualifierPosition()
-               )
-           );
-        }
-        else {
+            $qualifier = $this->qualifierService->createOrUpdate(
+                $word,
+                new MaintainQualifierProperties(
+                    $spec->getQualifierPosition()
+                )
+            );
+        } else {
             $this->qualifierService->deleteIfExists($word->getId());
         }
         if ($spec->isAsSubject()) {
             $subject = $this->subjectService->createOrUpdate($word);
-        }
-        else {
+        } else {
             $this->subjectService->deleteIfExists($word->getId());
         }
 
         // now that all entities have been handled, we can flush the entity manager
         $this->entityManager->flush();
         $this->entityManager->commit();
-
 
         // and finally, build and return the Dto
         $types = [];

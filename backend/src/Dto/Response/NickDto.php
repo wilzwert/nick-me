@@ -11,13 +11,12 @@ use App\Enum\WordGender;
 readonly class NickDto
 {
     /**
-     * @param OffenseLevel $offenseLevel
      * @param array<NickWordDto> $words
      */
     public function __construct(
         public WordGender $gender,
         public OffenseLevel $offenseLevel,
-        public array $words = []
+        public array $words = [],
     ) {
     }
 }

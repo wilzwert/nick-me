@@ -17,7 +17,7 @@ class Nick
     #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(type: 'string', length: 100)]
     private string $label;
 
     #[ORM\ManyToOne(targetEntity: Subject::class)]
@@ -31,7 +31,7 @@ class Nick
     #[ORM\Column(type: 'string', length: 10, enumType: WordGender::class)]
     private WordGender $targetGender;
 
-    #[ORM\Column(type: 'integer', length: 3,  enumType: OffenseLevel::class)]
+    #[ORM\Column(type: 'integer', length: 3, enumType: OffenseLevel::class)]
     private OffenseLevel $offenseLevel;
 
     #[ORM\Column(type: 'integer')]
@@ -42,7 +42,7 @@ class Nick
         Subject $subject,
         Qualifier $qualifier,
         WordGender $targetGender,
-        OffenseLevel $offenseLevel
+        OffenseLevel $offenseLevel,
     ) {
         $this->label = $label;
         $this->subject = $subject;
@@ -83,6 +83,6 @@ class Nick
 
     public function incrementUsageCount(): void
     {
-        $this->usageCount++;
+        ++$this->usageCount;
     }
 }

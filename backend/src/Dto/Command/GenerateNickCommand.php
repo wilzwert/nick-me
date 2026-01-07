@@ -12,16 +12,13 @@ use App\Enum\WordGender;
 readonly class GenerateNickCommand
 {
     /**
-     * @param Lang $lang
-     * @param WordGender|null $gender
-     * @param OffenseLevel|null $offenseLevel
      * @param list<int> $exclusions
      */
     public function __construct(
         private Lang $lang,
         private ?WordGender $gender = null,
         private ?OffenseLevel $offenseLevel = null,
-        private array $exclusions = []
+        private array $exclusions = [],
     ) {
     }
 
@@ -47,7 +44,4 @@ readonly class GenerateNickCommand
     {
         return $this->exclusions;
     }
-
-
-
 }

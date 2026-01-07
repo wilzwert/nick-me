@@ -12,9 +12,7 @@ use App\Enum\WordGender;
  */
 interface NickRepositoryInterface
 {
-
     public function getById(int $id): ?Nick;
 
     public function getByProperties(Subject $subject, Qualifier $qualifier, WordGender $targetGender): ?Nick;
-
 }

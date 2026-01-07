@@ -14,5 +14,4 @@ readonly class CsvQualifier
         public ?string $offenseLevel = null,
     ) {
     }
-
 }

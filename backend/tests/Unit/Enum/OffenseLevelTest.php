@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
  */
 class OffenseLevelTest extends TestCase
 {
-
     public static function fromStringTests(): array
     {
         return [
@@ -20,7 +19,7 @@ class OffenseLevelTest extends TestCase
             [5, 'MedIUM'],
             [10, 'HigH'],
             [15, 'very_high'],
-            [20, 'Max']
+            [20, 'Max'],
         ];
     }
 
@@ -32,12 +31,9 @@ class OffenseLevelTest extends TestCase
     }
 
     #[Test]
-    public function whenUnknownOffenseLevel_thenShouldThrowValueError(): void
+    public function whenUnknownOffenseLevelThenShouldThrowValueError(): void
     {
         $this->expectException(\ValueError::class);
         OffenseLevel::fromString('unknown');
-
     }
-
-
 }

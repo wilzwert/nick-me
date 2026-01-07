@@ -17,5 +17,4 @@ class WordSlugger implements WordSluggerInterface
     {
         return strtolower($this->slugger->slug(trim($str)));
     }
-
 }

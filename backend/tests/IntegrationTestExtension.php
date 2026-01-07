@@ -2,14 +2,14 @@
 
 namespace App\Tests;
 
-use App\Tests\Bootstrap\Container\RabbitMqContainerHandler;
-use App\Tests\Bootstrap\Subscriber\DoctrineFixturesSubscriber;
 use App\Tests\Bootstrap\Container\PostgresqlContainerHandler;
+use App\Tests\Bootstrap\Container\RabbitMqContainerHandler;
 use App\Tests\Bootstrap\Container\RedisContainerHandler;
+use App\Tests\Bootstrap\Subscriber\DoctrineFixturesSubscriber;
 use App\Tests\Bootstrap\Subscriber\TestContainersStartSubscriber;
 use App\Tests\Bootstrap\Subscriber\TestContainersStopSubscriber;
-use App\Tests\Bootstrap\TestSuiteService;
 use App\Tests\Bootstrap\Subscriber\TmpUploadsStopSubscriber;
+use App\Tests\Bootstrap\TestSuiteService;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
@@ -21,12 +21,11 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class IntegrationTestExtension implements Extension
 {
-
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         $testSuiteService = new TestSuiteService();
         $dbContainerHandler = new PostgresqlContainerHandler();
-        $rabbitMQContainerHandler = new RabbitMQContainerHandler();
+        $rabbitMQContainerHandler = new RabbitMqContainerHandler();
         $cacheContainerHandler = new RedisContainerHandler();
         $containerHandlers = [$dbContainerHandler, $cacheContainerHandler, $rabbitMQContainerHandler];
 

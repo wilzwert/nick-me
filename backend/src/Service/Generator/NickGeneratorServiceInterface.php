@@ -10,5 +10,5 @@ use App\Dto\Result\GeneratedNickData;
  */
 interface NickGeneratorServiceInterface
 {
-    public function generateNick(GenerateNickCommand $command) :GeneratedNickData;
+    public function generateNick(GenerateNickCommand $command): GeneratedNickData;
 }

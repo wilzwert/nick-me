@@ -7,11 +7,12 @@ use App\Enum\GrammaticalRoleType;
 /**
  * @author Wilhelm Zwertvaegher
  */
-class GeneratedNickWord {
+class GeneratedNickWord
+{
     public function __construct(
         public int $id,
         public string $label,
-        public GrammaticalRoleType $type
+        public GrammaticalRoleType $type,
     ) {
     }
 }

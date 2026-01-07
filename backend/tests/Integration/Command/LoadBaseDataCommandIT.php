@@ -6,7 +6,6 @@ use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
 use App\Repository\QualifierRepositoryInterface;
-use App\Repository\SubjectRepository;
 use App\Repository\SubjectRepositoryInterface;
 use App\Repository\WordRepositoryInterface;
 use App\Service\Data\WordSluggerInterface;
@@ -14,7 +13,6 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -54,12 +52,12 @@ class LoadBaseDataCommandIT extends KernelTestCase
         $wordsToCheck = [
             ['Amibe', WordGender::F, OffenseLevel::HIGH, true, false, null],
             ['Animal', WordGender::M, OffenseLevel::LOW, true, false, null],
-            ['Corsaire', WordGender::NEUTRAL, OffenseLevel::MEDIUM, true, false, null ],
+            ['Corsaire', WordGender::NEUTRAL, OffenseLevel::MEDIUM, true, false, null],
             ['Farceur', WordGender::AUTO, OffenseLevel::LOW, true, true, QualifierPosition::AFTER],
             ['Coulant', WordGender::AUTO, OffenseLevel::MEDIUM, false, true, QualifierPosition::AFTER],
             ['Humide', WordGender::NEUTRAL, OffenseLevel::HIGH, false, true, QualifierPosition::AFTER],
             ['Maligne', WordGender::F, OffenseLevel::MEDIUM, false, true, QualifierPosition::AFTER],
-            ['Indiscret', WordGender::M, OffenseLevel::MEDIUM, false, true, QualifierPosition::AFTER]
+            ['Indiscret', WordGender::M, OffenseLevel::MEDIUM, false, true, QualifierPosition::AFTER],
         ];
 
         foreach ($wordsToCheck as $word) {

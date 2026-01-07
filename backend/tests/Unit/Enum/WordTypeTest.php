@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 class WordTypeTest extends TestCase
 {
-
     public static function fromClassTests(): array
     {
         return [
@@ -31,7 +30,7 @@ class WordTypeTest extends TestCase
     }
 
     #[Test]
-    public function whenUnknownWordType_thenShouldThrowInvalidArgumentException(): void
+    public function whenUnknownWordTypeThenShouldThrowInvalidArgumentException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         GrammaticalRoleType::fromClass('unknown');

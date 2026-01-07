@@ -30,7 +30,7 @@ class GenerateNicksCommandIT extends KernelTestCase
     {
         self::bootKernel();
         self::getContainer()->set(GenerateNickInterface::class,
-            new class() implements GenerateNickInterface {
+            new class implements GenerateNickInterface {
                 private static $counter = 0;
 
                 public function __invoke(GenerateNickCommand $generateNickCommand): GeneratedNickData
@@ -75,7 +75,8 @@ class GenerateNicksCommandIT extends KernelTestCase
                         ]
                     );
 
-                    self::$counter++;
+                    ++self::$counter;
+
                     return $result;
                 }
             }

@@ -10,5 +10,4 @@ enum Sort
     case RANDOM;
 
     case AUTO;
-
 }

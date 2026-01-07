@@ -14,6 +14,8 @@ interface Criterion
      * @return class-string<Word|GrammaticalRole>
      */
     public function getTargetEntity(): string;
+
     public function getField(): string;
+
     public function shouldApply(): bool;
 }

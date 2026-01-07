@@ -15,10 +15,10 @@ use Random\RandomException;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Trait allowing WordCriteria to be applied on a QueryBuilder
+ * Trait allowing WordCriteria to be applied on a QueryBuilder.
+ *
  * @author Wilhelm Zwertvaegher
  */
-
 trait WordCriteriaRepositoryTrait
 {
     private CriterionConverter $criterionConverter;
@@ -40,14 +40,14 @@ trait WordCriteriaRepositoryTrait
         }
 
         $select = $qb->getDQLPart('select');
-        $qb ->andWhere($aliases->getAlias(Word::class).".lang = :lang")
+        $qb->andWhere($aliases->getAlias(Word::class).'.lang = :lang')
             ->setParameter('lang', $criteria->getLang());
 
         $this->criterionConverter->applyAll($qb, $criteria->getCriteria(), $aliases);
 
-        if ($sort === Sort::RANDOM) {
+        if (Sort::RANDOM === $sort) {
             $count = (int) $qb
-                ->select("COUNT(".$aliases->getAlias(Word::class).".id)")
+                ->select('COUNT('.$aliases->getAlias(Word::class).'.id)')
                 ->getQuery()
                 ->getSingleScalarResult();
 
@@ -61,8 +61,9 @@ trait WordCriteriaRepositoryTrait
             if ($count > 0) {
                 $offset = random_int(0, $count - 1);
                 $qb->setFirstResult($offset);
+            } else {
+                throw new NoWordFoundException('No word found.');
             }
-            else throw new NoWordFoundException("No word found.");
         }
 
         $qb->setMaxResults(1);

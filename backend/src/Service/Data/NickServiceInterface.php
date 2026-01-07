@@ -2,8 +2,6 @@
 
 namespace App\Service\Data;
 
-use App\Dto\Command\GenerateNickCommand;
-use App\Dto\Result\GeneratedNickData;
 use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;

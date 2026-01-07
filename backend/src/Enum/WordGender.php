@@ -2,8 +2,6 @@
 
 namespace App\Enum;
 
-use App\Dto\Response\FullWordDto;
-
 /**
  * @author Wilhelm Zwertvaegher
  */
@@ -19,6 +17,7 @@ enum WordGender: string implements Enum
     public static function fromString(string $value): WordGender
     {
         $normalized = strtoupper($value);
+
         return self::from($normalized);
     }
 }

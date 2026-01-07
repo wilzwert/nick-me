@@ -16,9 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 readonly class TestContainersStopSubscriber implements ExecutionFinishedSubscriber
 {
     /**
-     * @param TestSuiteService $suiteService
      * @param array<TestContainerHandler> $containerHandlers
-     * @param Filesystem $fs
      */
     public function __construct(
         private TestSuiteService $suiteService,
@@ -31,12 +29,12 @@ readonly class TestContainersStopSubscriber implements ExecutionFinishedSubscrib
     {
         if ($this->suiteService->isIntegrationTest()) {
             foreach (array_reverse($this->containerHandlers) as $containerHandler) {
-                fwrite(STDOUT, "Stopping ".$containerHandler::class . PHP_EOL);
+                fwrite(STDOUT, 'Stopping '.$containerHandler::class.PHP_EOL);
                 $containerHandler->stop();
             }
 
             // cleanup temporary generated env file
-            fwrite(STDOUT, "Cleaning local test env file" . PHP_EOL);
+            fwrite(STDOUT, 'Cleaning local test env file'.PHP_EOL);
             $this->fs->remove('.env.test.local');
         }
     }
