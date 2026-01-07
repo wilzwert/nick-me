@@ -50,7 +50,7 @@ readonly class GetWord implements GetWordInterface
 
     public function __invoke(RandomWordRequest $request): NickWordDto
     {
-        $service = $this->services[$request->getGrammaticalRole()->value];
+        $service = $this->services[$request->getGrammaticalRoleType()->value];
 
         $previous = $service->findByWordId($request->getPreviousId());
 
@@ -61,7 +61,7 @@ readonly class GetWord implements GetWordInterface
         if($request->getOffenseLevel()) {
             $criteria[] = new OffenseLevelCriterion(
                 $request->getOffenseLevel(),
-                ($request->getGrammaticalRole() === GrammaticalRoleType::SUBJECT ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE)
+                ($request->getGrammaticalRoleType() === GrammaticalRoleType::SUBJECT ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE)
             );
         }
         if (count($request->getExclusions())) {

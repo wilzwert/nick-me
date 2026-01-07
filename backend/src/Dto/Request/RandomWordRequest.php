@@ -21,29 +21,20 @@ use Symfony\Component\Validator\Exception\ValidatorException;
 class RandomWordRequest implements Request
 {
     /**
-     * @var list<int>
+     * @param int $previousId
+     * @param GrammaticalRoleType $role
+     * @param WordGender $gender
+     * @param OffenseLevel $offenseLevel
+     * @param list<int> $exclusions
      */
-    private array $exclusions;
-
     public function __construct(
         #[Assert\Type('integer')]
         private int                 $previousId,
         private GrammaticalRoleType $role,
         private WordGender         $gender,
         private OffenseLevel       $offenseLevel = OffenseLevel::HIGH,
-        string                      $exclusions = '',
+        private array                      $exclusions = [],
     ) {
-        $exclusionsIntArray = [];
-        if ($exclusions != '') {
-            $exclusionsStrArray = explode(',', $exclusions);
-            foreach ($exclusionsStrArray as $exclusion) {
-                if( !filter_var($exclusion, FILTER_VALIDATE_INT) ) {
-                    throw new ValidatorException('Exclusions must be integers');
-                }
-                $exclusionsIntArray[] = (int)$exclusion;
-            }
-        }
-        $this->exclusions = $exclusionsIntArray;
     }
 
     public function getPreviousId(): int
@@ -51,7 +42,7 @@ class RandomWordRequest implements Request
         return $this->previousId;
     }
 
-    public function getGrammaticalRole(): GrammaticalRoleType
+    public function getGrammaticalRoleType(): GrammaticalRoleType
     {
         return $this->role;
     }

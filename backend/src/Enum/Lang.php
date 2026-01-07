@@ -13,7 +13,7 @@ enum Lang: string implements Enum
     public static function fromString(string $value): Enum
     {
         try {
-            return self::from($value);
+            return self::from(strtolower($value));
         }
         catch (\Throwable $throwable) {
             return self::FR;

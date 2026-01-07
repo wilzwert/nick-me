@@ -42,7 +42,7 @@ enum OffenseLevel: int implements Enum
             'HIGH' => self::HIGH,
             'VERY_HIGH' => self::VERY_HIGH,
             'MAX' => self::MAX,
-            default => throw new \InvalidArgumentException("Unknown offense level: {$normalized}"),
+            default => throw new \ValueError("Unknown offense level: {$normalized}"),
         };
     }
 }
