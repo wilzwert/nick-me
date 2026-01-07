@@ -7,7 +7,7 @@ use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
-use App\Exception\EnumConversionException;
+use App\Exception\ConversionException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
@@ -24,19 +24,35 @@ readonly class RequestFactory
     {
         $this->strategies = array(
             RandomNickRequest::class => fn(array $parameters) => new RandomNickRequest(
-                lang: $this->handleConversion(Lang::class, 'lang', $parameters, Lang::FR),
-                gender: $this->handleConversion(WordGender::class, 'gender', $parameters, WordGender::AUTO),
-                offenseLevel: $this->handleConversion(OffenseLevel::class, 'offenseLevel', $parameters),
-                exclusions: $parameters['exclusions'] ?? ''
+                lang: $this->convertEnum(Lang::class, 'lang', $parameters, Lang::FR),
+                gender: $this->convertEnum(WordGender::class, 'gender', $parameters, WordGender::AUTO),
+                offenseLevel: $this->convertEnum(OffenseLevel::class, 'offenseLevel', $parameters),
+                exclusions: $this->convertIntArray('exclusions', $parameters)
             ),
             RandomWordRequest::class => fn(array $parameters) => new RandomWordRequest(
                 previousId: $parameters['previousId'] ?? null,
-                role: $this->handleConversion(GrammaticalRoleType::class, 'role', $parameters),
-                gender: $this->handleConversion(WordGender::class, 'gender', $parameters),
-                offenseLevel: $this->handleConversion(OffenseLevel::class, 'offenseLevel', $parameters),
-                exclusions: $parameters['exclusions'] ?? ''
+                role: $this->convertEnum(GrammaticalRoleType::class, 'role', $parameters),
+                gender: $this->convertEnum(WordGender::class, 'gender', $parameters),
+                offenseLevel: $this->convertEnum(OffenseLevel::class, 'offenseLevel', $parameters),
+                exclusions: $this->convertIntArray('exclusions', $parameters)
             ),
         );
+    }
+
+    private function convertIntArray(string $field, array $parameters): array
+    {
+        $str = $parameters[$field] ?? '';
+        $intArray = [];
+        if ($str != '') {
+            $strArray = explode(',', $str);
+            foreach ($strArray as $value) {
+                if( !filter_var($value, FILTER_VALIDATE_INT) ) {
+                    throw new ConversionException($field, $str);
+                }
+                $intArray[] = (int)$value;
+            }
+        }
+        return $intArray;
     }
 
     /**
@@ -45,9 +61,9 @@ readonly class RequestFactory
      * @param string $field
      * @param array $parameters
      * @return ?T
-     * @throws EnumConversionException
+     * @throws ConversionException
      */
-    private function handleConversion(string $enumClass, string $field, array $parameters, ?Enum $defaultValue = null): ?Enum
+    private function convertEnum(string $enumClass, string $field, array $parameters, ?Enum $defaultValue = null): ?Enum
     {
         if (!isset($parameters[$field])) {
             return $defaultValue;
@@ -57,7 +73,7 @@ readonly class RequestFactory
             return $this->enumConverter->convert($enumClass, $parameters[$field]);
         }
         catch (\Throwable $t) {
-            throw new EnumConversionException($enumClass, $field, $parameters[$field], 0, $t);
+            throw new ConversionException($field, $parameters[$field], 0, $t);
         }
     }
 
@@ -66,12 +82,12 @@ readonly class RequestFactory
      * @param class-string $class
      * @param array<string, string> $parameters
      * @return Request
-     * @throws EnumConversionException|\TypeError
+     * @throws ConversionException|\TypeError
      */
     public function fromParameters(string $class, array $parameters): Request
     {
         if(!array_key_exists($class, $this->strategies)) {
-            throw new ValidatorException('Strategy not found');
+            throw new \InvalidArgumentException('Strategy not found');
         }
 
         return $this->strategies[$class]($parameters);

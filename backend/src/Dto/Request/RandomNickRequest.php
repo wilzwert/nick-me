@@ -19,29 +19,18 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  */
 readonly class RandomNickRequest implements Request
 {
-    /**
-     * @var list<int>
+   /**
+     * @param Lang $lang
+     * @param WordGender $gender
+     * @param OffenseLevel|null $offenseLevel
+     * @param list<int> $exclusions
      */
-    private array $exclusions;
-
     public function __construct(
         private Lang $lang = Lang::FR,
         private WordGender $gender = WordGender::AUTO,
         private ?OffenseLevel $offenseLevel = null,
-        string $exclusions = '',
+        private array $exclusions = [],
     ) {
-        $exclusionsIntArray = [];
-        if ($exclusions != '') {
-            $exclusionsStrArray = explode(',', $exclusions);
-            foreach ($exclusionsStrArray as $exclusion) {
-                if( !filter_var($exclusion, FILTER_VALIDATE_INT) ) {
-                    throw new ValidatorException('Exclusions must be integers');
-                }
-                $exclusionsIntArray[] = (int)$exclusion;
-            }
-        }
-        $this->exclusions = $exclusionsIntArray;
-
     }
 
     public function getLang(): Lang

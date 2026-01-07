@@ -13,7 +13,7 @@ enum QualifierPosition: string implements Enum
 
     public static function fromString(string $value): Enum
     {
-        return self::from($value);
+        return self::from(strtolower($value));
     }
 
 }

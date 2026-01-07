@@ -2,7 +2,7 @@
 
 namespace App\Dto\Request;
 
-use App\Exception\EnumConversionException;
+use App\Exception\ConversionException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -28,7 +28,7 @@ class CustomRequestQueryValueResolver implements ValueResolverInterface
     {
     }
 
-    private function enumConversionExceptionToViolation(EnumConversionException $e): ConstraintViolation
+    private function enumConversionExceptionToViolation(ConversionException $e): ConstraintViolation
     {
         $message = $e->getMessage();
 
@@ -37,7 +37,7 @@ class CustomRequestQueryValueResolver implements ValueResolverInterface
             messageTemplate: '{{ message }}',
             parameters: [],
             root: null,
-            propertyPath: $e->getFieldName(),
+            propertyPath: $e->getPath(),
             invalidValue: $e->getValue(),
         );
     }
@@ -89,7 +89,7 @@ class CustomRequestQueryValueResolver implements ValueResolverInterface
             $dto = $this->requestFactory->fromParameters($argument->getType(), $request->query->all());
             $violations = $this->validator->validate($dto);
         }
-        catch (EnumConversionException $e) {
+        catch (ConversionException $e) {
             $violations->add($this->enumConversionExceptionToViolation($e));
         }
         catch (\TypeError $e) {
