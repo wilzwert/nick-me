@@ -8,7 +8,7 @@ use App\Entity\Subject;
 /**
  * @author Wilhelm Zwertvaegher
  */
-enum GrammaticalRoleType: string
+enum GrammaticalRoleType: string implements Enum
 {
     case SUBJECT = 'subject';
     case QUALIFIER = 'qualifier';
@@ -24,5 +24,10 @@ enum GrammaticalRoleType: string
             Qualifier::class => self::QUALIFIER,
             default => throw new \InvalidArgumentException('Unknown class: ' . $className)
         };
+    }
+
+    public static function fromString(string $value): Enum
+    {
+        return self::from($value);
     }
 }

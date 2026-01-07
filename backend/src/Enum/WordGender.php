@@ -7,7 +7,7 @@ use App\Dto\Response\FullWordDto;
 /**
  * @author Wilhelm Zwertvaegher
  */
-enum WordGender: string
+enum WordGender: string implements Enum
 {
     case M = 'M';
     case F = 'F';
@@ -19,25 +19,6 @@ enum WordGender: string
     public static function fromString(string $value): WordGender
     {
         $normalized = strtoupper($value);
-        return match ($normalized) {
-            'M' => self::M,
-            'F' => self::F,
-            'NEUTRAL' => self::NEUTRAL,
-            'AUTO' => self::AUTO,
-            default => throw new \InvalidArgumentException("Unknown WordGender value '{$normalized}'"),
-        };
-    }
-
-    /**
-     * @return array<WordGender>
-     */
-    public static function all(): array
-    {
-        return [
-            self::AUTO,
-            self::M,
-            self::F,
-            self::NEUTRAL,
-        ];
+        return self::from($normalized);
     }
 }

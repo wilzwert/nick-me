@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  *  - exclusions : a list a word ids to exclude
  *
  */
-readonly class RandomNickRequest
+readonly class RandomNickRequest implements Request
 {
     /**
      * @var list<int>
@@ -30,13 +30,15 @@ readonly class RandomNickRequest
         private ?OffenseLevel $offenseLevel = null,
         string $exclusions = '',
     ) {
-        $exclusionsStrArray = explode(',', $exclusions);
         $exclusionsIntArray = [];
-        foreach ($exclusionsStrArray as $exclusion) {
-            if( !filter_var($exclusion, FILTER_VALIDATE_INT) ) {
-                throw new ValidatorException('Exclusions must be integers');
+        if ($exclusions != '') {
+            $exclusionsStrArray = explode(',', $exclusions);
+            foreach ($exclusionsStrArray as $exclusion) {
+                if( !filter_var($exclusion, FILTER_VALIDATE_INT) ) {
+                    throw new ValidatorException('Exclusions must be integers');
+                }
+                $exclusionsIntArray[] = (int)$exclusion;
             }
-            $exclusionsIntArray[] = (int)$exclusion;
         }
         $this->exclusions = $exclusionsIntArray;
 
@@ -64,5 +66,4 @@ readonly class RandomNickRequest
     {
         return $this->exclusions;
     }
-
 }
