@@ -2,9 +2,7 @@
 
 namespace App\UseCase;
 
-use App\Dto\Request\RandomNickRequest;
 use App\Dto\Request\RandomWordRequest;
-use App\Dto\Response\NickDto;
 use App\Dto\Response\NickWordDto;
 
 /**
@@ -13,5 +11,4 @@ use App\Dto\Response\NickWordDto;
 interface GetWordInterface
 {
     public function __invoke(RandomWordRequest $request): NickWordDto;
-
 }

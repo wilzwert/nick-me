@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class GetWordIT extends KernelTestCase
 {
-
     private GetWordInterface $underTest;
 
     protected function setUp(): void
@@ -27,7 +26,8 @@ class GetWordIT extends KernelTestCase
 
     /**
      * Provides data for single random Subject requests
-     * For each case, we provide : previous word id, target gender, offense level, expected label
+     * For each case, we provide : previous word id, target gender, offense level, expected label.
+     *
      * @return array[]
      */
     public static function randomGenderedSubjectDataProvider(): array
@@ -35,13 +35,13 @@ class GetWordIT extends KernelTestCase
         return [
             [1, WordGender::F, OffenseLevel::MEDIUM, 'Banane'],
             [1, WordGender::NEUTRAL, OffenseLevel::MEDIUM, 'Hérétique'],
-            [1, WordGender::M, OffenseLevel::MEDIUM, 'Camembert']
+            [1, WordGender::M, OffenseLevel::MEDIUM, 'Camembert'],
         ];
     }
 
     #[Test]
     #[DataProvider('randomGenderedSubjectDataProvider')]
-    public function shouldGetGenderedSubject(int $previousId, WordGender $targetGender, OffenseLevel $offenseLevel,  $expectedLabel): void
+    public function shouldGetGenderedSubject(int $previousId, WordGender $targetGender, OffenseLevel $offenseLevel, $expectedLabel): void
     {
         $result = ($this->underTest)(new RandomWordRequest(
             previousId: $previousId,
@@ -56,7 +56,8 @@ class GetWordIT extends KernelTestCase
 
     /**
      * Provides data for single random Qualifier requests
-     * For each case, we provide : previous word id, target gender, offense level, expected label, exclusions if needed
+     * For each case, we provide : previous word id, target gender, offense level, expected label, exclusions if needed.
+     *
      * @return array[]
      */
     public static function randomGenderedQualifierDataProvider(): array
@@ -69,7 +70,7 @@ class GetWordIT extends KernelTestCase
             // asking for an F or M gender while excluding actual F or M gendered qualifiers
             // allows to test getting a gender-formatted AUTO qualifier
             [1, WordGender::F, OffenseLevel::MEDIUM, [6], 'Peureuse'],
-            [1, WordGender::M, OffenseLevel::MEDIUM, [7], 'Peureux']
+            [1, WordGender::M, OffenseLevel::MEDIUM, [7], 'Peureux'],
         ];
     }
 
@@ -107,7 +108,7 @@ class GetWordIT extends KernelTestCase
     public function shouldRandomlyPickGenderedOrAutoQualifier(WordGender $targetGender, array $expectedLabels): void
     {
         $labels = [];
-        for ($retries = 0; $retries < 30; $retries++) {
+        for ($retries = 0; $retries < 30; ++$retries) {
             $result = ($this->underTest)(new RandomWordRequest(
                 previousId: 1,
                 role: GrammaticalRoleType::QUALIFIER,
@@ -119,7 +120,7 @@ class GetWordIT extends KernelTestCase
             if (!isset($labels[$result->label])) {
                 $labels[$result->label] = 0;
             }
-            $labels[$result->label]++;
+            ++$labels[$result->label];
         }
         self::assertEqualsCanonicalizing($expectedLabels, array_keys($labels));
 
@@ -127,7 +128,7 @@ class GetWordIT extends KernelTestCase
         // here, we only check that with 30 retries, each label appears 5 to 25 times which is basically the
         // same than not testing it
         foreach ($labels as $count) {
-            self::assertTrue(abs($count-$retries/2) <= 10);
+            self::assertTrue(abs($count - $retries / 2) <= 10);
         }
     }
 }

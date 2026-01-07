@@ -9,8 +9,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
-* @author Wilhelm Zwertvaegher
-* @extends ServiceEntityRepository<Qualifier>
+ * @author Wilhelm Zwertvaegher
+ *
+ * @extends ServiceEntityRepository<Qualifier>
  */
 class QualifierRepository extends ServiceEntityRepository implements QualifierRepositoryInterface
 {
@@ -18,7 +19,7 @@ class QualifierRepository extends ServiceEntityRepository implements QualifierRe
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry,Qualifier::class);
+        parent::__construct($registry, Qualifier::class);
     }
 
     public function findByWordId(int $wordId): ?Qualifier

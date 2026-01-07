@@ -14,5 +14,4 @@ interface SubjectRepositoryInterface
     public function findByWordId(int $wordId): ?Subject;
 
     public function findOne(WordCriteria $criteria, Sort $sort = Sort::RANDOM): ?Subject;
-
 }

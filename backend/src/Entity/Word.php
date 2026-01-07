@@ -39,16 +39,14 @@ class Word
     #[ORM\Column(type: 'string', length: 10, enumType: WordStatus::class)]
     private WordStatus $status;
 
-
     public function __construct(
         string $slug,
         string $label,
         WordGender $gender,
         Lang $lang,
         OffenseLevel $offenseLevel,
-        WordStatus $status
-    )
-    {
+        WordStatus $status,
+    ) {
         $this->slug = $slug;
         $this->label = $label;
         $this->gender = $gender;

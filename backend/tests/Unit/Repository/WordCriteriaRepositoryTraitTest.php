@@ -21,7 +21,6 @@ use PHPUnit\Framework\TestCase;
 
 class WordCriteriaRepositoryTraitTest extends TestCase
 {
-
     use WordCriteriaRepositoryTrait;
 
     protected function setUp(): void
@@ -31,7 +30,6 @@ class WordCriteriaRepositoryTraitTest extends TestCase
 
     private function assertCommonBehaviour(MockObject&QueryBuilder $queryBuilder): void
     {
-
         $queryBuilder->expects($this->once())
             ->method('getDQLPart')
             ->willReturn([]);
@@ -61,7 +59,6 @@ class WordCriteriaRepositoryTraitTest extends TestCase
             ->method('setMaxResults')
             ->with(1)
             ->willReturnSelf();
-
     }
 
     #[Test]
@@ -82,7 +79,6 @@ class WordCriteriaRepositoryTraitTest extends TestCase
             ->method('setParameter')
             ->with('lang', Lang::FR)
             ->willReturnSelf();
-
 
         $this->applyWordCriteria($queryBuilder, new WordCriteria());
     }
@@ -106,7 +102,6 @@ class WordCriteriaRepositoryTraitTest extends TestCase
             ->with('lang', Lang::EN)
             ->willReturnSelf();
 
-
         $this->applyWordCriteria($queryBuilder, new WordCriteria(Lang::EN));
     }
 
@@ -120,13 +115,13 @@ class WordCriteriaRepositoryTraitTest extends TestCase
                         new GenderCriterion(
                             WordGender::F,
                             GenderConstraintType::EXACT
-                        )
+                        ),
                     ]
                 ),
                 2,
-                ["word.lang = :lang", "word.gender IN (:values0)"],
+                ['word.lang = :lang', 'word.gender IN (:values0)'],
                 ['lang', 'values0'],
-                [Lang::FR, [WordGender::F, WordGender::AUTO]]
+                [Lang::FR, [WordGender::F, WordGender::AUTO]],
             ],
             [
                 new WordCriteria(
@@ -139,14 +134,14 @@ class WordCriteriaRepositoryTraitTest extends TestCase
                         new OffenseLevelCriterion(
                             OffenseLevel::MEDIUM,
                             OffenseConstraintType::LTE
-                        )
+                        ),
                     ]
                 ),
                 3,
                 ['word.lang = :lang', 'word.gender IN (:values0)', 'word.offenseLevel IN (:values1)'],
                 ['lang', 'values0', 'values1'],
-                [Lang::EN, [WordGender::M, WordGender::AUTO, WordGender::NEUTRAL], [OffenseLevel::LOW, OffenseLevel::MEDIUM]]
-            ]
+                [Lang::EN, [WordGender::M, WordGender::AUTO, WordGender::NEUTRAL], [OffenseLevel::LOW, OffenseLevel::MEDIUM]],
+            ],
         ];
     }
 
@@ -157,9 +152,8 @@ class WordCriteriaRepositoryTraitTest extends TestCase
         int $expectedCalls,
         array $expectedWHere,
         array $expectedParameterNames,
-        array $expectedValues
-    ): void
-    {
+        array $expectedValues,
+    ): void {
         $queryBuilder = $this->createMock(QueryBuilder::class);
 
         // by default, a WordCriteria only has a set lang, which is Lang::FR by default
@@ -174,6 +168,7 @@ class WordCriteriaRepositoryTraitTest extends TestCase
             ->with(
                 self::callback(function ($arg) use (&$andWhereArgs) {
                     $andWhereArgs[] = $arg;
+
                     return true;
                 }))
             ->willReturnSelf();
@@ -183,10 +178,12 @@ class WordCriteriaRepositoryTraitTest extends TestCase
             ->with(
                 self::callback(function ($name) use (&$parametersNamesArgs) {
                     $parametersNamesArgs[] = $name;
+
                     return true;
                 }),
                 self::callback(function ($value) use (&$parametersValuesArgs) {
                     $parametersValuesArgs[] = $value;
+
                     return true;
                 })
             )
@@ -194,9 +191,8 @@ class WordCriteriaRepositoryTraitTest extends TestCase
 
         $this->applyWordCriteria($queryBuilder, $wordCriteria);
 
-        self::assertEquals($expectedWHere, $andWhereArgs);;
+        self::assertEquals($expectedWHere, $andWhereArgs);
         self::assertEquals($expectedParameterNames, $parametersNamesArgs);
         self::assertEquals($expectedValues, $parametersValuesArgs);
     }
-
 }

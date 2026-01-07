@@ -8,7 +8,7 @@ namespace App\Dto\Response;
 final readonly class SubjectDto
 {
     public function __construct(
-        public int $usagesCount
+        public int $usagesCount,
     ) {
     }
 }

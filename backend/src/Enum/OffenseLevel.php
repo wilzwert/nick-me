@@ -23,14 +23,13 @@ enum OffenseLevel: int implements Enum
             $v = (int) $value;
             try {
                 return self::from($v);
-            }
-            catch (\Throwable $e) {
+            } catch (\Throwable $e) {
                 return ($v >= self::MAX->value) ? self::MAX :
                     ($v >= self::VERY_HIGH->value ? self::VERY_HIGH :
                     ($v >= self::HIGH->value ? self::HIGH :
                     ($v >= self::MEDIUM->value ? self::MEDIUM :
                     self::LOW
-                )));
+                    )));
             }
         }
 

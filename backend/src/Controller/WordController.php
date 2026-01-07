@@ -2,18 +2,12 @@
 
 namespace App\Controller;
 
-use App\Dto\Request\RandomNickRequest;
 use App\Dto\Request\RandomWordRequest;
 use App\Dto\Request\RequestFromQuery;
-use App\Dto\Response\NickDto;
-use App\UseCase\GenerateNickInterface;
 use App\UseCase\GetWordInterface;
-use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -34,5 +28,4 @@ class WordController extends AbstractController
             Response::HTTP_OK
         );
     }
-
 }

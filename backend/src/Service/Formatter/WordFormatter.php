@@ -17,13 +17,12 @@ class WordFormatter implements WordFormatterInterface
      */
     private array $formatters;
 
-
     /**
      * @param iterable<FormatterStrategyInterface> $formatters
      */
     public function __construct(
         #[AutowireIterator('app.formatter_strategy')]
-        iterable $formatters
+        iterable $formatters,
     ) {
         foreach ($formatters as $formatter) {
             $this->formatters[$formatter->getLang()->value] = $formatter;

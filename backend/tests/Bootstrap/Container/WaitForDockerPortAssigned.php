@@ -13,7 +13,6 @@ use Testcontainers\Wait\WaitStrategy;
  */
 class WaitForDockerPortAssigned extends BaseWaitStrategy
 {
-
     private ?WaitStrategy $decorated = null;
 
     public function __construct(private readonly int $port, int $timeout = 10000, int $pollInterval = 500)
@@ -24,6 +23,7 @@ class WaitForDockerPortAssigned extends BaseWaitStrategy
     public function withWait(WaitStrategy $wait): self
     {
         $this->decorated = $wait;
+
         return $this;
     }
 
@@ -47,6 +47,7 @@ class WaitForDockerPortAssigned extends BaseWaitStrategy
                 if ($this->decorated) {
                     $this->decorated->wait($container);
                 }
+
                 return;
             }
 

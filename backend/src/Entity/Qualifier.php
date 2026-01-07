@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @author Wilhelm Zwertvaegher
  */
-
 #[ORM\Entity]
 #[ORM\Table(name: 'qualifier')]
 #[ORM\UniqueConstraint(name: 'uq_qualifier_word', columns: ['word_id'])]
@@ -37,6 +36,7 @@ class Qualifier implements GrammaticalRole
     {
         return $this->word;
     }
+
     public function getPosition(): QualifierPosition
     {
         return $this->position;
@@ -50,11 +50,12 @@ class Qualifier implements GrammaticalRole
     public function setPosition(QualifierPosition $position): Qualifier
     {
         $this->position = $position;
+
         return $this;
     }
 
     public function incrementUsageCount(): void
     {
-        $this->usageCount++;
+        ++$this->usageCount;
     }
 }

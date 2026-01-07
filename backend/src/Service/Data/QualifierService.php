@@ -29,8 +29,7 @@ class QualifierService implements QualifierServiceInterface
         $qualifier = $this->repository->findByWordId($word->getId());
         if ($qualifier) {
             $qualifier->setPosition($command->getPosition());
-        }
-        else {
+        } else {
             $qualifier = new Qualifier($word, $command->getPosition());
         }
         $this->save($qualifier);
@@ -54,9 +53,10 @@ class QualifierService implements QualifierServiceInterface
     public function findOneRandomly(WordCriteria $criteria): Qualifier
     {
         $result = $this->repository->findOne($criteria);
-        if(empty($result)) {
+        if (empty($result)) {
             throw new \LogicException('Could not find a Qualifier');
         }
+
         return $result;
     }
 
@@ -66,7 +66,6 @@ class QualifierService implements QualifierServiceInterface
     }
 
     /**
-     * @param int $wordId
      * @return ?Qualifier
      */
     public function findByWordId(int $wordId): ?GrammaticalRole
@@ -76,7 +75,7 @@ class QualifierService implements QualifierServiceInterface
 
     public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
     {
-        if (! $other instanceof Qualifier) {
+        if (!$other instanceof Qualifier) {
             throw new \LogicException('Cannot find another qualifier because $other param is not an instance of Qualifier');
         }
 
@@ -90,7 +89,6 @@ class QualifierService implements QualifierServiceInterface
 
     /**
      * @param Qualifier $grammaticalRole
-     * @return void
      */
     public function incrementUsageCount(GrammaticalRole $grammaticalRole): void
     {
@@ -98,4 +96,3 @@ class QualifierService implements QualifierServiceInterface
         $this->save($grammaticalRole);
     }
 }
-

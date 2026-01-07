@@ -7,5 +7,4 @@ namespace App\Exception;
  */
 class WordNotFoundException extends \Exception
 {
-
 }

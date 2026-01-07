@@ -3,8 +3,6 @@
 namespace App\Tests\Integration\UseCase;
 
 use App\Dto\Command\MaintainWordCommand;
-use App\Entity\Qualifier;
-use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
@@ -23,8 +21,6 @@ class MaintainWordIT extends KernelTestCase
 {
     private MaintainWordInterface $underTest;
 
-
-
     protected function setUp(): void
     {
         self::bootKernel();
@@ -41,7 +37,7 @@ class MaintainWordIT extends KernelTestCase
             // shouldUpdateWordAnDeleteSubject
             ['NEW woRd', 'New Word', Lang::EN, WordGender::NEUTRAL, OffenseLevel::MAX, WordStatus::APPROVED, true, QualifierPosition::BEFORE, false, 1],
             // shouldCreateWordWithQualifierAndSubject
-            ['NEW woRd', 'New Word', Lang::EN, WordGender::NEUTRAL, OffenseLevel::MAX, WordStatus::APPROVED, true, QualifierPosition::BEFORE, true, null]
+            ['NEW woRd', 'New Word', Lang::EN, WordGender::NEUTRAL, OffenseLevel::MAX, WordStatus::APPROVED, true, QualifierPosition::BEFORE, true, null],
         ];
     }
 
@@ -74,7 +70,7 @@ class MaintainWordIT extends KernelTestCase
         $result = ($this->underTest)($command);
 
         self::assertNotNull($result->id);
-        if ($wordId !== null) {
+        if (null !== $wordId) {
             self::assertEquals($wordId, $result->id);
         }
 
@@ -82,14 +78,12 @@ class MaintainWordIT extends KernelTestCase
         if ($shouldBeQualifier) {
             self::assertContains(GrammaticalRoleType::QUALIFIER->value, $types);
             self::assertEquals($qualifierPosition, $result->types[GrammaticalRoleType::QUALIFIER->value]->position);
-        }
-        else {
+        } else {
             self::assertNotContains(GrammaticalRoleType::QUALIFIER->value, $types);
         }
         if ($shouldBeSubject) {
             self::assertContains(GrammaticalRoleType::SUBJECT->value, $types);
-        }
-        else {
+        } else {
             self::assertNotContains(GrammaticalRoleType::SUBJECT->value, $types);
         }
         self::assertEquals($lang, $result->lang);

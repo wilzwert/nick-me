@@ -3,7 +3,6 @@
 namespace App\Tests\Integration\UseCase;
 
 use App\Dto\Command\GenerateNickCommand;
-use App\Dto\Request\RandomNickRequest;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
 use App\Enum\WordGender;
@@ -29,7 +28,6 @@ class GenerateNickIT extends KernelTestCase
         self::assertEquals($words[1]->type, GrammaticalRoleType::QUALIFIER);
     }
 
-
     public static function targetGenders(): array
     {
         return [
@@ -54,7 +52,8 @@ class GenerateNickIT extends KernelTestCase
         self::assertEquals($targetGender, $result->getTargetGender());
     }
 
-    #[Test]function shouldGenerateNickWithComputedTargetGender(): void
+    #[Test]
+    public function shouldGenerateNickWithComputedTargetGender(): void
     {
         self::bootKernel();
         $useCase = static::getContainer()->get(GenerateNickInterface::class);

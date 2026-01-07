@@ -7,9 +7,9 @@ namespace App\Enum;
  */
 enum WordStatus: string implements Enum
 {
-    case PENDING = "PENDING";
-    case REJECTED = "REJECTED";
-    case APPROVED = "APPROVED";
+    case PENDING = 'PENDING';
+    case REJECTED = 'REJECTED';
+    case APPROVED = 'APPROVED';
 
     public static function fromString(string $value): Enum
     {

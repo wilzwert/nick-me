@@ -20,14 +20,13 @@ class RequestFactoryTest extends TestCase
 {
     private RequestFactory $underTest;
 
-
     protected function setUp(): void
     {
         $this->underTest = new RequestFactory(new EnumConverter());
     }
 
     #[Test]
-    public function whenUnknownClass_thenShouldThrowInvalidArgumentException(): void
+    public function whenUnknownClassThenShouldThrowInvalidArgumentException(): void
     {
         self::expectException(\InvalidArgumentException::class);
         $this->underTest->fromParameters(\stdClass::class, []);
@@ -39,7 +38,7 @@ class RequestFactoryTest extends TestCase
         $parameters = [
             'offenseLevel' => 'max',
             'gender' => 'm',
-            'exclusions' => '12,14'
+            'exclusions' => '12,14',
         ];
 
         $result = $this->underTest->fromParameters(RandomNickRequest::class, $parameters);
@@ -57,7 +56,7 @@ class RequestFactoryTest extends TestCase
         $parameters = [
             'previousId' => '8',
             'role' => 'subject',
-            'offenseLevel'  => 'max',
+            'offenseLevel' => 'max',
             'gender' => 'f',
         ];
 

@@ -11,5 +11,4 @@ use App\Dto\Result\GeneratedNickData;
 interface GenerateNickInterface
 {
     public function __invoke(GenerateNickCommand $generateNickCommand): GeneratedNickData;
-
 }

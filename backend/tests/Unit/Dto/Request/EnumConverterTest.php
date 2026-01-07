@@ -18,7 +18,6 @@ use PHPUnit\Framework\TestCase;
  */
 class EnumConverterTest extends TestCase
 {
-
     private EnumConverter $underTest;
 
     protected function setUp(): void
@@ -26,10 +25,8 @@ class EnumConverterTest extends TestCase
         $this->underTest = new EnumConverter();
     }
 
-    /**
-     * @return array
-     */
-    public static function successDataProvider(): array {
+    public static function successDataProvider(): array
+    {
         return [
             [GrammaticalRoleType::class, 'subject', GrammaticalRoleType::SUBJECT],
             [GrammaticalRoleType::class, 'qualifier', GrammaticalRoleType::QUALIFIER],
@@ -69,5 +66,4 @@ class EnumConverterTest extends TestCase
         self::expectException(\ValueError::class);
         $this->underTest->convert($className, $value);
     }
-
 }

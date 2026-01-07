@@ -9,13 +9,11 @@ use App\Specification\WordCriteria;
 
 /**
  * @extends GrammaticalRoleServiceInterface<Qualifier>
+ *
  * @author Wilhelm Zwertvaegher
  */
 interface QualifierServiceInterface extends GrammaticalRoleServiceInterface
 {
-    /**
-     * @return Qualifier
-     */
     public function findOneRandomly(WordCriteria $criteria): Qualifier;
 
     public function createOrUpdate(Word $word, MaintainQualifierProperties $command): Qualifier;

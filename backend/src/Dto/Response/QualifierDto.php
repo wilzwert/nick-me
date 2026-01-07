@@ -10,8 +10,8 @@ use App\Enum\QualifierPosition;
 final readonly class QualifierDto
 {
     public function __construct(
-       public int $usagesCount,
-       public QualifierPosition $position
+        public int $usagesCount,
+        public QualifierPosition $position,
     ) {
     }
 }

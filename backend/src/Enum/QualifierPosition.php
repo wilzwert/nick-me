@@ -15,5 +15,4 @@ enum QualifierPosition: string implements Enum
     {
         return self::from(strtolower($value));
     }
-
 }

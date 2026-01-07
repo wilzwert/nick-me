@@ -2,12 +2,12 @@
 
 namespace App\Dto\Command;
 
+use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
+use App\Enum\WordGender;
 use App\Enum\WordStatus;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Enum\Lang;
-use App\Enum\WordGender;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
@@ -26,7 +26,7 @@ class MaintainWordCommand
         private readonly bool $asSubject = false,
         private readonly bool $asQualifier = false,
         private readonly ?QualifierPosition $qualifierPosition = null,
-        private ?int $wordId = null
+        private ?int $wordId = null,
     ) {
     }
 
@@ -43,6 +43,7 @@ class MaintainWordCommand
     public function setWordId(int $wordId): self
     {
         $this->wordId = $wordId;
+
         return $this;
     }
 

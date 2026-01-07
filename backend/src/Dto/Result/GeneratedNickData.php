@@ -3,7 +3,6 @@
 namespace App\Dto\Result;
 
 use App\Entity\Nick;
-use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
 
@@ -13,16 +12,13 @@ use App\Enum\WordGender;
 readonly class GeneratedNickData
 {
     /**
-     * @param WordGender $targetGender
-     * @param OffenseLevel $targetOffenseLevel
-     * @param Nick $nick
      * @param list<GeneratedNickWord> $words
      */
     public function __construct(
         private WordGender $targetGender,
         private OffenseLevel $targetOffenseLevel,
         private Nick $nick,
-        private array $words
+        private array $words,
     ) {
     }
 

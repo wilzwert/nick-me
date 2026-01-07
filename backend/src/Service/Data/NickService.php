@@ -17,8 +17,8 @@ class NickService implements NickServiceInterface
 {
     public function __construct(
         private readonly NickRepositoryInterface $repository,
-        private readonly EntityManagerInterface $entityManager
-    ){
+        private readonly EntityManagerInterface $entityManager,
+    ) {
     }
 
     public function save(Nick $nick): void

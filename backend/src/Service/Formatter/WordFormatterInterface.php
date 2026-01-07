@@ -11,5 +11,4 @@ use App\Enum\WordGender;
 interface WordFormatterInterface
 {
     public function formatLabel(Word $word, WordGender $gender): string;
-
 }

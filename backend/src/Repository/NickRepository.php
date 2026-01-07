@@ -11,11 +11,11 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Nick>
+ *
  * @author Wilhelm Zwertvaegher
  */
 class NickRepository extends ServiceEntityRepository implements NickRepositoryInterface
 {
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Nick::class);

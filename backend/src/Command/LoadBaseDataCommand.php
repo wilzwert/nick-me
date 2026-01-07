@@ -5,10 +5,10 @@ namespace App\Command;
 use App\Dto\Command\MaintainWordCommand;
 use App\Dto\Csv\CsvQualifier;
 use App\Dto\Csv\CsvSubject;
-use App\Enum\OffenseLevel;
-use App\Enum\WordGender;
-use App\Enum\QualifierPosition;
 use App\Enum\Lang;
+use App\Enum\OffenseLevel;
+use App\Enum\QualifierPosition;
+use App\Enum\WordGender;
 use App\Enum\WordStatus;
 use App\Service\Data\WordSluggerInterface;
 use App\UseCase\MaintainWord;
@@ -22,7 +22,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 /**
  * @author Wilhelm Zwertvaegher
  */
-
 #[AsCommand(name: 'app:load-base-data')]
 class LoadBaseDataCommand extends Command
 {
@@ -32,17 +31,15 @@ class LoadBaseDataCommand extends Command
         #[Autowire('%base_data.subject_csv%')]
         private readonly string $subjectCsvPath,
         #[Autowire('%base_data.qualifier_csv%')]
-        private readonly string $qualifierCsvPath
-    )
-    {
+        private readonly string $qualifierCsvPath,
+    ) {
         parent::__construct();
     }
 
     public function __invoke(
         OutputInterface $output,
-        #[Option('Append the data fixtures instead of deleting all data from the database first.')] bool $append = false
-    ): int
-    {
+        #[Option('Append the data fixtures instead of deleting all data from the database first.')] bool $append = false,
+    ): int {
         $output->writeln('Loading base data...');
         $output->writeln('Loading subjects...');
 
@@ -93,6 +90,7 @@ class LoadBaseDataCommand extends Command
         }
 
         $output->writeln('Base data loaded successfully.');
+
         return Command::SUCCESS;
     }
 }

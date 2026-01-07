@@ -10,6 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @author Wilhelm Zwertvaegher
+ *
  * @extends ServiceEntityRepository<Subject>
  */
 class SubjectRepository extends ServiceEntityRepository implements SubjectRepositoryInterface
@@ -18,7 +19,7 @@ class SubjectRepository extends ServiceEntityRepository implements SubjectReposi
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry,Subject::class);
+        parent::__construct($registry, Subject::class);
     }
 
     public function findByWordId(int $wordId): ?Subject

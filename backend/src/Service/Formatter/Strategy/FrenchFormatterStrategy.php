@@ -11,8 +11,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
  * @author Wilhelm Zwertvaegher
  */
 #[AutoconfigureTag('app.formatter_strategy')]
-class FrenchFormatterStrategy implements FormatterStrategyInterface {
-
+class FrenchFormatterStrategy implements FormatterStrategyInterface
+{
     public function getLang(): Lang
     {
         return Lang::FR;
@@ -21,22 +21,22 @@ class FrenchFormatterStrategy implements FormatterStrategyInterface {
     public function format(Word $word, WordGender $targetGender): string
     {
         // sadly, we assume that we don't need to do anything when the target gender is not female
-        if($targetGender != WordGender::F) {
+        if (WordGender::F != $targetGender) {
             return $word->getLabel();
         }
 
-        if ($word->getGender() != WordGender::AUTO) {
+        if (WordGender::AUTO != $word->getGender()) {
             return $word->getLabel();
         }
 
-        $rules = array(
+        $rules = [
             'eux' => 'euse',
             'ien' => 'ienne',
             'eur' => 'euse',
             'if' => 'ive',
             'et' => 'ette',
-            'on' => 'onne'
-        );
+            'on' => 'onne',
+        ];
         foreach ($rules as $source => $target) {
             if (str_ends_with($word->getLabel(), $source)) {
                 return preg_replace("/{$source}$/", $target, $word->getLabel());

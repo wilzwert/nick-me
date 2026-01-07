@@ -12,15 +12,12 @@ readonly class ValueCriterion implements Criterion
 {
     /**
      * @param class-string<Word|GrammaticalRole> $targetEntity
-     * @param string $field
-     * @param mixed $value
-     * @param ValueCriterionCheck $check
      */
     public function __construct(
         private string $targetEntity,
         private string $field,
         private mixed $value,
-        private ValueCriterionCheck $check
+        private ValueCriterionCheck $check,
     ) {
     }
 

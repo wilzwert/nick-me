@@ -12,7 +12,4 @@ enum OffenseConstraintType
     case LTE;
 
     case LT;
-
-
-
 }

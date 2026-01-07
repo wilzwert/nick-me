@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @author Wilhelm Zwertvaegher
  */
-
 #[ORM\Entity]
 #[ORM\Table(name: 'subject')]
 #[ORM\UniqueConstraint(name: 'uq_subject_word', columns: ['word_id'])]
@@ -28,7 +27,8 @@ class Subject implements GrammaticalRole
         $this->word = $word;
     }
 
-    public function getWord(): Word {
+    public function getWord(): Word
+    {
         return $this->word;
     }
 
@@ -39,7 +39,6 @@ class Subject implements GrammaticalRole
 
     public function incrementUsageCount(): void
     {
-        $this->usageCount++;
+        ++$this->usageCount;
     }
-
 }

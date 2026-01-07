@@ -18,13 +18,13 @@ use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-
     public function __construct(private EntityManagerInterface $entityManager)
     {
     }
 
     /**
-     * Description of words, subjects and qualifiers to create
+     * Description of words, subjects and qualifiers to create.
+     *
      * @return list<array>
      */
     private function getWordsToCreate(): array
@@ -69,7 +69,7 @@ class AppFixtures extends Fixture
         $qualifierIdReflectionProperty = $reflectionClass->getProperty('id');
         $qualifierIdReflectionProperty->setAccessible(true);
 
-        $wordsToCreate =$this->getWordsToCreate();
+        $wordsToCreate = $this->getWordsToCreate();
 
         foreach ($wordsToCreate as $wordToCreate) {
             $word = new Word(

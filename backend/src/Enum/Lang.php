@@ -14,8 +14,7 @@ enum Lang: string implements Enum
     {
         try {
             return self::from(strtolower($value));
-        }
-        catch (\Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             return self::FR;
         }
     }

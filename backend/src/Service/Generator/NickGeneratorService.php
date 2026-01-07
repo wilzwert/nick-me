@@ -30,13 +30,12 @@ use Random\RandomException;
  */
 class NickGeneratorService implements NickGeneratorServiceInterface
 {
-
     public function __construct(
-        private readonly SubjectServiceInterface   $subjectService,
+        private readonly SubjectServiceInterface $subjectService,
         private readonly QualifierServiceInterface $qualifierService,
-        private readonly WordFormatterInterface    $formatter,
-        private readonly NickService $nickService
-    ){
+        private readonly WordFormatterInterface $formatter,
+        private readonly NickService $nickService,
+    ) {
     }
 
     /**
@@ -50,16 +49,14 @@ class NickGeneratorService implements NickGeneratorServiceInterface
      * On the other hand we cannot simply set the target as AUTO because in that case for gender-specific words variation we
      * would have to choose a default gender, because reloading the subject or qualifier or a nick would produce gender compatible words
      * And we do not want to choose a gender as default, so by default we will randomly choose between M and F
-     * TL;DR ; a Nick's target Gender cannot be AUTO, it MUST be a defined GENDER
-     * @param GenerateNickCommand $command
-     * @param Subject $subject
-     * @return WordGender
+     * TL;DR ; a Nick's target Gender cannot be AUTO, it MUST be a defined GENDER.
+     *
      * @throws RandomException
      */
     private function computeTargetGender(GenerateNickCommand $command, Subject $subject): WordGender
     {
         // in case a non-auto gender has been explicitly asked, we have to respect it
-        if ($command->getGender() !== null && $command->getGender() !== WordGender::AUTO) {
+        if (null !== $command->getGender() && WordGender::AUTO !== $command->getGender()) {
             return $command->getGender();
         }
 
@@ -68,7 +65,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
             // neutral is randomly forced to M or F to increase possibilities, otherwise it would be very limited
             // because in some languages neutral words are rare
             // in any case, having a random M or F target gender will still allow NEUTRAL qualifiers
-            WordGender::AUTO, WordGender::NEUTRAL => random_int(0, 1) === 1 ? WordGender::M : WordGender::F,
+            WordGender::AUTO, WordGender::NEUTRAL => 1 === random_int(0, 1) ? WordGender::M : WordGender::F,
             default => $subject->getWord()->getGender(),
         };
     }
@@ -81,16 +78,15 @@ class NickGeneratorService implements NickGeneratorServiceInterface
                 $subject->getWord()->getId(),
                 $this->formatter->formatLabel($subject->getWord(), $targetGender),
                 GrammaticalRoleType::fromClass($subject::class)
-            )
+            ),
         ];
         $qualifierWord = new GeneratedNickWord(
             $qualifier->getWord()->getId(),
             $this->formatter->formatLabel($qualifier->getWord(), $targetGender),
             GrammaticalRoleType::fromClass($qualifier::class));
-        if($qualifier->getPosition() === QualifierPosition::AFTER) {
+        if (QualifierPosition::AFTER === $qualifier->getPosition()) {
             $words[] = $qualifierWord;
-        }
-        else {
+        } else {
             array_unshift($words, $qualifierWord);
         }
 
@@ -142,9 +138,9 @@ class NickGeneratorService implements NickGeneratorServiceInterface
             ),
             new OffenseLevelCriterion(
                 $subject->getWord()->getOffenseLevel(),
-                $command->getOffenseLevel() === OffenseLevel::MAX ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE,
+                OffenseLevel::MAX === $command->getOffenseLevel() ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE,
             ),
-            new ValuesCriterion(Word::class, 'id', $exclusions, ValuesCriterionCheck::NOT_IN)
+            new ValuesCriterion(Word::class, 'id', $exclusions, ValuesCriterionCheck::NOT_IN),
         ];
 
         // get a Qualifier according to the Subject's OffenseLevel and Gender
