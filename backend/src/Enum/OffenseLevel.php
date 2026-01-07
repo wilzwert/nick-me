@@ -5,7 +5,7 @@ namespace App\Enum;
 /**
  * @author Wilhelm Zwertvaegher
  */
-enum OffenseLevel: int
+enum OffenseLevel: int implements Enum
 {
     case LOW = 1;
 
@@ -19,6 +19,21 @@ enum OffenseLevel: int
 
     public static function fromString(string $value): self
     {
+        if (filter_var($value, FILTER_VALIDATE_INT)) {
+            $v = (int) $value;
+            try {
+                return self::from($v);
+            }
+            catch (\Throwable $e) {
+                return ($v >= self::MAX->value) ? self::MAX :
+                    ($v >= self::VERY_HIGH->value ? self::VERY_HIGH :
+                    ($v >= self::HIGH->value ? self::HIGH :
+                    ($v >= self::MEDIUM->value ? self::MEDIUM :
+                    self::LOW
+                )));
+            }
+        }
+
         $normalized = strtoupper(preg_replace('/[^A-Za-z_]/', '_', $value));
 
         return match ($normalized) {
@@ -29,19 +44,5 @@ enum OffenseLevel: int
             'MAX' => self::MAX,
             default => throw new \InvalidArgumentException("Unknown offense level: {$normalized}"),
         };
-    }
-
-    /**
-     * @return array<OffenseLevel>
-     */
-    public static function all(): array
-    {
-        return [
-            self::LOW,
-            self::MEDIUM,
-            self::HIGH,
-            self::VERY_HIGH,
-            self::MAX
-        ];
     }
 }

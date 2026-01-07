@@ -26,7 +26,7 @@ readonly class GenderCriterion implements EnumCriterion
     {
         // TODO this should be removed because GenderCriterion does not apply when gender is not set
         if (null === $this->gender || $this->gender === WordGender::AUTO) {
-            return WordGender::all();
+            return WordGender::cases();
         }
 
         // asking for NEUTRAL always requires a word to be NEUTRAL only

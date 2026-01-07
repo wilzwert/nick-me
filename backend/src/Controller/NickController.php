@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Dto\Command\GenerateNickCommand;
+use App\Dto\Request\CustomRequestQueryValueResolver;
 use App\Dto\Request\RandomNickRequest;
+use App\Dto\Request\RequestFromQuery;
 use App\Dto\Response\NickDto;
 use App\Dto\Response\NickWordDto;
 use App\Dto\Result\GeneratedNickWord;
@@ -27,10 +29,7 @@ class NickController extends AbstractController
     }
 
     #[Route('', name: 'api_nick', methods: ['GET'])]
-    public function __invoke(
-        #[MapQueryString]
-        RandomNickRequest $request,
-    ): JsonResponse
+    public function __invoke(#[RequestFromQuery] RandomNickRequest $request): JsonResponse
     {
         $generateNickCommand = new GenerateNickCommand(
             $request->getLang(),

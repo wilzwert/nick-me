@@ -26,7 +26,7 @@ readonly class OffenseLevelCriterion implements EnumCriterion
     public function getAllowedValues(): array
     {
         if (!$this->offenseLevel) {
-            return OffenseLevel::all();
+            return OffenseLevel::cases();
         }
 
         if ($this->offenseConstraintType == OffenseConstraintType::EXACT) {

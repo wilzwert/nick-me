@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  *  - exclusions : a list a word ids to exclude
  *
  */
-readonly class RandomWordRequest
+readonly class RandomWordRequest implements Request
 {
     /**
      * @var list<int>
