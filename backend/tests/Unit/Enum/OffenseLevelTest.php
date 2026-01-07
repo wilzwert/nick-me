@@ -32,9 +32,9 @@ class OffenseLevelTest extends TestCase
     }
 
     #[Test]
-    public function whenUnknownOffenseLevel_thenShouldThrowInvalidArgumentException(): void
+    public function whenUnknownOffenseLevel_thenShouldThrowValueError(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\ValueError::class);
         OffenseLevel::fromString('unknown');
 
     }

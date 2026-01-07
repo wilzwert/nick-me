@@ -13,7 +13,7 @@ class ConversionException extends \Exception
      * @param string $path
      * @param string $value
      * @param int $code
-     * @param \Exception|null $previous
+     * @param ?\Throwable $previous
      */
     public function __construct(private readonly string $path, private readonly string $value, int $code = 0, ?\Throwable $previous = null)
     {
