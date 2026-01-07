@@ -2,7 +2,7 @@
 
 namespace App\Dto\Request;
 
-use App\Enum\Lang;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
 use App\Enum\GrammaticalRoleType;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  *  - exclusions : a list a word ids to exclude
  *
  */
-readonly class RandomWordRequest implements Request
+class RandomWordRequest implements Request
 {
     /**
      * @var list<int>
@@ -26,19 +26,22 @@ readonly class RandomWordRequest implements Request
     private array $exclusions;
 
     public function __construct(
+        #[Assert\Type('integer')]
         private int                 $previousId,
         private GrammaticalRoleType $role,
         private WordGender         $gender,
         private OffenseLevel       $offenseLevel = OffenseLevel::HIGH,
         string                      $exclusions = '',
     ) {
-        $exclusionsStrArray = explode(',', $exclusions);
         $exclusionsIntArray = [];
-        foreach ($exclusionsStrArray as $exclusion) {
-            if( !filter_var($exclusion, FILTER_VALIDATE_INT) ) {
-                throw new ValidatorException('Exclusions must be integers');
+        if ($exclusions != '') {
+            $exclusionsStrArray = explode(',', $exclusions);
+            foreach ($exclusionsStrArray as $exclusion) {
+                if( !filter_var($exclusion, FILTER_VALIDATE_INT) ) {
+                    throw new ValidatorException('Exclusions must be integers');
+                }
+                $exclusionsIntArray[] = (int)$exclusion;
             }
-            $exclusionsIntArray[] = (int)$exclusion;
         }
         $this->exclusions = $exclusionsIntArray;
     }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Dto\Request\RandomNickRequest;
 use App\Dto\Request\RandomWordRequest;
+use App\Dto\Request\RequestFromQuery;
 use App\Dto\Response\NickDto;
 use App\UseCase\GenerateNickInterface;
 use App\UseCase\GetWordInterface;
@@ -26,10 +27,7 @@ class WordController extends AbstractController
     }
 
     #[Route('', name: 'api_word', methods: ['GET'])]
-    public function __invoke(
-        #[MapQueryString]
-        RandomWordRequest $request,
-    ): JsonResponse
+    public function __invoke(#[RequestFromQuery] RandomWordRequest $request): JsonResponse
     {
         return $this->json(
             ($this->getWord)($request),
