@@ -116,7 +116,6 @@ class WordCriteriaRepositoryTraitTest extends TestCase
             [
                 new WordCriteria(
                     Lang::FR,
-                    null,
                     [
                         new GenderCriterion(
                             WordGender::F,
@@ -132,7 +131,6 @@ class WordCriteriaRepositoryTraitTest extends TestCase
             [
                 new WordCriteria(
                     Lang::EN,
-                    null,
                     [
                         new GenderCriterion(
                             WordGender::M,

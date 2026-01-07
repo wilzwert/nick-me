@@ -15,7 +15,7 @@ class EnumConverter
      * @param class-string<T> $className
      * @param string $value
      * @return T
-     * @throws \InvalidArgumentException, \ValueError
+     * @throws \InvalidArgumentException|\ValueError
      */
     public function convert(string $className, string $value): Enum {
         return $className::fromString($value);

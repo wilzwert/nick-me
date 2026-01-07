@@ -39,6 +39,12 @@ readonly class RequestFactory
         );
     }
 
+    /**
+     * @param string $field
+     * @param array<string, string> $parameters
+     * @return array<int>
+     * @throws ConversionException
+     */
     private function convertIntArray(string $field, array $parameters): array
     {
         $str = $parameters[$field] ?? '';
@@ -59,7 +65,7 @@ readonly class RequestFactory
      * @template  T of Enum
      * @param class-string<T> $enumClass
      * @param string $field
-     * @param array $parameters
+     * @param array<string, string> $parameters
      * @return ?T
      * @throws ConversionException
      */
