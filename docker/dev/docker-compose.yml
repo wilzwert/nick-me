@@ -126,6 +126,7 @@ services:
       - ../../backend/.env.test:/app/.env.test
       - ../../backend/phpunit.dist.xml:/app/phpunit.dist.xml
       - ../../backend/phpstan.dist.neon:/app/phpstan.dist.neon
+      - ../../back/.php-cs-fixer.dist.php:/app/.php-cs-fixer.dist.php
       - ../../backend/resources:/app/resources
 
 
