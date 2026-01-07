@@ -1,5 +1,12 @@
 # nick-me
 
+[![Backend CI](https://img.shields.io/github/actions/workflow/status/wilzwert/nick-me/ci_backend.yml?label=Backend%20CI&logo=Github)](https://github.com/wilzwert/nick-me/actions/workflows/ci_backend.yml)
+
+[![Backend coverage](https://img.shields.io/codecov/c/gh/wilzwert/nick-me/main?flag=backend&label=Backend%20coverage&logo=PHP)](https://wilzwert.github.io/nick-me/backend-coverage/)
+[![Backend Quality Gate Status](https://img.shields.io/sonar/quality_gate/NickMe_backend?server=https%3A%2F%2Fsonarcloud.io&logo=sonarcloud&label=Backend%20quality%20gate)](https://sonarcloud.io/summary/new_code?id=NickMe_backend)
+
+[Backend coverage report](https://wilzwert.github.io/nick-me/backend-coverage/)
+
 ## Overview
 
 Nick Me is (or will be) a "fun nickname" generator. It's in French only at the moment, but could be available in english in the future.
