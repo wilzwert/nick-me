@@ -37,6 +37,7 @@ class NickController extends AbstractController
 
         return $this->json(
             new NickDto(
+                $generatedNickData->getNick()->getId(),
                 $generatedNickData->getTargetGender(),
                 $generatedNickData->getTargetOffenseLevel(),
                 array_map(
