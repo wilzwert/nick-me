@@ -13,10 +13,14 @@ export async function generateNick(params: {
   offenseLevel: OffenseLevel;
 }): Promise<Nick> {
 
-  const res = await fetch(`${API_BASE}/api/nick`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(params)
+  const query = new URLSearchParams({
+    gender: params.gender,
+    offenseLevel: String(params.offenseLevel)
+  });
+
+  const res = await fetch(`${API_BASE}/api/nick?${query.toString()}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
   });
 
   if (!res.ok) {
@@ -31,9 +35,9 @@ export async function generateNick(params: {
  */
 export async function replaceWord(params: {
   role: WordRole;
-  gender: 'M' | 'F';
+  gender: Gender;
   previousId: number;
-  offenseLevel: number;
+  offenseLevel: OffenseLevel;
 }): Promise<Word> {
 
   const query = new URLSearchParams({
