@@ -1,6 +1,8 @@
 import { useNickStore } from '../domain/nick.store';
 import { type Word } from '../domain/model/Word';
 import { useReplaceWord } from '../application/replaceWord';
+import { OFFENSE_LEVEL_LABELS } from '../domain/labels/offenseLevel.labels';
+import { GENDER_LABELS } from '../domain/labels/gender.labels';
 
 export function Nick() {
   const nick = useNickStore(s => s.nick);
@@ -37,6 +39,10 @@ export function Nick() {
   return (
     <div className="nick-display">
       <h2>Ton pseudo</h2>
+      <p>
+        { GENDER_LABELS[nick.gender] } / 
+        { OFFENSE_LEVEL_LABELS[nick.offenseLevel] }
+      </p>
 
       <div className="nick-words">
         {nick.words.map(word => (
@@ -53,7 +59,7 @@ export function Nick() {
       </div>
 
       <div className="nick-actions">
-        <button onClick={handleCopy}>📋 Copier</button>
+        <button onClick={handleCopy}>📋 Copy</button>
       </div>
     </div>
   );

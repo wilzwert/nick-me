@@ -1,18 +1,18 @@
 import { create } from "zustand";
 import type { Nick } from "./model/Nick";
-import type { Word } from "./model/Word";
+// import type { Word } from "./model/Word";
 
 interface NickStore {
     nick: Nick | null;
     setNick: (nick: Nick) => void;
-    replaceWord: (update: Word) => void
+    // replaceWord: (update: Word) => void
 }
 
 export const useNickStore = create<NickStore>(set => ({
   nick: null as Nick | null,
 
   setNick: (nick: Nick) => set({ nick }),
-
+/*
   replaceWord: (updated: Word) =>
     set(state => ({
       nick: state.nick && {
@@ -21,5 +21,5 @@ export const useNickStore = create<NickStore>(set => ({
           w.id === updated.id ? updated : w
         )
       }
-    }))
+    }))*/
 }));
