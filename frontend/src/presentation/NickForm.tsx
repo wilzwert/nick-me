@@ -1,22 +1,21 @@
-import { useState } from 'react';
 import { GENDER_LABELS } from '../domain/labels/gender.labels';
-import { type Gender, GENDER_ORDER } from '../domain/model/Gender';
+import { GENDER_ORDER } from '../domain/model/Gender';
 import { useGenerateNick } from '../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
-import type { OffenseLevel } from '../domain/model/OffenseLevel';
+import { useCriteriaStore } from '../domain/criteria.store';
+
 
 export function NickForm() {
+  const criteria = useCriteriaStore(s => s.criteria);
+  const setCriteria = useCriteriaStore(s => s.setCriteria);
+
   const { mutate: generateNick, isPending } = useGenerateNick();
-
-  const [gender, setGender] = useState<Gender>('NEUTRAL');
-  const [offenseLevel, setOffenseLevel] = useState<OffenseLevel>(5);
-
 
   return (
     <form
       onSubmit={e => {
         e.preventDefault();
-        generateNick({ gender, offenseLevel });
+        generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
       }}
     >
       {/* Gender */}
@@ -27,8 +26,8 @@ export function NickForm() {
             <input
               type="radio"
               name="gender"
-              checked={gender === g}
-              onChange={() => setGender(g)}
+              checked={criteria.gender === g}
+              onChange={() => { setCriteria({gender: g, offenseLevel: criteria.offenseLevel}); }}
             />
             {GENDER_LABELS[g]}
           </label>
@@ -38,7 +37,7 @@ export function NickForm() {
       {/* OffenseLevel Gauge */}
       <fieldset>
         <legend>Niveau d'offense</legend>
-        <OffenseLevelGauge value={offenseLevel} onChange={setOffenseLevel} />
+        <OffenseLevelGauge value={criteria.offenseLevel} onChange={(offenseLevel) => {setCriteria({gender: criteria.gender, offenseLevel}); }} />
         
       </fieldset>
 
