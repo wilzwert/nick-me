@@ -34,8 +34,8 @@ class GetWordIT extends KernelTestCase
     public static function randomGenderedSubjectDataProvider(): array
     {
         return [
-            [1, WordGender::F, OffenseLevel::MEDIUM, 'Banane'],
-            [1, WordGender::NEUTRAL, OffenseLevel::MEDIUM, 'Hérétique'],
+            [1, WordGender::F, OffenseLevel::LOW, 'Banane'],
+            [1, WordGender::NEUTRAL, OffenseLevel::MAX, 'Hérétique'],
             [1, WordGender::M, OffenseLevel::MEDIUM, 'Camembert'],
         ];
     }
@@ -64,14 +64,14 @@ class GetWordIT extends KernelTestCase
     public static function randomGenderedQualifierDataProvider(): array
     {
         return [
-            [1, WordGender::NEUTRAL, OffenseLevel::MEDIUM, [], 'Fataliste'],
+            [1, WordGender::NEUTRAL, OffenseLevel::MAX, [], 'Fataliste'],
             // for F and M genders, we force exclusion of the word with id 5, which is AUTO gendered
             [1, WordGender::F, OffenseLevel::MEDIUM, [5], 'Indiscrète'],
             [1, WordGender::M, OffenseLevel::MEDIUM, [5], 'Interrogateur'],
             // asking for an F or M gender while excluding actual F or M gendered qualifiers
             // allows to test getting a gender-formatted AUTO qualifier
-            [1, WordGender::F, OffenseLevel::MEDIUM, [6], 'Peureuse'],
-            [1, WordGender::M, OffenseLevel::MEDIUM, [7], 'Peureux'],
+            [1, WordGender::F, OffenseLevel::LOW, [6], 'Peureuse'],
+            [1, WordGender::M, OffenseLevel::LOW, [7], 'Peureux'],
         ];
     }
 
