@@ -2,6 +2,7 @@
 
 namespace App\Dto\Request;
 
+use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
@@ -23,8 +24,13 @@ readonly class RandomNickRequest implements Request
         private Lang $lang = Lang::FR,
         private WordGender $gender = WordGender::AUTO,
         private ?OffenseLevel $offenseLevel = null,
+        private ?int $previousId = null,
+        private ?GrammaticalRoleType $replaceRole = null,
         private array $exclusions = [],
     ) {
+        if ($this->replaceRole !== null && $this->previousId === null) {
+            throw new \InvalidArgumentException('Unable to replace a word on an unknown nick');
+        }
     }
 
     public function getLang(): Lang
@@ -40,6 +46,16 @@ readonly class RandomNickRequest implements Request
     public function getOffenseLevel(): ?OffenseLevel
     {
         return $this->offenseLevel;
+    }
+
+    public function getPreviousNickId(): ?int
+    {
+        return $this->previousId;
+    }
+
+    public function getReplaceRoleType(): ?GrammaticalRoleType
+    {
+        return $this->replaceRole;
     }
 
     /**

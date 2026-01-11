@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
 use App\Entity\Word;
@@ -15,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AssignedGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
+use ReflectionProperty;
 
 class AppFixtures extends Fixture
 {
@@ -43,7 +45,10 @@ class AppFixtures extends Fixture
         ];
     }
 
-    public function load(ObjectManager $manager): void
+    /**
+     * @return list<ReflectionProperty>
+     */
+    private function prepareMetadata(): array
     {
         $classMetadata = $this->entityManager->getClassMetadata(Word::class);
         $classMetadata->setIdGenerator(new AssignedGenerator());
@@ -54,6 +59,10 @@ class AppFixtures extends Fixture
         $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $classMetadata = $this->entityManager->getClassMetadata(Qualifier::class);
+        $classMetadata->setIdGenerator(new AssignedGenerator());
+        $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+
+        $classMetadata = $this->entityManager->getClassMetadata(Nick::class);
         $classMetadata->setIdGenerator(new AssignedGenerator());
         $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
@@ -69,7 +78,19 @@ class AppFixtures extends Fixture
         $qualifierIdReflectionProperty = $reflectionClass->getProperty('id');
         $qualifierIdReflectionProperty->setAccessible(true);
 
+        $reflectionClass = new \ReflectionClass(Nick::class);
+        $nickIdReflectionProperty = $reflectionClass->getProperty('id');
+        $nickIdReflectionProperty->setAccessible(true);
+
+        return [$wordIdReflectionProperty, $subjectIdReflectionProperty, $qualifierIdReflectionProperty, $nickIdReflectionProperty];
+    }
+
+    public function load(ObjectManager $manager): void
+    {
+        [$wordIdReflectionProperty, $subjectIdReflectionProperty, $qualifierIdReflectionProperty, $nickIdReflectionProperty] = $this->prepareMetadata();
+
         $wordsToCreate = $this->getWordsToCreate();
+        $subjects = $qualifiers = [];
 
         foreach ($wordsToCreate as $wordToCreate) {
             $word = new Word(
@@ -88,14 +109,27 @@ class AppFixtures extends Fixture
                 $subject = new Subject($word);
                 $subjectIdReflectionProperty->setValue($subject, $wordToCreate['id']);
                 $manager->persist($subject);
+                $subjects[$wordToCreate['id']] = $subject;
             }
 
             if (!empty($wordToCreate['asQualifier'])) {
                 $qualifier = new Qualifier($word, $wordToCreate['qualifierPosition'] ?? QualifierPosition::AFTER);
                 $qualifierIdReflectionProperty->setValue($qualifier, $wordToCreate['id']);
                 $manager->persist($qualifier);
+                $qualifiers[$wordToCreate['id']] = $qualifier;
             }
         }
+
+        // create a Nick
+        $nick = new Nick(
+            label: 'Camembert Fataliste',
+            subject: $subjects[3],
+            qualifier: $qualifiers[8],
+            targetGender: WordGender::M,
+            offenseLevel: OffenseLevel::MEDIUM
+        );
+        $nickIdReflectionProperty->setValue($nick, 1);
+        $manager->persist($nick);
 
         $manager->flush();
 
@@ -108,6 +142,9 @@ class AppFixtures extends Fixture
         );
         $this->entityManager->getConnection()->executeStatement(
             "SELECT setval(pg_get_serial_sequence('qualifier','id'), (SELECT MAX(id) FROM qualifier))"
+        );
+        $this->entityManager->getConnection()->executeStatement(
+            "SELECT setval(pg_get_serial_sequence('nick','id'), (SELECT MAX(id) FROM nick))"
         );
     }
 }

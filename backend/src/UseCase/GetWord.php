@@ -2,44 +2,39 @@
 
 namespace App\UseCase;
 
-use App\Dto\Request\RandomWordRequest;
+use App\Dto\Command\GetWordCommand;
 use App\Dto\Response\NickWordDto;
 use App\Entity\GrammaticalRole;
-use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Service\Data\GrammaticalRoleServiceInterface;
 use App\Service\Formatter\WordFormatterInterface;
-use App\Specification\Criterion\GenderConstraintType;
-use App\Specification\Criterion\GenderCriterion;
-use App\Specification\Criterion\OffenseConstraintType;
-use App\Specification\Criterion\OffenseLevelCriterion;
-use App\Specification\Criterion\ValuesCriterion;
-use App\Specification\Criterion\ValuesCriterionCheck;
-use App\Specification\WordCriteria;
+use App\Service\Generator\WordFinderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
- * @template T of GrammaticalRole
  *
  * @author Wilhelm Zwertvaegher
  */
 readonly class GetWord implements GetWordInterface
 {
     /**
-     * @var array<string, GrammaticalRoleServiceInterface<T>>
+     * @var array<string, GrammaticalRoleServiceInterface<GrammaticalRole>>
      */
     private array $services;
 
     /**
+     * @template T of GrammaticalRole
      * @param iterable<GrammaticalRoleServiceInterface<T>> $services
      */
     public function __construct(
         #[AutowireIterator('app.word_type_data_service')]
         iterable $services,
+        private WordFinderInterface $wordFinder,
         private WordFormatterInterface $formatter,
         private EntityManagerInterface $entityManager,
     ) {
+        // FIXME : injecting services only to be able to increment usage count seems a bit overkill
         $servicesByWordType = [];
         foreach ($services as $service) {
             $servicesByWordType[$service->getGrammaticalRole()->value] = $service;
@@ -47,37 +42,13 @@ readonly class GetWord implements GetWordInterface
         $this->services = $servicesByWordType;
     }
 
-    public function __invoke(RandomWordRequest $request): NickWordDto
+    public function __invoke(GetWordCommand $command): NickWordDto
     {
-        $service = $this->services[$request->getGrammaticalRoleType()->value];
-
-        $previous = $service->findByWordId($request->getPreviousId());
-
-        $criteria = [];
-        if ($request->getGender()) {
-            $criteria[] = new GenderCriterion($request->getGender(), GenderConstraintType::EXACT);
-        }
-        if ($request->getOffenseLevel()) {
-            $criteria[] = new OffenseLevelCriterion(
-                $request->getOffenseLevel(),
-                GrammaticalRoleType::SUBJECT === $request->getGrammaticalRoleType() ? OffenseConstraintType::EXACT : OffenseConstraintType::LTE
-            );
-        }
-        if (count($request->getExclusions())) {
-            $criteria[] = new ValuesCriterion(Word::class, 'id', $request->getExclusions(), ValuesCriterionCheck::NOT_IN);
-        }
-
-        $wordCriteria = new WordCriteria(
-            $previous->getWord()->getLang(),
-            $criteria
-        );
-
-        $new = $service->findSimilar($previous, $wordCriteria);
-        $service->incrementUsageCount($new);
+        $new = $this->wordFinder->findSimilar($command);
+        $this->services[$command->getRole()->value]->incrementUsageCount($new);
         $this->entityManager->flush();
-
         // build the nick word dto
-        $targetGender = $request->getGender() ?? $new->getWord()->getGender();
+        $targetGender = $command->getGender();
 
         return new NickWordDto(
             $new->getWord()->getId(),

@@ -26,6 +26,8 @@ readonly class RequestFactory
                 lang: $this->convertEnum(Lang::class, 'lang', $parameters, Lang::FR),
                 gender: $this->convertEnum(WordGender::class, 'gender', $parameters, WordGender::AUTO),
                 offenseLevel: $this->convertEnum(OffenseLevel::class, 'offenseLevel', $parameters),
+                previousId: $parameters['previousId'] ?? null,
+                replaceRole: $this->convertEnum(GrammaticalRoleType::class, 'replaceRole', $parameters),
                 exclusions: $this->convertIntArray('exclusions', $parameters)
             ),
             RandomWordRequest::class => fn (array $parameters) => new RandomWordRequest(

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\UseCase;
 
+use App\Dto\Command\GetWordCommand;
 use App\Dto\Request\RandomWordRequest;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
@@ -25,7 +26,7 @@ class GetWordIT extends KernelTestCase
     }
 
     /**
-     * Provides data for single random Subject requests
+     * Provides data for single random Subject commands
      * For each case, we provide : previous word id, target gender, offense level, expected label.
      *
      * @return array[]
@@ -43,12 +44,12 @@ class GetWordIT extends KernelTestCase
     #[DataProvider('randomGenderedSubjectDataProvider')]
     public function shouldGetGenderedSubject(int $previousId, WordGender $targetGender, OffenseLevel $offenseLevel, $expectedLabel): void
     {
-        $result = ($this->underTest)(new RandomWordRequest(
-            previousId: $previousId,
+        $result = ($this->underTest)(new GetWordCommand(
             role: GrammaticalRoleType::SUBJECT,
             gender: $targetGender,
             // when requesting a new Subject, offenseLevel is exactly matched
-            offenseLevel: $offenseLevel
+            offenseLevel: $offenseLevel,
+            previousId: $previousId
         ));
 
         self::assertEquals($expectedLabel, $result->label);
@@ -81,14 +82,14 @@ class GetWordIT extends KernelTestCase
         WordGender $targetGender,
         OffenseLevel $offenseLevel,
         array $exclusions,
-        string $expectedLabel): void
-    {
-        $result = ($this->underTest)(new RandomWordRequest(
-            previousId: $previousId,
+        string $expectedLabel
+    ): void {
+        $result = ($this->underTest)(new GetWordCommand(
             role: GrammaticalRoleType::QUALIFIER,
             gender: $targetGender,
             // when requesting a new Subject, offenseLevel is <=
             offenseLevel: $offenseLevel,
+            previousId: $previousId,
             exclusions: $exclusions
         ));
 
@@ -109,12 +110,12 @@ class GetWordIT extends KernelTestCase
     {
         $labels = [];
         for ($retries = 0; $retries < 30; ++$retries) {
-            $result = ($this->underTest)(new RandomWordRequest(
-                previousId: 1,
+            $result = ($this->underTest)(new GetWordCommand(
                 role: GrammaticalRoleType::QUALIFIER,
                 gender: $targetGender,
                 // when requesting a new Subject, offenseLevel is <=
-                offenseLevel: OffenseLevel::MAX
+                offenseLevel: OffenseLevel::MAX,
+                previousId: 1
             ));
 
             if (!isset($labels[$result->label])) {

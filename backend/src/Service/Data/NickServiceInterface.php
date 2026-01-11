@@ -13,14 +13,37 @@ use App\Enum\WordGender;
  */
 interface NickServiceInterface
 {
+    /**
+     * @param Nick $nick
+     * @return void
+     */
     public function save(Nick $nick): void;
 
+    /**
+     * @param int $id
+     * @return Nick|null
+     */
+    public function getNick(int $id): ?Nick;
+
+    /**
+     * @param Nick $nick
+     * @return void
+     */
     public function incrementUsageCount(Nick $nick): void;
 
+    /**
+     * @param Subject $subject
+     * @param Qualifier $qualifier
+     * @param WordGender $targetGender
+     * @param OffenseLevel $offenseLevel
+     * @param string $label
+     * @return Nick
+     */
     public function getOrCreate(
         Subject $subject,
         Qualifier $qualifier,
         WordGender $targetGender,
         OffenseLevel $offenseLevel,
-        string $label): Nick;
+        string $label
+    ): Nick;
 }

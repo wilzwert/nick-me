@@ -3,8 +3,11 @@
 namespace App\Service\Generator;
 
 use App\Dto\Command\GenerateNickCommand;
+use App\Dto\Command\GetWordCommand;
 use App\Dto\Result\GeneratedNickData;
 use App\Dto\Result\GeneratedNickWord;
+use App\Entity\GrammaticalRole;
+use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
 use App\Entity\Word;
@@ -12,7 +15,9 @@ use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
+use App\Exception\NickNotFoundException;
 use App\Service\Data\NickService;
+use App\Service\Data\NickServiceInterface;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
 use App\Service\Formatter\WordFormatterInterface;
@@ -34,7 +39,8 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         private readonly SubjectServiceInterface $subjectService,
         private readonly QualifierServiceInterface $qualifierService,
         private readonly WordFormatterInterface $formatter,
-        private readonly NickService $nickService,
+        private readonly NickServiceInterface $nickService,
+        private readonly WordFinderInterface $wordFinder
     ) {
     }
 
@@ -70,6 +76,12 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         };
     }
 
+    /**
+     * @param Subject $subject
+     * @param Qualifier $qualifier
+     * @param WordGender $targetGender
+     * @return GeneratedNickData
+     */
     private function buildGeneratedNick(Subject $subject, Qualifier $qualifier, WordGender $targetGender): GeneratedNickData
     {
         // build the generated nick data
@@ -83,7 +95,8 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         $qualifierWord = new GeneratedNickWord(
             $qualifier->getWord()->getId(),
             $this->formatter->formatLabel($qualifier->getWord(), $targetGender),
-            GrammaticalRoleType::fromClass($qualifier::class));
+            GrammaticalRoleType::fromClass($qualifier::class)
+        );
         if (QualifierPosition::AFTER === $qualifier->getPosition()) {
             $words[] = $qualifierWord;
         } else {
@@ -107,7 +120,60 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         );
     }
 
-    public function generateNick(GenerateNickCommand $command): GeneratedNickData
+    /**
+     * @throws NickNotFoundException
+     */
+    private function updateNick(GenerateNickCommand $command): GeneratedNickData
+    {
+        $previousNick = $this->nickService->getNick($command->getPreviousNickId());
+        if ($previousNick === null) {
+            throw new NickNotFoundException();
+        }
+
+        // create a new nick with a replaced word
+        $subject = $previousNick->getSubject();
+        $qualifier = $previousNick->getQualifier();
+
+        switch ($command->getReplaceRoleType()) {
+            case GrammaticalRoleType::SUBJECT:
+                /** @var Subject $subject */
+                $subject = $this->wordFinder->findSimilar(
+                    new GetWordCommand(
+                        GrammaticalRoleType::SUBJECT,
+                        // we better trust the previous nick than parameters received
+                        $previousNick->getTargetGender(),
+                        $previousNick->getOffenseLevel(),
+                        null,
+                        $subject,
+                        $command->getExclusions()
+                    )
+                );
+                assert($subject instanceof Subject);
+                break;
+            case GrammaticalRoleType::QUALIFIER:
+                /** @var Qualifier $qualifier */
+                $qualifier = $this->wordFinder->findSimilar(
+                    new GetWordCommand(
+                        GrammaticalRoleType::QUALIFIER,
+                        // we better trust the previous nick than parameters received
+                        $previousNick->getTargetGender(),
+                        $previousNick->getOffenseLevel(),
+                        null,
+                        $qualifier,
+                        $command->getExclusions()
+                    )
+                );
+                assert($qualifier instanceof Qualifier);
+                break;
+        }
+
+        return $this->buildGeneratedNick($subject, $qualifier, $previousNick->getTargetGender());
+    }
+
+    /**
+     * @throws RandomException
+     */
+    private function createNick(GenerateNickCommand $command): GeneratedNickData
     {
         // get a Subject according to OffenseLevel and Gender
         $criteria = [];
@@ -152,5 +218,15 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         );
 
         return $this->buildGeneratedNick($subject, $qualifier, $targetGender);
+    }
+
+    public function generateNick(GenerateNickCommand $command): GeneratedNickData
+    {
+        // create a new Nick, or "update" an existing one
+        if ($command->getPreviousNickId()) {
+            return $this->updateNick($command);
+        }
+
+        return $this->createNick($command);
     }
 }
