@@ -2,7 +2,7 @@ import { GENDER_LABELS } from '../domain/labels/gender.labels';
 import { GENDER_ORDER } from '../domain/model/Gender';
 import { useGenerateNick } from '../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
-import { useCriteriaStore } from '../domain/criteria.store';
+import { useCriteriaStore } from '../domain/store/criteria.store';
 
 
 export function NickForm() {

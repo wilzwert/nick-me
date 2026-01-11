@@ -1,6 +1,6 @@
-import { useCriteriaStore } from "../domain/criteria.store";
-import { useNickHistoryStore } from "../domain/nick-history.store";
-import { useNickStore } from "../domain/nick.store";
+import { useCriteriaStore } from "../domain/store/criteria.store";
+import { useNickHistoryStore } from "../domain/store/nick-history.store";
+import { useNickStore } from "../domain/store/nick.store";
 import { CopyNickButton } from "./CopyNickButton";
 
 export function NickHistory() {
