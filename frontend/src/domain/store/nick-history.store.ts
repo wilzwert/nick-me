@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { type Nick } from './model/Nick';
+import { type Nick } from '../model/Nick';
 
 const STORAGE_KEY = 'nick-history';
 
@@ -18,11 +18,10 @@ function saveHistory(history: Nick[]) {
 interface NickHistoryState {
   history: Nick[];
   addNick: (nick: Nick) => void;
-  setFromHistory: () => void;
   removeNick: (nick: Nick) => void;
 }
 
-export const useNickHistoryStore = create<NickHistoryState>((set, get) => ({
+export const useNickHistoryStore = create<NickHistoryState>((set) => ({
   history: loadHistory(),
 
   addNick: (nick: Nick) =>
@@ -31,11 +30,6 @@ export const useNickHistoryStore = create<NickHistoryState>((set, get) => ({
       saveHistory(updated);
       return { history: updated };
     }),
-
-  setFromHistory: () => {
-    set(() => ({ history: get().history }));
-  },
-
   removeNick: (nick: Nick) => {
     set(state => {
       const updated = state.history.filter(n => n.id !== nick.id);

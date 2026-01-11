@@ -38,16 +38,16 @@ export async function replaceWord(params: {
   gender: Gender;
   previousId: number;
   offenseLevel: OffenseLevel;
-}): Promise<Word> {
+}): Promise<Nick> {
 
   const query = new URLSearchParams({
-    role: params.role,
+    replaceRole: params.role,
     gender: params.gender,
     previousId: String(params.previousId),
     offenseLevel: String(params.offenseLevel)
   });
 
-  const res = await fetch(`${API_BASE}/api/word?${query.toString()}`);
+  const res = await fetch(`${API_BASE}/api/nick?${query.toString()}`);
 
   if (!res.ok) {
     throw new Error('Failed to replace word');

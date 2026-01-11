@@ -1,4 +1,4 @@
-import { useNickStore } from '../domain/nick.store';
+import { useNickStore } from '../domain/store/nick.store';
 import { type Word } from '../domain/model/Word';
 import { useReplaceWord } from '../application/replaceWord';
 import { OFFENSE_LEVEL_LABELS } from '../domain/labels/offenseLevel.labels';
@@ -17,12 +17,12 @@ export function Nick() {
     reloadWord(
       {
         role: word.role,
-        previousId: word.id,
+        previousId: nick.id,
         gender: nick.gender,
         offenseLevel: nick.offenseLevel
       },
       {
-        onSuccess: (newWord) => {
+        onSuccess: (newNick) => {
           setNick({
             ...nick,
             words: nick.words.map(w => (w.id === word.id ? newWord : w))
@@ -30,11 +30,6 @@ export function Nick() {
         }
       }
     );
-  };
-
-  const handleCopy = async () => {
-    const text = nick.words.map(w => w.label).join(' ');
-    await navigator.clipboard.writeText(text);
   };
 
   return (
