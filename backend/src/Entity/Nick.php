@@ -85,4 +85,9 @@ class Nick
     {
         ++$this->usageCount;
     }
+
+    public function getUsageCount(): int
+    {
+        return $this->usageCount;
+    }
 }

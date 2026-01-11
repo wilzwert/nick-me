@@ -18,7 +18,7 @@ readonly class GetWordCommand
     public function __construct(
         private GrammaticalRoleType $role,
         private WordGender $gender,
-        private OffenseLevel $offenseLevel = OffenseLevel::HIGH,
+        private OffenseLevel $offenseLevel = OffenseLevel::MEDIUM,
         private ?int $previousId = null,
         private ?GrammaticalRole $previous = null,
         private array $exclusions = [],

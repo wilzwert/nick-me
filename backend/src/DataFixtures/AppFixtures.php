@@ -34,14 +34,16 @@ class AppFixtures extends Fixture
         return [
             ['id' => 1, 'slug' => 'coquin', 'label' => 'Coquin', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::AUTO, 'asSubject' => true, 'asQualifier' => true],
 
-            ['id' => 2, 'slug' => 'banane', 'label' => 'Banane', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::F, 'asSubject' => true],
+            ['id' => 2, 'slug' => 'banane', 'label' => 'Banane', 'offenseLevel' => OffenseLevel::LOW, 'lang' => Lang::FR, 'gender' => WordGender::F, 'asSubject' => true],
             ['id' => 3, 'slug' => 'camembert', 'label' => 'Camembert', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::M, 'asSubject' => true],
-            ['id' => 4, 'slug' => 'heretique', 'label' => 'Hérétique', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::NEUTRAL, 'asSubject' => true],
+            ['id' => 4, 'slug' => 'heretique', 'label' => 'Hérétique', 'offenseLevel' => OffenseLevel::MAX, 'lang' => Lang::FR, 'gender' => WordGender::NEUTRAL, 'asSubject' => true],
+            ['id' => 9, 'slug' => 'corsaire', 'label' => 'Corsaire', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::NEUTRAL, 'asSubject' => true],
 
-            ['id' => 5, 'slug' => 'peureux', 'label' => 'Peureux', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::AUTO, 'asQualifier' => true],
+            ['id' => 5, 'slug' => 'peureux', 'label' => 'Peureux', 'offenseLevel' => OffenseLevel::LOW, 'lang' => Lang::FR, 'gender' => WordGender::AUTO, 'asQualifier' => true],
             ['id' => 6, 'slug' => 'indiscrete', 'label' => 'Indiscrète', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::F, 'asQualifier' => true],
             ['id' => 7, 'slug' => 'interrogateur', 'label' => 'Interrogateur', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::M, 'asQualifier' => true],
-            ['id' => 8, 'slug' => 'fataliste', 'label' => 'Fataliste', 'offenseLevel' => OffenseLevel::MEDIUM, 'lang' => Lang::FR, 'gender' => WordGender::NEUTRAL, 'asQualifier' => true],
+            ['id' => 8, 'slug' => 'fataliste', 'label' => 'Fataliste', 'offenseLevel' => OffenseLevel::MAX, 'lang' => Lang::FR, 'gender' => WordGender::NEUTRAL, 'asQualifier' => true],
+            ['id' => 10, 'slug' => 'nucleaire', 'label' => 'Nucléaire', 'offenseLevel' => OffenseLevel::MAX, 'lang' => Lang::FR, 'gender' => WordGender::NEUTRAL, 'asQualifier' => true],
         ];
     }
 
@@ -122,9 +124,9 @@ class AppFixtures extends Fixture
 
         // create a Nick
         $nick = new Nick(
-            label: 'Camembert Fataliste',
+            label: 'Camembert Interrogateur',
             subject: $subjects[3],
-            qualifier: $qualifiers[8],
+            qualifier: $qualifiers[7],
             targetGender: WordGender::M,
             offenseLevel: OffenseLevel::MEDIUM
         );

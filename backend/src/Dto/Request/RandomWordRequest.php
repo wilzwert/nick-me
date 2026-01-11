@@ -26,7 +26,7 @@ class RandomWordRequest implements Request
         private int $previousId,
         private GrammaticalRoleType $role,
         private WordGender $gender,
-        private OffenseLevel $offenseLevel = OffenseLevel::HIGH,
+        private OffenseLevel $offenseLevel = OffenseLevel::MEDIUM,
         private array $exclusions = [],
     ) {
     }
