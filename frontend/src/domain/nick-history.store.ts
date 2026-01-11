@@ -19,6 +19,7 @@ interface NickHistoryState {
   history: Nick[];
   addNick: (nick: Nick) => void;
   setFromHistory: () => void;
+  removeNick: (nick: Nick) => void;
 }
 
 export const useNickHistoryStore = create<NickHistoryState>((set, get) => ({
@@ -33,5 +34,14 @@ export const useNickHistoryStore = create<NickHistoryState>((set, get) => ({
 
   setFromHistory: () => {
     set(() => ({ history: get().history }));
+  },
+
+  removeNick: (nick: Nick) => {
+    set(state => {
+      const updated = state.history.filter(n => n.id !== nick.id);
+      saveHistory(updated);
+      return { history: updated };
+    });
   }
+
 }));

@@ -1,9 +1,11 @@
 import { useCriteriaStore } from "../domain/criteria.store";
 import { useNickHistoryStore } from "../domain/nick-history.store";
 import { useNickStore } from "../domain/nick.store";
+import { CopyNickButton } from "./CopyNickButton";
 
 export function NickHistory() {
   const history = useNickHistoryStore(s => s.history);
+  const removeFromHistory = useNickHistoryStore(s => s.removeNick);
   const setNick = useNickStore(s => s.setNick);
   const setCriteria = useCriteriaStore(s => s.setCriteria);
 
@@ -23,6 +25,10 @@ export function NickHistory() {
             }>
               {nick.words.map(w => w.label).join(' ')}
             </button>
+            <CopyNickButton nick={nick} />
+            <button onClick={() => {
+              removeFromHistory(nick);
+            }}>❌</button>
           </li>
         ))}
       </ul>

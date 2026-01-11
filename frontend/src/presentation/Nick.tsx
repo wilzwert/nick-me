@@ -3,6 +3,7 @@ import { type Word } from '../domain/model/Word';
 import { useReplaceWord } from '../application/replaceWord';
 import { OFFENSE_LEVEL_LABELS } from '../domain/labels/offenseLevel.labels';
 import { GENDER_LABELS } from '../domain/labels/gender.labels';
+import { CopyNickButton } from './CopyNickButton';
 
 export function Nick() {
   const nick = useNickStore(s => s.nick);
@@ -59,7 +60,7 @@ export function Nick() {
       </div>
 
       <div className="nick-actions">
-        <button onClick={handleCopy}>📋 Copy</button>
+        <CopyNickButton nick={nick} />
       </div>
     </div>
   );
