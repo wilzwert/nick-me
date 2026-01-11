@@ -31,6 +31,8 @@ class NickController extends AbstractController
             $request->getLang(),
             $request->getGender(),
             $request->getOffenseLevel(),
+            $request->getPreviousNickId(),
+            $request->getReplaceRoleType(),
             $request->getExclusions()
         );
         $generatedNickData = ($this->generateNick)($generateNickCommand);

@@ -2,6 +2,7 @@
 
 namespace App\Dto\Command;
 
+use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
@@ -18,7 +19,9 @@ readonly class GenerateNickCommand
         private Lang $lang,
         private ?WordGender $gender = null,
         private ?OffenseLevel $offenseLevel = null,
-        private array $exclusions = [],
+        private ?int $previousNickId = null,
+        private ?GrammaticalRoleType $replaceRoleType = null,
+        private array $exclusions = []
     ) {
     }
 
@@ -44,4 +47,15 @@ readonly class GenerateNickCommand
     {
         return $this->exclusions;
     }
+
+    public function getPreviousNickId(): ?int
+    {
+        return $this->previousNickId;
+    }
+
+    public function getReplaceRoleType(): ?GrammaticalRoleType
+    {
+        return $this->replaceRoleType;
+    }
+
 }

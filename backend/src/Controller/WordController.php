@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Dto\Command\GetWordCommand;
 use App\Dto\Request\RandomWordRequest;
 use App\Dto\Request\RequestFromQuery;
 use App\UseCase\GetWordInterface;
@@ -23,8 +24,17 @@ class WordController extends AbstractController
     #[Route('', name: 'api_word', methods: ['GET'])]
     public function __invoke(#[RequestFromQuery] RandomWordRequest $request): JsonResponse
     {
+        $command = new GetWordCommand(
+            $request->getGrammaticalRoleType(),
+            $request->getGender(),
+            $request->getOffenseLevel(),
+            $request->getPreviousId(),
+            null,
+            $request->getExclusions()
+        );
+
         return $this->json(
-            ($this->getWord)($request),
+            ($this->getWord)($command),
             Response::HTTP_OK
         );
     }
