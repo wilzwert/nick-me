@@ -64,7 +64,8 @@ class GetWordIT extends KernelTestCase
     public static function randomGenderedQualifierDataProvider(): array
     {
         return [
-            [1, WordGender::NEUTRAL, OffenseLevel::MAX, [], 'Fataliste'],
+            // for F and M genders, we force exclusion of the word with id 10 to avoid randomness
+            [1, WordGender::NEUTRAL, OffenseLevel::MEDIUM, [10], 'Humide'],
             // for F and M genders, we force exclusion of the word with id 5, which is AUTO gendered
             [1, WordGender::F, OffenseLevel::MEDIUM, [5], 'Indiscrète'],
             [1, WordGender::M, OffenseLevel::MEDIUM, [5], 'Interrogateur'],
