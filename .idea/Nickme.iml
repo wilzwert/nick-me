@@ -139,7 +139,17 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/validator" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/testcontainers/testcontainers" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/theseer/tokenizer" />
-      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/altcha-org/altcha" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/masterminds/html5" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/nelmio/cors-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpstan/phpstan-doctrine" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/browser-kit" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/dom-crawler" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/password-hasher" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/security-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/security-core" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/security-csrf" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/security-http" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
