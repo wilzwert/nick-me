@@ -18,7 +18,6 @@ export function useReplaceWord() {
   const setNick = useNickStore(s => s.setNick);
   const addNickToHistory = useNickHistoryStore(s => s.addNick);
 
-
   return useMutation<Nick, Error, ReplaceWordParams>({
     mutationFn: params => replaceWord(params),
     onSuccess: (newNick: Nick) => {
