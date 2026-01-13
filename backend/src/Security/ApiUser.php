@@ -5,10 +5,15 @@ namespace App\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @phpstan-type UserRole 'ROLE_FRONTEND'|'ROLE_CLIENT'|'ROLE_ADMIN'
  * @author Wilhelm Zwertvaegher
  */
-class ApiUser implements UserInterface {
+readonly class ApiUser implements UserInterface {
 
+    /**
+     * @param string $identifier
+     * @param array<UserRole> $roles
+     */
     public function __construct(
         private string $identifier,
         private array $roles
