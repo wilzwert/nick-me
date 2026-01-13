@@ -38,10 +38,10 @@ class GenerateNicksCommand extends Command
     ): int {
         $offenseLevel = $targetGender = null;
 
-        if (!ctype_digit($numberOfNicksToGenerateStr)) {
+        if (!filter_var($numberOfNicksToGenerateStr, FILTER_VALIDATE_INT)) {
             throw new \InvalidArgumentException('Number of nicks to generate must be an integer');
         }
-        if (null !== $offenseLevelStr && !ctype_digit($offenseLevelStr)) {
+        if (null !== $offenseLevelStr && !filter_var($offenseLevelStr, FILTER_VALIDATE_INT)) {
             throw new \InvalidArgumentException('Offense level must be a known value of OffenseLevel enum');
         }
 
