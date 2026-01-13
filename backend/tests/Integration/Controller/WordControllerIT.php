@@ -3,20 +3,19 @@
 namespace App\Tests\Integration\Controller;
 
 use App\Enum\OffenseLevel;
+use App\Tests\Support\AltchaWebTestCase;
+use App\Tests\Support\ApiUrl;
+use App\Tests\Support\TestRequestParameters;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
-class WordControllerIT extends WebTestCase
+class WordControllerIT extends AltchaWebTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->client = static::createClient();
-    }
     public static function provideValidUrlQueryFoNewWord(): array
     {
         return [
@@ -29,7 +28,7 @@ class WordControllerIT extends WebTestCase
     #[DataProvider('provideValidUrlQueryFoNewWord')]
     public function shouldGetWord(string $query): void
     {
-        $this->client->request('GET', sprintf('/api/word?%s', $query));
+        $this->requestWithValidAltcha(new TestRequestParameters('GET', ApiUrl::build(ApiUrl::WORD_ENDPOINT, $query)));
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -37,6 +36,12 @@ class WordControllerIT extends WebTestCase
         self::assertArrayHasKey('id', $data);
         self::assertArrayHasKey('label', $data);
         self::assertArrayHasKey('role', $data);
+    }
 
+    #[Test]
+    public function whenAltchaIsInvalid_thenShouldReturn401(): void
+    {
+        $this->requestWithInvalidAltcha(new TestRequestParameters('GET', ApiUrl::build(ApiUrl::WORD_ENDPOINT)));
+        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 }

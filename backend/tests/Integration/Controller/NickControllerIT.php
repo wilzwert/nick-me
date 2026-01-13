@@ -4,6 +4,12 @@ namespace App\Tests\Integration\Controller;
 
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
+use App\Security\Service\AltchaServiceInterface;
+use App\Tests\Mocks\MockAltchaService;
+use App\Tests\Support\AltchaTestData;
+use App\Tests\Support\AltchaWebTestCase;
+use App\Tests\Support\ApiUrl;
+use App\Tests\Support\TestRequestParameters;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -12,16 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Wilhelm Zwertvaegher
  */
-class NickControllerIT extends WebTestCase
+class NickControllerIT extends AltchaWebTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->client = static::createClient();
-    }
-
     public static function provideValidUrlQueryFoNewNick(): array
     {
+        // we do not include the AUTO gender, because it cannot be a result of a nick generation, only a parameter
         $allPossibleGenders = ['F', 'M', 'NEUTRAL'];
         $allPossibleOffenseLevels = array_map(fn (OffenseLevel $level) => $level->value, OffenseLevel::cases());
         return [
@@ -39,7 +40,9 @@ class NickControllerIT extends WebTestCase
     #[DataProvider('provideValidUrlQueryFoNewNick')]
     public function shouldGenerateNick(string $query, array $expectedOffenseLevels, array $expectedGenders): void
     {
-        $this->client->request('GET', sprintf('/api/nick?%s', $query));
+        $this->requestWithValidAltcha(
+            new TestRequestParameters('GET', ApiUrl::build(ApiUrl::NICK_ENDPOINT, $query))
+        );
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -53,7 +56,7 @@ class NickControllerIT extends WebTestCase
     #[Test]
     public function shouldUpdateNick(): void
     {
-        $this->client->request('GET', '/api/nick?previousId=1&replaceRole=subject');
+        $this->requestWithValidAltcha(new TestRequestParameters('GET', ApiUrl::build(ApiUrl::NICK_ENDPOINT, 'previousId=1&replaceRole=subject')));
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -62,5 +65,12 @@ class NickControllerIT extends WebTestCase
         self::assertNotEquals(1, $data['id']);
         self::assertEquals(WordGender::M->value, $data['gender']);
         self::assertEquals(OffenseLevel::MEDIUM->value, $data['offenseLevel']);
+    }
+
+    #[Test]
+    public function whenAltchaIsInvalid_thenShouldReturn401(): void
+    {
+        $this->requestWithInvalidAltcha(new TestRequestParameters('GET', ApiUrl::build(ApiUrl::NICK_ENDPOINT)));
+        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 }

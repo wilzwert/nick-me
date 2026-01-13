@@ -20,6 +20,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
  */
 class AltchaAuthenticatorTest extends TestCase
 {
+    private const string ALTCHA_HEADER_KEY = 'altcha-header';
+
     private AltchaAuthenticator $authenticator;
     private MockObject&AltchaServiceInterface $altchaService;
 
@@ -28,14 +30,14 @@ class AltchaAuthenticatorTest extends TestCase
         parent::setUp();
 
         $this->altchaService = $this->createMock(AltchaServiceInterface::class);
-        $this->authenticator = new AltchaAuthenticator($this->altchaService);
+        $this->authenticator = new AltchaAuthenticator($this->altchaService, self::ALTCHA_HEADER_KEY);
     }
 
     #[Test]
     public function shouldSupportRequestWhenPayloadHeaderExists(): void
     {
         $request = new Request();
-        $request->headers->set('X-Altcha-Payload', 'dummy');
+        $request->headers->set(self::ALTCHA_HEADER_KEY, 'dummy');
 
         self::assertTrue($this->authenticator->supports($request));
     }
@@ -52,7 +54,7 @@ class AltchaAuthenticatorTest extends TestCase
     public function shouldAuthenticateAndReturnPassportWhenPayloadIsValid(): void
     {
         $request = new Request();
-        $request->headers->set('X-Altcha-Payload', 'validPayload');
+        $request->headers->set(self::ALTCHA_HEADER_KEY, 'validPayload');
 
         $this->altchaService
             ->expects($this->once())
@@ -74,7 +76,7 @@ class AltchaAuthenticatorTest extends TestCase
     public function whenInvalid_thenShouldThrowException(): void
     {
         $request = new Request();
-        $request->headers->set('X-Altcha-Payload', 'invalidPayload');
+        $request->headers->set(self::ALTCHA_HEADER_KEY, 'invalidPayload');
 
         $this->altchaService
             ->expects($this->once())
