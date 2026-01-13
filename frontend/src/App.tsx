@@ -1,5 +1,6 @@
 
 import './App.css'
+import { AltchaModal } from './presentation/AltchaModal';
 import { Nick } from './presentation/Nick';
 import { NickForm } from './presentation/NickForm';
 import { NickHistory } from './presentation/NickHistory';
@@ -11,6 +12,7 @@ function App() {
       <NickForm/>
       <Nick />
       <NickHistory />
+      <AltchaModal />
     </div>
   );
 }

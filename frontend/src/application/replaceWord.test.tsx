@@ -5,7 +5,6 @@ import { useNickStore } from '../domain/store/nick.store';
 import { useNickHistoryStore } from '../domain/store/nick-history.store';
 import type { ReactNode } from 'react';
 import type { Nick } from '../domain/model/Nick';
-import type { Word } from '../domain/model/Word';
 import { replaceWord } from '../infrastructure/nick.api';
 import { useReplaceWord } from './replaceWord';
 

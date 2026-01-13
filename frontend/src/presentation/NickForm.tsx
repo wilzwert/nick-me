@@ -3,6 +3,7 @@ import { GENDER_ORDER } from '../domain/model/Gender';
 import { useGenerateNick } from '../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
 import { useCriteriaStore } from '../domain/store/criteria.store';
+import { executeWithAltcha } from '../application/altcha.service';
 
 
 export function NickForm() {
@@ -15,7 +16,9 @@ export function NickForm() {
     <form
       onSubmit={e => {
         e.preventDefault();
-        generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
+        executeWithAltcha(() => {
+          generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
+        });
       }}
     >
       {/* Gender */}

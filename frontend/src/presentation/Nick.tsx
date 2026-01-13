@@ -4,6 +4,7 @@ import { useReplaceWord } from '../application/replaceWord';
 import { OFFENSE_LEVEL_LABELS } from '../domain/labels/offenseLevel.labels';
 import { GENDER_LABELS } from '../domain/labels/gender.labels';
 import { CopyNickButton } from './CopyNickButton';
+import { executeWithAltcha } from '../application/altcha.service';
 
 export function Nick() {
   const nick = useNickStore(s => s.nick);
@@ -23,10 +24,7 @@ export function Nick() {
       },
       {
         onSuccess: (newNick) => {
-          setNick({
-            ...nick,
-            words: nick.words.map(w => (w.id === word.id ? newWord : w))
-          });
+          setNick(newNick);
         }
       }
     );
@@ -45,7 +43,9 @@ export function Nick() {
           <span key={word.id} className="nick-word">
             {word.label}
             <button
-              onClick={() => handleReloadWord(word)}
+              onClick={() => executeWithAltcha(() => {
+                handleReloadWord(word)}
+              )}
               disabled={reloadingWord}
             >
               🔄
