@@ -13,7 +13,6 @@ interface AltchaStore {
   pending: boolean;
   setPayload: (payload: string) => void;
   setCallback: (callback: ((payload: string) => void) | null) => void;
-  clear: () => void
 }
 
 export const useAltchaStore = create<AltchaStore>((set, get) => ({
@@ -48,6 +47,5 @@ export const useAltchaStore = create<AltchaStore>((set, get) => ({
       return;
     }
     set({ token: null, callback, pending: true });
-  },
-  clear: () => set({ token: null })
+  }
 }));

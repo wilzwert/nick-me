@@ -1,4 +1,4 @@
-import { useAltchaStore } from './stores/altcha.store';
+import { useAltchaStore } from "../stores/altcha.store";
 import 'altcha'
 
 const ALTCHA_CHALLENGE_URL = import.meta.env.VITE_ALTCHA_CHALLENGE_URL ?? '';
@@ -19,5 +19,5 @@ export function AltchaModal() {
     return null;
   }
 
-  return <altcha-widget auto="onload" expire={ALTCHA_TOKEN_EXPIRY_MS} onstatechange={handleStateChange} challengeurl={ALTCHA_CHALLENGE_URL} credentials='same-origin'>debug</altcha-widget>;
+  return <altcha-widget auto="onload" expire={ALTCHA_TOKEN_EXPIRY_MS} onstatechange={handleStateChange} challengeurl={ALTCHA_CHALLENGE_URL} credentials='same-origin'></altcha-widget>;
 }

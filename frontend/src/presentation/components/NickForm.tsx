@@ -1,9 +1,9 @@
-import { GENDER_LABELS } from '../domain/labels/gender.labels';
-import { GENDER_ORDER } from '../domain/model/Gender';
-import { useGenerateNick } from '../application/generateNick';
+import { GENDER_LABELS } from '../../domain/labels/gender.labels';
+import { GENDER_ORDER } from '../../domain/model/Gender';
+import { useGenerateNick } from '../../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
-import { useCriteriaStore } from './stores/criteria.store';
-import { useExecuteWithAltcha } from '../infrastructure/altcha.service';
+import { useCriteriaStore } from '../stores/criteria.store';
+import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
 
 
 export function NickForm() {

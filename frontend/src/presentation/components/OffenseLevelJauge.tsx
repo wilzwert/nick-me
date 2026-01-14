@@ -1,6 +1,6 @@
-import type { OffenseLevel } from '../domain/model/OffenseLevel';
-import { OFFENSE_LEVEL_VALUES } from '../domain/model/OffenseLevel';
-import { OFFENSE_LEVEL_LABELS } from '../domain/labels/offenseLevel.labels';
+import type { OffenseLevel } from '../../domain/model/OffenseLevel';
+import { OFFENSE_LEVEL_VALUES } from '../../domain/model/OffenseLevel';
+import { OFFENSE_LEVEL_LABELS } from '../../domain/labels/offenseLevel.labels';
 
 interface Props {
   value: OffenseLevel;
