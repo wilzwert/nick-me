@@ -1,9 +1,9 @@
 
 import './App.css'
-import { AltchaModal } from './presentation/AltchaModal';
-import { Nick } from './presentation/Nick';
-import { NickForm } from './presentation/NickForm';
-import { NickHistory } from './presentation/NickHistory';
+import { AltchaModal } from './presentation/components/AltchaModal';
+import { Nick } from './presentation/components/Nick';
+import { NickForm } from './presentation/components/NickForm';
+import { NickHistory } from './presentation/components/NickHistory';
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type Nick } from '../domain/model/Nick';
+import { type Nick } from '../../domain/model/Nick';
 
 
 interface Props {
