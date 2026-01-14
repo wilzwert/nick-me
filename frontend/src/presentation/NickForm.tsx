@@ -2,13 +2,14 @@ import { GENDER_LABELS } from '../domain/labels/gender.labels';
 import { GENDER_ORDER } from '../domain/model/Gender';
 import { useGenerateNick } from '../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
-import { useCriteriaStore } from '../domain/store/criteria.store';
-import { executeWithAltcha } from '../application/altcha.service';
+import { useCriteriaStore } from './stores/criteria.store';
+import { useExecuteWithAltcha } from '../infrastructure/altcha.service';
 
 
 export function NickForm() {
   const criteria = useCriteriaStore(s => s.criteria);
   const setCriteria = useCriteriaStore(s => s.setCriteria);
+  const executeWithAltcha = useExecuteWithAltcha();
 
   const { mutate: generateNick, isPending } = useGenerateNick();
 

@@ -1,6 +1,6 @@
 // domain/nick.store.test.ts
 import { describe, it, expect, beforeEach } from 'vitest';
-import type { Nick } from '../model/Nick';
+import type { Nick } from '../../domain/model/Nick';
 import { useNickHistoryStore } from './nick-history.store';
 
 describe('NickStoreHistory', () => {

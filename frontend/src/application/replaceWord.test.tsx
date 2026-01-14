@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useNickStore } from '../domain/store/nick.store';
-import { useNickHistoryStore } from '../domain/store/nick-history.store';
+import { useNickStore } from '../presentation/stores/nick.store';
+import { useNickHistoryStore } from '../presentation/stores/nick-history.store';
 import type { ReactNode } from 'react';
 import type { Nick } from '../domain/model/Nick';
 import { replaceWord } from '../infrastructure/nick.api';

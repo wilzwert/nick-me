@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { type Nick } from '../model/Nick';
+import { type Nick } from '../../domain/model/Nick';
 
 const STORAGE_KEY = 'nick-history';
 

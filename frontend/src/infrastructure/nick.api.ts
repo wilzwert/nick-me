@@ -1,4 +1,4 @@
-import { useAltchaStore } from '../application/altcha.store';
+import { useAltchaStore } from '../presentation/stores/altcha.store';
 import type { Gender } from '../domain/model/Gender';
 import type { Nick } from '../domain/model/Nick';
 import type { OffenseLevel } from '../domain/model/OffenseLevel';
@@ -15,7 +15,11 @@ export async function generateNick(params: {
 }): Promise<Nick> {
 
   
-  const altchaPayload = useAltchaStore.getState().payload ?? '';
+  const altchaToken = useAltchaStore.getState().token;
+
+  if (!altchaToken) {
+    throw new Error('Altcha token is required to replace word');
+  }
 
   const query = new URLSearchParams({
     gender: params.gender,
@@ -24,7 +28,7 @@ export async function generateNick(params: {
 
   const res = await fetch(`${API_BASE}/api/nick?${query.toString()}`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json', 'X-Altcha-Payload': altchaPayload }
+    headers: { 'Content-Type': 'application/json', 'X-Altcha-Payload': altchaToken.payload }
   });
 
   if (!res.ok) {
@@ -44,7 +48,11 @@ export async function replaceWord(params: {
   offenseLevel: OffenseLevel;
 }): Promise<Nick> {
 
-  const altchaPayload = useAltchaStore.getState().payload ?? '';
+  const altchaToken = useAltchaStore.getState().token;
+
+  if (!altchaToken) {
+    throw new Error('Altcha token is required to replace word');
+  }
 
   const query = new URLSearchParams({
     replaceRole: params.role,
@@ -55,7 +63,7 @@ export async function replaceWord(params: {
 
   const res = await fetch(`${API_BASE}/api/nick?${query.toString()}`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json', 'X-Altcha-Payload': altchaPayload }
+    headers: { 'Content-Type': 'application/json', 'X-Altcha-Payload': altchaToken.payload }
   });
 
   if (!res.ok) {
