@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Criteria } from "../model/Criteria";
+import type { Criteria } from "../../domain/model/Criteria";
 
 interface CriteriaStore {
     criteria: Criteria;

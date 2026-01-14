@@ -1,7 +1,7 @@
 // domain/criteria.store.test.ts
 import { describe, expect, it, beforeEach } from 'vitest';
 import { useCriteriaStore, DEFAULT_CRITERIA } from './criteria.store';
-import type { Criteria } from '../model/Criteria';
+import type { Criteria } from '../../domain/model/Criteria';
 
 describe('CriteriaStore', () => {
   beforeEach(() => {

@@ -3,9 +3,9 @@ import { renderHook, act } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useGenerateNick } from './generateNick';
 import { generateNick } from '../infrastructure/nick.api';
-import { useNickStore } from '../domain/store/nick.store';
-import { useNickHistoryStore } from '../domain/store/nick-history.store';
-import { useCriteriaStore } from '../domain/store/criteria.store';
+import { useNickStore } from '../presentation/stores/nick.store';
+import { useNickHistoryStore } from '../presentation/stores/nick-history.store';
+import { useCriteriaStore } from '../presentation/stores/criteria.store';
 import type { ReactNode } from 'react';
 import type { Nick } from '../domain/model/Nick';
 

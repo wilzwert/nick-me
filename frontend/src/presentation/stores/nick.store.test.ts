@@ -1,7 +1,7 @@
 // domain/nick.store.test.ts
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useNickStore } from './nick.store';
-import type { Nick } from '../model/Nick';
+import type { Nick } from '../../domain/model/Nick';
 
 describe('NickStore', () => {
   beforeEach(() => {

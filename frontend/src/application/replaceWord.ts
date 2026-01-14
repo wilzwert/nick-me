@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { replaceWord } from "../infrastructure/nick.api";
-import { useNickStore } from "../domain/store/nick.store";
+import { useNickStore } from "../presentation/stores/nick.store";
 import type { Nick } from "../domain/model/Nick";
 import type { Gender } from "../domain/model/Gender";
 import type { OffenseLevel } from "../domain/model/OffenseLevel";
 import type { WordRole } from "../domain/model/Word";
-import { useNickHistoryStore } from "../domain/store/nick-history.store";
+import { useNickHistoryStore } from "../presentation/stores/nick-history.store";
 
 interface ReplaceWordParams {
   role: WordRole;

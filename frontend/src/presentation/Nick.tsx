@@ -1,14 +1,15 @@
-import { useNickStore } from '../domain/store/nick.store';
+import { useNickStore } from './stores/nick.store';
 import { type Word } from '../domain/model/Word';
 import { useReplaceWord } from '../application/replaceWord';
 import { OFFENSE_LEVEL_LABELS } from '../domain/labels/offenseLevel.labels';
 import { GENDER_LABELS } from '../domain/labels/gender.labels';
 import { CopyNickButton } from './CopyNickButton';
-import { executeWithAltcha } from '../application/altcha.service';
+import { useExecuteWithAltcha } from '../infrastructure/altcha.service';
 
 export function Nick() {
   const nick = useNickStore(s => s.nick);
   const setNick = useNickStore(s => s.setNick);
+  const executeWithAltcha = useExecuteWithAltcha();
 
   const { mutate: reloadWord, isPending: reloadingWord } = useReplaceWord();
 
