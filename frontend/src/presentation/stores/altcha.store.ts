@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const ALTCHA_TOKEN_EXPIRY_MS = parseInt(import.meta.env.VITE_ALTCHA_TOKEN_EXPIRY_MS);
+const ALTCHA_TOKEN_EXPIRY_SECONDS = parseInt(import.meta.env.VITE_ALTCHA_TOKEN_EXPIRY_SECONDS);
 
 type AltchaToken = {
   payload: string;
@@ -24,8 +24,8 @@ export const useAltchaStore = create<AltchaStore>((set, get) => ({
     set(
       { 
         token:  {
-          expiresAt: Date.now() + ALTCHA_TOKEN_EXPIRY_MS,
-          payload: payload 
+          expiresAt: Date.now() + ALTCHA_TOKEN_EXPIRY_SECONDS * 1000,
+          payload: payload
         },
         pending: false
       }
