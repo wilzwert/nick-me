@@ -16,8 +16,8 @@ abstract class AltchaWebTestCase extends WebTestCase
     {
         $this->client = static::createClient();
         $this->altchaHeaderPayloadKey = 'HTTP_'.str_replace('-', '_', strtoupper(static::getContainer()->getParameter(
-                'altcha.header_payload_key'
-            )));
+            'altcha.header_payload_key'
+        )));
         self::getContainer()->set(AltchaServiceInterface::class, new MockAltchaService());
     }
 
