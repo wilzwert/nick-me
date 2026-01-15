@@ -79,6 +79,9 @@
         "test:full": [
             "XDEBUG_MODE=coverage vendor/bin/phpunit",
             "vendor/bin/coverage-check coverage/clover.xml 80"
+        ],
+        "phpstan": [
+            "vendor/bin/phpstan analyse"
         ]
     },
     "conflict": {
