@@ -5,6 +5,7 @@ namespace App\Security\Service;
 use AltchaOrg\Altcha\Altcha;
 use AltchaOrg\Altcha\Challenge;
 use AltchaOrg\Altcha\ChallengeOptions;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -12,8 +13,11 @@ use AltchaOrg\Altcha\ChallengeOptions;
 class AltchaService implements AltchaServiceInterface
 {
 
-    public function __construct(private readonly Altcha $altcha)
-    {
+    public function __construct(
+        private readonly Altcha $altcha,
+        #[Autowire('%altcha.token_expiry_seconds%')]
+        private readonly int $altchaTokenExpirySeconds
+    ) {
     }
 
     public function createChallenge(): Challenge
@@ -21,7 +25,7 @@ class AltchaService implements AltchaServiceInterface
         // Create a new challenge
         $options = new ChallengeOptions(
             maxNumber: 50000, // the maximum random number
-            expires: new \DateTimeImmutable()->add(new \DateInterval('PT10S')),
+            expires: new \DateTimeImmutable()->add(new \DateInterval(sprintf('PT%sS', $this->altchaTokenExpirySeconds))),
         );
 
         return $this->altcha->createChallenge($options);
