@@ -39,6 +39,14 @@ class AltchaAuthenticatorTest extends TestCase
         $request = new Request();
         $request->headers->set(self::ALTCHA_HEADER_KEY, 'dummy');
 
+        $this->altchaService
+            ->expects($this->never())
+            ->method('createChallenge');
+        $this->altchaService
+            ->expects($this->never())
+            ->method('verifySolution');
+
+
         self::assertTrue($this->authenticator->supports($request));
     }
 
@@ -46,6 +54,13 @@ class AltchaAuthenticatorTest extends TestCase
     public function shouldNotSupportRequestWhenPayloadHeaderMissing(): void
     {
         $request = new Request();
+
+        $this->altchaService
+            ->expects($this->never())
+            ->method('createChallenge');
+        $this->altchaService
+            ->expects($this->never())
+            ->method('verifySolution');
 
         self::assertFalse($this->authenticator->supports($request));
     }
@@ -95,6 +110,12 @@ class AltchaAuthenticatorTest extends TestCase
     {
         $request = new Request();
         $exception = new AuthenticationException('Captcha invalid');
+        $this->altchaService
+            ->expects($this->never())
+            ->method('createChallenge');
+        $this->altchaService
+            ->expects($this->never())
+            ->method('verifySolution');
 
         $response = $this->authenticator->onAuthenticationFailure($request, $exception);
 
@@ -107,7 +128,13 @@ class AltchaAuthenticatorTest extends TestCase
     public function onAuthenticationSuccess_shouldReturnNull(): void
     {
         $request = new Request();
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->createStub(TokenInterface::class);
+        $this->altchaService
+            ->expects($this->never())
+            ->method('createChallenge');
+        $this->altchaService
+            ->expects($this->never())
+            ->method('verifySolution');
 
         $response = $this->authenticator->onAuthenticationSuccess($request, $token, 'main');
 

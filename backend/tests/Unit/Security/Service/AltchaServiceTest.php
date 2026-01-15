@@ -20,7 +20,7 @@ class AltchaServiceTest extends TestCase
         $challenge = $this->createStub(Challenge::class);
         $altcha->expects($this->once())->method('createChallenge')->willReturn($challenge);
 
-        $service = new AltchaService($altcha);
+        $service = new AltchaService($altcha, 60);
 
         $result = $service->createChallenge();
         self::assertEquals($challenge, $result);
@@ -32,7 +32,7 @@ class AltchaServiceTest extends TestCase
         $altcha = $this->createMock(Altcha::class);
         $altcha->expects($this->once())->method('verifySolution')->willReturn(true);
 
-        $service = new AltchaService($altcha);
+        $service = new AltchaService($altcha, 60);
 
         $result = $service->verifySolution('str');
         self::assertEquals(true, $result);
