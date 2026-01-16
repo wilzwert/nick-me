@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import { type Nick } from '../../domain/model/Nick';
+import { ActionIcon, CopyButton, Tooltip } from '@mantine/core';
+import { IconCheck, IconCopy } from '@tabler/icons-react';
 
 
 interface Props {
@@ -7,25 +8,16 @@ interface Props {
   className?: string;
 }
 
-export function CopyNickButton({ nick, className }: Props) {
-  const [copied, setCopied] = useState(false);
-
-  async function handleCopy() {
-    const text = nick.words.map(w => w.label).join(' ');
-    await navigator.clipboard.writeText(text);
-
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  }
-
+export function CopyNickButton({ nick }: Props) {
   return (
-    <button
-      type="button"
-      onClick={handleCopy}
-      className={className}
-      title="Copier le pseudo"
-    >
-      {copied ? '✔ Copié !' : '📋 Copier'}
-    </button>
+    <CopyButton value={nick.words.map(w => w.label).join(' ')} timeout={2000}>
+      {({ copied, copy }) => (
+      <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
+          <ActionIcon color={copied ? 'teal' : 'gray'} variant="subtle" onClick={copy}>
+            {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
+          </ActionIcon>
+        </Tooltip>
+      )}
+    </CopyButton>
   );
 }

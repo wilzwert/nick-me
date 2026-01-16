@@ -4,6 +4,7 @@ import { useGenerateNick } from '../../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
 import { useCriteriaStore } from '../stores/criteria.store';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
+import { Box, LoadingOverlay } from '@mantine/core';
 
 
 export function NickForm() {
@@ -14,38 +15,39 @@ export function NickForm() {
   const { mutate: generateNick, isPending } = useGenerateNick();
 
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        executeWithAltcha(() => {
-          generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
-        });
-      }}
-    >
-      {/* Gender */}
-      <fieldset>
-        <legend>Genre</legend>
-        {GENDER_ORDER.map(g => (
-          <label key={g}>
-            <input
-              type="radio"
-              name="gender"
-              checked={criteria.gender === g}
-              onChange={() => { setCriteria({gender: g, offenseLevel: criteria.offenseLevel}); }}
-            />
-            {GENDER_LABELS[g]}
-          </label>
-        ))}
-      </fieldset>
-
-      {/* OffenseLevel Gauge */}
-      <fieldset>
-        <legend>Niveau d'offense</legend>
-        <OffenseLevelGauge value={criteria.offenseLevel} onChange={(offenseLevel) => {setCriteria({gender: criteria.gender, offenseLevel}); }} />
+  
+    <Box pos="relative">
+      <LoadingOverlay visible={isPending} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
+      <form 
+       onSubmit={e => {
+         e.preventDefault();
+         executeWithAltcha(() => {
+           generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
+         });
+       }}>
         
-      </fieldset>
+        <fieldset>
+          <legend>Genre</legend>
+          {GENDER_ORDER.map(g => (
+            <label key={g}>
+              <input
+                type="radio"
+                name="gender"
+                checked={criteria.gender === g}
+                onChange={() => { setCriteria({gender: g, offenseLevel: criteria.offenseLevel}); }}
+              />
+              {GENDER_LABELS[g]}
+            </label>
+          ))}
+        </fieldset>
 
-      <button disabled={isPending}>Go</button>
-    </form>
+        <fieldset>
+          <legend>Niveau d'offense</legend>
+          <OffenseLevelGauge value={criteria.offenseLevel} onChange={(offenseLevel) => {setCriteria({gender: criteria.gender, offenseLevel}); }} />
+          
+        </fieldset>
+        <button disabled={isPending}>Go</button>
+      </form>
+    </Box>
   );
 }
