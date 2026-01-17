@@ -37,11 +37,12 @@ export function Nick() {
     <Card>
       <Box ta="center">
       <h2>Ton pseudo</h2>
+      { /* 
       <p>
         { GENDER_LABELS[nick.gender] } / 
         { OFFENSE_LEVEL_LABELS[nick.offenseLevel] }
       </p>
-
+      /*}
       {/* For screen readers */}
       <p className="sr-only" aria-live="polite" aria-atomic="true">
         Pseudo généré : {nick.words.map(w => w.label).join(' ')}

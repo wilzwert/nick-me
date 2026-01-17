@@ -30,6 +30,7 @@ export function NickForm() {
           <Radio.Group
             name="gender"
             label="Choisissez un genre"
+            value={criteria.gender}
           >
             <Group mt="xs">
               {GENDER_ORDER.map(g => (
