@@ -4,7 +4,7 @@ import { useGenerateNick } from '../../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
 import { useCriteriaStore } from '../stores/criteria.store';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
-import { Box, LoadingOverlay } from '@mantine/core';
+import { Box, Button, Card, Fieldset, Group, LoadingOverlay, Radio, Stack } from '@mantine/core';
 
 
 export function NickForm() {
@@ -16,6 +16,7 @@ export function NickForm() {
 
   return (
   
+    <Card>
     <Box pos="relative">
       <LoadingOverlay visible={isPending} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
       <form 
@@ -25,29 +26,28 @@ export function NickForm() {
            generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
          });
        }}>
+       <Stack gap={20}>
+          <Radio.Group
+            name="gender"
+            label="Choisissez un genre"
+          >
+            <Group mt="xs">
+              {GENDER_ORDER.map(g => (
+                <Radio key={g} value={g} checked={criteria.gender === g} label={GENDER_LABELS[g]} onChange={() => { setCriteria({gender: g, offenseLevel: criteria.offenseLevel}); }}/>
+              ))}
+            </Group>
+          </Radio.Group>
         
-        <fieldset>
-          <legend>Genre</legend>
-          {GENDER_ORDER.map(g => (
-            <label key={g}>
-              <input
-                type="radio"
-                name="gender"
-                checked={criteria.gender === g}
-                onChange={() => { setCriteria({gender: g, offenseLevel: criteria.offenseLevel}); }}
-              />
-              {GENDER_LABELS[g]}
-            </label>
-          ))}
-        </fieldset>
-
-        <fieldset>
-          <legend>Niveau d'offense</legend>
           <OffenseLevelGauge value={criteria.offenseLevel} onChange={(offenseLevel) => {setCriteria({gender: criteria.gender, offenseLevel}); }} />
-          
-        </fieldset>
-        <button disabled={isPending}>Go</button>
+        <Box>
+        <Button 
+          type="submit" 
+          disabled={isPending}
+        >Go</Button>
+        </Box>
+      </Stack>
       </form>
     </Box>
+    </Card>
   );
 }

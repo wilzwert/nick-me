@@ -1,7 +1,10 @@
+import { ActionIcon, Button, Card, Container, Group, List, Paper, Stack, Text, ThemeIcon } from "@mantine/core";
 import { useCriteriaStore } from "../stores/criteria.store";
 import { useNickHistoryStore } from "../stores/nick-history.store";
 import { useNickStore } from "../stores/nick.store";
 import { CopyNickButton } from "./CopyNickButton";
+import styles from './NickHistory.module.css';
+import { IconCircleCheck, IconHistory, IconX } from "@tabler/icons-react";
 
 export function NickHistory() {
   const history = useNickHistoryStore(s => s.history);
@@ -12,26 +15,60 @@ export function NickHistory() {
   if (!history.length) return null;
 
   return (
-    <div className="nick-history">
+    <Card>
+    <Stack gap={10}>
       <h3>Historique</h3>
-      <ul>
-        {history.map((nick, i) => (
-          <li key={i}>
-            <button onClick={
+      <List
+      spacing="xs"
+      size="sm"
+      center
+      icon={
+        <ThemeIcon size={24} radius="xl">
+          <IconHistory size={16} />
+        </ThemeIcon>
+      }
+    >
+      {history.map((nick, i) => (
+          <List.Item key={i}>
+            <Group>
+              <Paper
+                component="button"   // ⚡️ rend le Paper un vrai <button>
+                type="button"        // nécessaire pour un form
+                onClick={
                 () => {
                     setCriteria({gender: nick.gender, offenseLevel: nick.offenseLevel});
                     setNick(nick);
                 }
-            }>
+              }
+                radius="sm"
+                p="xs"
+                shadow="xs"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  cursor: 'pointer', // pour la souris
+                  border: 'none',    // supprime la bordure native du bouton
+                }}
+              >
+            <Text>
               {nick.words.map(w => w.label).join(' ')}
-            </button>
+            </Text>
+            </Paper>
             <CopyNickButton nick={nick} />
-            <button onClick={() => {
+            <Button 
+            variant="subtle"
+          size="xs"
+            onClick={() => {
               removeFromHistory(nick);
-            }}>❌</button>
-          </li>
+            }}>
+                <IconX aria-label="Supprimer"/>
+            </Button>
+            </Group>
+          </List.Item>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Stack>
+    </Card>
   );
 }

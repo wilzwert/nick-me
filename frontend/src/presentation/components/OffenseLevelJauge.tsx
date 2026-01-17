@@ -1,40 +1,60 @@
 import type { OffenseLevel } from '../../domain/model/OffenseLevel';
 import { OFFENSE_LEVEL_VALUES } from '../../domain/model/OffenseLevel';
 import { OFFENSE_LEVEL_LABELS } from '../../domain/labels/offenseLevel.labels';
+import { Box, Group, Slider, Stack, Text } from '@mantine/core';
 
 interface Props {
   value: OffenseLevel;
   onChange: (value: OffenseLevel) => void;
 }
 
+
+const marks = Object.entries(OFFENSE_LEVEL_LABELS).map(([value, label]) => ({
+  value: Number(value),
+  label
+  }
+));
+
+
 export function OffenseLevelGauge({ value, onChange }: Props) {
   const min = OFFENSE_LEVEL_VALUES[0];
   const max = OFFENSE_LEVEL_VALUES[OFFENSE_LEVEL_VALUES.length - 1];
-
-  // Snap automatique sur les valeurs du backend
-  function snap(value: number): OffenseLevel {
-    return OFFENSE_LEVEL_VALUES.reduce(
-      (prev, curr) =>
-        Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
-    );
-  }
-
+  
   return (
-    <div>
-      <input
-        type="range"
+      <Stack gap="40">
+        <label htmlFor="offense-level">
+        <Text size="sm">
+          Niveau d'offense
+        </Text>
+      </label>
+      
+      <Slider 
+        id="offense-level"
         min={min}
         max={max}
-        step={1}
+        defaultValue={5} 
         value={value}
-        onChange={e => onChange(snap(Number(e.target.value)))}
-        style={{ width: '100%' }}
-      />
+        marks={marks}
+        labelAlwaysOn={true}
+        restrictToMarks
+        label={(value) => 
+            OFFENSE_LEVEL_LABELS[Number(value) as OffenseLevel]
+        }
 
-      {/* Display current selected label */}
-      <div style={{ textAlign: 'center', marginTop: '0.5rem', fontWeight: 'bold' }}>
-        {OFFENSE_LEVEL_LABELS[value]}
-      </div>
-    </div>
+        onChange={e => onChange(e as OffenseLevel)}
+        styles={{
+          track: {
+            height: 6,
+            background: 'linear-gradient(to right, var(--mantine-primary-color-filled), red)',
+          },
+           bar: {
+            height: 6,
+            background: 'rgba(0, 0, 0, 0)',
+          },
+          markLabel: { display: 'none' },
+          thumb: { width: 20, height: 20 },
+        }}
+      />
+      </Stack>
   );
 }

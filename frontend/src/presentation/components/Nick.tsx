@@ -5,8 +5,7 @@ import { OFFENSE_LEVEL_LABELS } from '../../domain/labels/offenseLevel.labels';
 import { GENDER_LABELS } from '../../domain/labels/gender.labels';
 import { CopyNickButton } from './CopyNickButton';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
-import styles from './Nick.module.css';
-import { Button } from '@mantine/core';
+import { Box, Button, Card, Group, Paper, Text } from '@mantine/core';
 import { IconReload } from '@tabler/icons-react';
 
 export function Nick() {
@@ -35,22 +34,25 @@ export function Nick() {
   };
 
   return (
-    <div className={styles.nickDisplay}>
+    <Card>
+      <Box ta="center">
       <h2>Ton pseudo</h2>
       <p>
         { GENDER_LABELS[nick.gender] } / 
         { OFFENSE_LEVEL_LABELS[nick.offenseLevel] }
       </p>
 
-      {/* Annonce du nick complet pour lecteurs d’écran */}
+      {/* For screen readers */}
       <p className="sr-only" aria-live="polite" aria-atomic="true">
         Pseudo généré : {nick.words.map(w => w.label).join(' ')}
       </p>
 
-      <ul className={styles.nickWords} aria-label="Mots du pseudo">
+      
+      <Group aria-label="Mots du pseudo" gap={30} align="center" justify="center">
       {nick.words.map(word => (
-        <li key={word.id} className={styles.nickWord}>
-          <span>{word.label}</span>
+        <Paper key={word.id} p={16}>
+
+          <Text component='span'>{word.label}</Text>
 
           <Button size="xs"
             onClick={() =>
@@ -58,17 +60,17 @@ export function Nick() {
                 handleReloadWord(word);
               })
             }
+            variant="subtle"
             disabled={reloadingWord}
             aria-label={`Remplacer le mot ${word.label}`}
             aria-disabled={reloadingWord}
             aria-busy={reloadingWord}
           >
-            <span aria-hidden="true"><IconReload /></span>
+            <span aria-hidden="true"><IconReload/></span>
           </Button>
-        </li>
+        </Paper>
       ))}
-    </ul>
-
+    
     {reloadingWord && (
         <p role="status" aria-live="polite" className="sr-only">
           Remplacement du mot en cours
@@ -79,6 +81,8 @@ export function Nick() {
       <div className="nick-actions">
         <CopyNickButton nick={nick} />
       </div>
-    </div>
+      </Group>
+      </Box>
+    </Card>
   );
 }
