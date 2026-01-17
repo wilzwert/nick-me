@@ -4,11 +4,9 @@ namespace App\Tests\Unit\Security\Authenticator;
 
 use App\Security\ApiUser;
 use App\Security\Authenticator\AltchaAuthenticator;
-use App\Security\Service\AltchaServiceInterface;
 use App\Tests\Fakes\FakeAltchaService;
 use App\Tests\Support\AltchaTestData;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
