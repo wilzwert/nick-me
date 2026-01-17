@@ -1,5 +1,5 @@
 
-import { AppShell, Box, createTheme, Group, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import './App.css'
 import { AltchaModal } from './presentation/components/AltchaModal';

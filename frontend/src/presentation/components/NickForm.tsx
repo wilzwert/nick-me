@@ -4,7 +4,7 @@ import { useGenerateNick } from '../../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
 import { useCriteriaStore } from '../stores/criteria.store';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
-import { Box, Button, Card, Fieldset, Group, LoadingOverlay, Radio, Stack } from '@mantine/core';
+import { Box, Button, Card, Group, LoadingOverlay, Radio, Stack } from '@mantine/core';
 
 
 export function NickForm() {
