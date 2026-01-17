@@ -5,11 +5,14 @@ namespace App\Tests\Unit\Security\Authenticator;
 use App\Security\ApiUser;
 use App\Security\Authenticator\AltchaAuthenticator;
 use App\Security\Service\AltchaServiceInterface;
+use App\Tests\Fakes\FakeAltchaService;
+use App\Tests\Support\AltchaTestData;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -20,32 +23,20 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
  */
 class AltchaAuthenticatorTest extends TestCase
 {
-    private const string ALTCHA_HEADER_KEY = 'altcha-header';
-
     private AltchaAuthenticator $authenticator;
-    private MockObject&AltchaServiceInterface $altchaService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->altchaService = $this->createMock(AltchaServiceInterface::class);
-        $this->authenticator = new AltchaAuthenticator($this->altchaService, self::ALTCHA_HEADER_KEY);
+        $this->authenticator = new AltchaAuthenticator(new FakeAltchaService(), AltchaTestData::HEADER_KEY);
     }
 
     #[Test]
     public function shouldSupportRequestWhenPayloadHeaderExists(): void
     {
         $request = new Request();
-        $request->headers->set(self::ALTCHA_HEADER_KEY, 'dummy');
-
-        $this->altchaService
-            ->expects($this->never())
-            ->method('createChallenge');
-        $this->altchaService
-            ->expects($this->never())
-            ->method('verifySolution');
-
+        $request->headers->set(AltchaTestData::HEADER_KEY, AltchaTestData::INVALID_PAYLOAD);
         self::assertTrue($this->authenticator->supports($request));
     }
 
@@ -53,14 +44,6 @@ class AltchaAuthenticatorTest extends TestCase
     public function shouldNotSupportRequestWhenPayloadHeaderMissing(): void
     {
         $request = new Request();
-
-        $this->altchaService
-            ->expects($this->never())
-            ->method('createChallenge');
-        $this->altchaService
-            ->expects($this->never())
-            ->method('verifySolution');
-
         self::assertFalse($this->authenticator->supports($request));
     }
 
@@ -68,13 +51,7 @@ class AltchaAuthenticatorTest extends TestCase
     public function shouldAuthenticateAndReturnPassportWhenPayloadIsValid(): void
     {
         $request = new Request();
-        $request->headers->set(self::ALTCHA_HEADER_KEY, 'validPayload');
-
-        $this->altchaService
-            ->expects($this->once())
-            ->method('verifySolution')
-            ->with('validPayload')
-            ->willReturn(true);
+        $request->headers->set(AltchaTestData::HEADER_KEY, AltchaTestData::VALID_PAYLOAD);
 
         $passport = $this->authenticator->authenticate($request);
 
@@ -90,14 +67,7 @@ class AltchaAuthenticatorTest extends TestCase
     public function whenInvalidThenShouldThrowException(): void
     {
         $request = new Request();
-        $request->headers->set(self::ALTCHA_HEADER_KEY, 'invalidPayload');
-
-        $this->altchaService
-            ->expects($this->once())
-            ->method('verifySolution')
-            ->with('invalidPayload')
-            ->willReturn(false);
-
+        $request->headers->set(AltchaTestData::HEADER_KEY, AltchaTestData::INVALID_PAYLOAD);
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Captcha invalid');
 
@@ -109,17 +79,11 @@ class AltchaAuthenticatorTest extends TestCase
     {
         $request = new Request();
         $exception = new AuthenticationException('Captcha invalid');
-        $this->altchaService
-            ->expects($this->never())
-            ->method('createChallenge');
-        $this->altchaService
-            ->expects($this->never())
-            ->method('verifySolution');
 
         $response = $this->authenticator->onAuthenticationFailure($request, $exception);
 
         self::assertInstanceOf(JsonResponse::class, $response);
-        self::assertEquals(JsonResponse::HTTP_UNAUTHORIZED, $response->getStatusCode());
+        self::assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
         self::assertEquals(['message' => 'Captcha invalid'], json_decode($response->getContent(), true));
     }
 
@@ -128,12 +92,6 @@ class AltchaAuthenticatorTest extends TestCase
     {
         $request = new Request();
         $token = $this->createStub(TokenInterface::class);
-        $this->altchaService
-            ->expects($this->never())
-            ->method('createChallenge');
-        $this->altchaService
-            ->expects($this->never())
-            ->method('verifySolution');
 
         $response = $this->authenticator->onAuthenticationSuccess($request, $token, 'main');
 
