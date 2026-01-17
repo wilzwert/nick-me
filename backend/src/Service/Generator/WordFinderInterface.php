@@ -10,9 +10,5 @@ use App\Entity\GrammaticalRole;
  */
 interface WordFinderInterface
 {
-    /**
-     * @param GetWordCommand $command
-     * @return GrammaticalRole
-     */
     public function findSimilar(GetWordCommand $command): GrammaticalRole;
 }

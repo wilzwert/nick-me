@@ -28,7 +28,7 @@ readonly class RandomNickRequest implements Request
         private ?GrammaticalRoleType $replaceRole = null,
         private array $exclusions = [],
     ) {
-        if ($this->replaceRole !== null && $this->previousId === null) {
+        if (null !== $this->replaceRole && null === $this->previousId) {
             throw new \InvalidArgumentException('Unable to replace a word on an unknown nick');
         }
     }

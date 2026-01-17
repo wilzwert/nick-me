@@ -9,6 +9,7 @@
     <option name="transferred" value="true" />
   </component>
   <component name="PHPCSFixerOptionsConfiguration">
+    <option name="codingStandard" value="Symfony" />
     <option name="transferred" value="true" />
   </component>
   <component name="PHPCodeSnifferOptionsConfiguration">
@@ -265,8 +266,8 @@
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <phpunit_by_interpreter interpreter_id="29ffc7a3-5aef-4524-862a-dde7d58477ff" custom_loader_path="/app/vendor/autoload.php" phpunit_phar_path="" />
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/backend/vendor/autoload.php" />
+      <phpunit_by_interpreter interpreter_id="29ffc7a3-5aef-4524-862a-dde7d58477ff" custom_loader_path="/app/vendor/autoload.php" phpunit_phar_path="" />
     </phpunit_settings>
   </component>
   <component name="Psalm">

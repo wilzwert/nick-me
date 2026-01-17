@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Qualifier;
+use App\Specification\DoctrineQueryBuilder;
 use App\Specification\Sort;
 use App\Specification\WordCriteria;
+use App\Specification\WordCriteriaService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,9 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class QualifierRepository extends ServiceEntityRepository implements QualifierRepositoryInterface
 {
-    use WordCriteriaRepositoryTrait;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly WordCriteriaService $wordCriteriaService)
     {
         parent::__construct($registry, Qualifier::class);
     }
@@ -32,7 +32,7 @@ class QualifierRepository extends ServiceEntityRepository implements QualifierRe
         $qb = $this->createQueryBuilder('q')
             ->join('q.word', 'word');
 
-        $this->applyWordCriteria($qb, $criteria, $sort);
+        $this->wordCriteriaService->applyWordCriteria(new DoctrineQueryBuilder($qb), $criteria, $sort);
 
         return $qb->getQuery()->getOneOrNullResult();
     }

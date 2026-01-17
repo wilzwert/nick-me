@@ -21,7 +21,7 @@ readonly class GenerateNickCommand
         private ?OffenseLevel $offenseLevel = null,
         private ?int $previousNickId = null,
         private ?GrammaticalRoleType $replaceRoleType = null,
-        private array $exclusions = []
+        private array $exclusions = [],
     ) {
     }
 
@@ -57,5 +57,4 @@ readonly class GenerateNickCommand
     {
         return $this->replaceRoleType;
     }
-
 }

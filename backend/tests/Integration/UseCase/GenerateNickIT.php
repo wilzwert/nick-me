@@ -122,5 +122,4 @@ class GenerateNickIT extends KernelTestCase
         self::assertEquals(OffenseLevel::MEDIUM, $result->getTargetOffenseLevel());
         self::assertEquals(WordGender::M, $result->getTargetGender());
     }
-
 }

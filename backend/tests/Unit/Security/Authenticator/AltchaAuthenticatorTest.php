@@ -46,7 +46,6 @@ class AltchaAuthenticatorTest extends TestCase
             ->expects($this->never())
             ->method('verifySolution');
 
-
         self::assertTrue($this->authenticator->supports($request));
     }
 
@@ -88,7 +87,7 @@ class AltchaAuthenticatorTest extends TestCase
     }
 
     #[Test]
-    public function whenInvalid_thenShouldThrowException(): void
+    public function whenInvalidThenShouldThrowException(): void
     {
         $request = new Request();
         $request->headers->set(self::ALTCHA_HEADER_KEY, 'invalidPayload');
@@ -106,7 +105,7 @@ class AltchaAuthenticatorTest extends TestCase
     }
 
     #[Test]
-    public function onAuthenticationFailure_shouldReturnJsonResponseWithUnauthorized(): void
+    public function onAuthenticationFailureShouldReturnJsonResponseWithUnauthorized(): void
     {
         $request = new Request();
         $exception = new AuthenticationException('Captcha invalid');
@@ -125,7 +124,7 @@ class AltchaAuthenticatorTest extends TestCase
     }
 
     #[Test]
-    public function onAuthenticationSuccess_shouldReturnNull(): void
+    public function onAuthenticationSuccessShouldReturnNull(): void
     {
         $request = new Request();
         $token = $this->createStub(TokenInterface::class);

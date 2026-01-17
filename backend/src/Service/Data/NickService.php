@@ -26,10 +26,6 @@ class NickService implements NickServiceInterface
         $this->entityManager->persist($nick);
     }
 
-    /**
-     * @param int $id
-     * @return Nick|null
-     */
     public function getNick(int $id): ?Nick
     {
         return $this->repository->getById($id);

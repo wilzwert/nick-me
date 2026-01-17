@@ -21,5 +21,4 @@ class AltchaChallengeController extends AbstractController
     {
         return $this->json($this->altchaService->createChallenge());
     }
-
 }

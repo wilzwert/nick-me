@@ -20,5 +20,4 @@ class ApiUserTest extends TestCase
         self::assertEquals('identifier', $apiUser->getUserIdentifier());
         self::assertEquals(['ROLE_TEST'], $apiUser->getRoles());
     }
-
 }

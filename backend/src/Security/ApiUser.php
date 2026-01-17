@@ -6,17 +6,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @phpstan-type UserRole 'ROLE_FRONTEND'|'ROLE_CLIENT'|'ROLE_ADMIN'
+ *
  * @author Wilhelm Zwertvaegher
  */
-readonly class ApiUser implements UserInterface {
-
+readonly class ApiUser implements UserInterface
+{
     /**
-     * @param string $identifier
      * @param array<UserRole> $roles
      */
     public function __construct(
         private string $identifier,
-        private array $roles
+        private array $roles,
     ) {
     }
 

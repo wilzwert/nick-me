@@ -14,13 +14,10 @@ class TestRequestParameters
         private array $files = [],
         private array $server = [],
         private ?string $content = null,
-        private bool $changeHistory = true
+        private bool $changeHistory = true,
     ) {
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): string
     {
         return $this->method;
@@ -75,5 +72,4 @@ class TestRequestParameters
     {
         $this->content = $value;
     }
-
 }
