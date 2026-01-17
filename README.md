@@ -19,17 +19,24 @@ Backend :
 - fetch a random word to replace a word of a previous nick
 - CLI for bulk nicks generation
 - CLI for base data import
+- API endpoints protected by Altcha
+
+ Frontend :
+- nick generation and display, history in local storage (WIP)
+- Altcha implementation
 
 ## Roadmap
 Backend :
 - add an endpoint to suggest a new word : data is limited at the moment, the more words the more fun !
 - add an endpoint to report an offensive word : the goal here is to be _gently_ offensive, event in MAX offense level, 
 so it's important that users are able to report words that go a bit too far
-- protect the API with rate limiting, captcha (for frontend) and app tokens (for discord bot)
+- protect the API with rate limiting, and app tokens (for discord bot)
 - create admin endpoints
+- create an endpoint to contact me
 
- Frontend :
-- everything (probably in React) ;)
+Frontend :
+- add a contact form
+- add an "About" page
 
 Other
 - create a Discord Bot
