@@ -4,15 +4,11 @@ namespace App\Tests\Integration\Controller;
 
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
-use App\Security\Service\AltchaServiceInterface;
-use App\Tests\Mocks\MockAltchaService;
-use App\Tests\Support\AltchaTestData;
 use App\Tests\Support\AltchaWebTestCase;
 use App\Tests\Support\ApiUrl;
 use App\Tests\Support\TestRequestParameters;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -25,8 +21,9 @@ class NickControllerIT extends AltchaWebTestCase
         // we do not include the AUTO gender, because it cannot be a result of a nick generation, only a parameter
         $allPossibleGenders = ['F', 'M', 'NEUTRAL'];
         $allPossibleOffenseLevels = array_map(fn (OffenseLevel $level) => $level->value, OffenseLevel::cases());
+
         return [
-            ['', $allPossibleOffenseLevels, $allPossibleGenders ],
+            ['', $allPossibleOffenseLevels, $allPossibleGenders],
             ['offenseLevel=max', [OffenseLevel::MAX->value], $allPossibleGenders],
             ['offenseLevel=low', [OffenseLevel::LOW->value], $allPossibleGenders],
             ['gender=f', $allPossibleOffenseLevels, [WordGender::F->value]],
@@ -68,7 +65,7 @@ class NickControllerIT extends AltchaWebTestCase
     }
 
     #[Test]
-    public function whenAltchaIsInvalid_thenShouldReturn401(): void
+    public function whenAltchaIsInvalidThenShouldReturn401(): void
     {
         $this->requestWithInvalidAltcha(new TestRequestParameters('GET', ApiUrl::build(ApiUrl::NICK_ENDPOINT)));
         self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);

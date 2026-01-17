@@ -8,7 +8,6 @@ use App\Tests\Support\ApiUrl;
 use App\Tests\Support\TestRequestParameters;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -39,7 +38,7 @@ class WordControllerIT extends AltchaWebTestCase
     }
 
     #[Test]
-    public function whenAltchaIsInvalid_thenShouldReturn401(): void
+    public function whenAltchaIsInvalidThenShouldReturn401(): void
     {
         $this->requestWithInvalidAltcha(new TestRequestParameters('GET', ApiUrl::build(ApiUrl::WORD_ENDPOINT)));
         self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);

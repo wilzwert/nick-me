@@ -4,7 +4,6 @@ namespace App\Security\Authenticator;
 
 use App\Security\ApiUser;
 use App\Security\Service\AltchaServiceInterface;
-use PHPStan\DependencyInjection\AutowiredParameter;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,15 +18,13 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 /**
  * @author Wilhelm Zwertvaegher
  */
-
 class AltchaAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
         private readonly AltchaServiceInterface $altchaService,
         #[Autowire('%altcha.header_payload_key%')]
-        private readonly string $headerPayloadKey
-    )
-    {
+        private readonly string $headerPayloadKey,
+    ) {
     }
 
     public function authenticate(Request $request): Passport
@@ -58,6 +55,7 @@ class AltchaAuthenticator extends AbstractAuthenticator
         $data = [
             'message' => $exception->getMessage(),
         ];
+
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
 }

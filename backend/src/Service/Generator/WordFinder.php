@@ -3,12 +3,10 @@
 namespace App\Service\Generator;
 
 use App\Dto\Command\GetWordCommand;
-use App\Dto\Response\NickWordDto;
 use App\Entity\GrammaticalRole;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Service\Data\GrammaticalRoleServiceInterface;
-use App\Service\Formatter\WordFormatterInterface;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;
 use App\Specification\Criterion\OffenseConstraintType;
@@ -30,11 +28,12 @@ class WordFinder implements WordFinderInterface
 
     /**
      * @template T of GrammaticalRole
+     *
      * @param iterable<GrammaticalRoleServiceInterface<T>> $services
      */
     public function __construct(
         #[AutowireIterator('app.word_type_data_service')]
-        iterable                                $services,
+        iterable $services,
     ) {
         $servicesByWordType = [];
         foreach ($services as $service) {
@@ -43,16 +42,12 @@ class WordFinder implements WordFinderInterface
         $this->services = $servicesByWordType;
     }
 
-    /**
-     * @param GetWordCommand $command
-     * @return GrammaticalRole
-     */
     public function findSimilar(GetWordCommand $command): GrammaticalRole
     {
         $service = $this->services[$command->getRole()->value];
         $previous = $command->getPrevious() ?? $service->findByWordId($command->getPreviousId());
 
-        if ($previous === null) {
+        if (null === $previous) {
             throw new \LogicException('Cannot get a word without a previous word');
         }
 
@@ -74,5 +69,4 @@ class WordFinder implements WordFinderInterface
 
         return $service->findSimilar($previous, $wordCriteria);
     }
-
 }

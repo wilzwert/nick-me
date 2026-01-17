@@ -3,7 +3,6 @@
 namespace App\Tests\Integration\UseCase;
 
 use App\Dto\Command\GetWordCommand;
-use App\Dto\Request\RandomWordRequest;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
@@ -83,7 +82,7 @@ class GetWordIT extends KernelTestCase
         WordGender $targetGender,
         OffenseLevel $offenseLevel,
         array $exclusions,
-        string $expectedLabel
+        string $expectedLabel,
     ): void {
         $result = ($this->underTest)(new GetWordCommand(
             role: GrammaticalRoleType::QUALIFIER,

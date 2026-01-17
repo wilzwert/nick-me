@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Mocks;
+namespace App\Tests\Fakes;
 
 use AltchaOrg\Altcha\Challenge;
 use App\Security\Service\AltchaServiceInterface;
@@ -9,9 +9,8 @@ use App\Tests\Support\AltchaTestData;
 /**
  * @author Wilhelm Zwertvaegher
  */
-class MockAltchaService implements AltchaServiceInterface
+class FakeAltchaService implements AltchaServiceInterface
 {
-
     public function createChallenge(): Challenge
     {
         return new Challenge(
@@ -25,6 +24,6 @@ class MockAltchaService implements AltchaServiceInterface
 
     public function verifySolution(string $data): bool
     {
-        return $data == AltchaTestData::VALID_PAYLOAD;
+        return AltchaTestData::VALID_PAYLOAD == $data;
     }
 }

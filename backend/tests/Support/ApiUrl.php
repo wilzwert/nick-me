@@ -7,9 +7,9 @@ namespace App\Tests\Support;
  */
 class ApiUrl
 {
-    const string NICK_ENDPOINT = '/api/nick';
+    public const string NICK_ENDPOINT = '/api/nick';
 
-    const string WORD_ENDPOINT = '/api/word';
+    public const string WORD_ENDPOINT = '/api/word';
 
     public static function build($endpoint, $query = ''): string
     {

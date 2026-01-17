@@ -16,7 +16,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AssignedGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
-use ReflectionProperty;
 
 class AppFixtures extends Fixture
 {
@@ -49,7 +48,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * @return list<ReflectionProperty>
+     * @return list<\ReflectionProperty>
      */
     private function prepareMetadata(): array
     {

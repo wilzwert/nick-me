@@ -12,11 +12,10 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  */
 class AltchaService implements AltchaServiceInterface
 {
-
     public function __construct(
         private readonly Altcha $altcha,
         #[Autowire('%altcha.token_expiry_seconds%')]
-        private readonly int $altchaTokenExpirySeconds
+        private readonly int $altchaTokenExpirySeconds,
     ) {
     }
 

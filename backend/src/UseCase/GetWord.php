@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
- *
  * @author Wilhelm Zwertvaegher
  */
 readonly class GetWord implements GetWordInterface
@@ -25,6 +24,7 @@ readonly class GetWord implements GetWordInterface
 
     /**
      * @template T of GrammaticalRole
+     *
      * @param iterable<GrammaticalRoleServiceInterface<T>> $services
      */
     public function __construct(

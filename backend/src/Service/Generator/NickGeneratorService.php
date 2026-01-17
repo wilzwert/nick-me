@@ -6,7 +6,6 @@ use App\Dto\Command\GenerateNickCommand;
 use App\Dto\Command\GetWordCommand;
 use App\Dto\Result\GeneratedNickData;
 use App\Dto\Result\GeneratedNickWord;
-use App\Entity\GrammaticalRole;
 use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
@@ -16,7 +15,6 @@ use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
 use App\Exception\NickNotFoundException;
-use App\Service\Data\NickService;
 use App\Service\Data\NickServiceInterface;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
@@ -40,7 +38,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         private readonly QualifierServiceInterface $qualifierService,
         private readonly WordFormatterInterface $formatter,
         private readonly NickServiceInterface $nickService,
-        private readonly WordFinderInterface $wordFinder
+        private readonly WordFinderInterface $wordFinder,
     ) {
     }
 
@@ -76,12 +74,6 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         };
     }
 
-    /**
-     * @param Subject $subject
-     * @param Qualifier $qualifier
-     * @param WordGender $targetGender
-     * @return GeneratedNickData
-     */
     private function buildGeneratedNick(Subject $subject, Qualifier $qualifier, WordGender $targetGender): GeneratedNickData
     {
         // build the generated nick data
@@ -126,7 +118,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
     private function updateNick(GenerateNickCommand $command): GeneratedNickData
     {
         $previousNick = $this->nickService->getNick($command->getPreviousNickId());
-        if ($previousNick === null) {
+        if (null === $previousNick) {
             throw new NickNotFoundException();
         }
 

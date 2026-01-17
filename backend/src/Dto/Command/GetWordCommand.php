@@ -23,7 +23,7 @@ readonly class GetWordCommand
         private ?GrammaticalRole $previous = null,
         private array $exclusions = [],
     ) {
-        if (null === $previous  && null === $this->previousId) {
+        if (null === $previous && null === $this->previousId) {
             throw new \InvalidArgumentException('Cannot get a word without a previous word or id');
         }
     }
