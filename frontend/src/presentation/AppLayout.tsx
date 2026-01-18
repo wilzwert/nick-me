@@ -1,9 +1,23 @@
-import { AppShell, Container, Stack, Group, Box, Text } from '@mantine/core';
-import { useMantineColorScheme } from '@mantine/core';
+import { AppShell, Container, Stack, Box } from '@mantine/core';
 import { FooterIcons } from './components/FooterIcons';
+import { useNickStore } from './stores/nick.store';
+import { useEffect, useRef, useState } from 'react';
+import './AppLayout.css';
+
+const BACKGROUND_COUNT: number=3;
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  const { colorScheme } = useMantineColorScheme();
+    const nick = useNickStore(s => s.nick);
+    const [bgIndex, setBgIndex] = useState(0);
+    const prevNickRef = useRef<number | null>(null);
+
+    useEffect(() => {
+        if (!nick) return;
+        if (nick.id !== prevNickRef.current) {
+            setBgIndex((i) => (i + 1) % BACKGROUND_COUNT);
+            prevNickRef.current = nick.id;
+        }
+    }, [nick]);
 
   return (
     <AppShell
@@ -15,12 +29,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <FooterIcons />
         </Box>
         </AppShell.Footer>
-
-        <AppShell.Main>
-        <Container size="sm">
-            <Stack gap={20}>{children}</Stack>
-        </Container>
+        <AppShell.Main
+            className={`main main-${bgIndex}`}
+        >
+            <Container size="sm">
+                <Stack gap={20}>{children}</Stack>
+            </Container>
       </AppShell.Main>
+      
     </AppShell>
   );
 }

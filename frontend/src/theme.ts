@@ -2,7 +2,7 @@ import { createTheme } from "@mantine/core";
 
 // theme.ts
 export const theme = createTheme({
-  primaryColor: 'violet',
+  primaryColor: 'cyan',
   fontFamily: 'Inter, sans-serif',
   radius: {
     sm: '4px',
@@ -13,7 +13,7 @@ export const theme = createTheme({
   headings: {
     fontFamily: 'Roboto, sans-serif',
     sizes: {
-      h1: { fontSize: '36px' },
+      h1: { fontSize: '66px' },
     },
   },
   components: {

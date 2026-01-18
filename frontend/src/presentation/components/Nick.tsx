@@ -1,18 +1,17 @@
 import { useNickStore } from '../stores/nick.store';
 import { type Word } from '../../domain/model/Word';
 import { useReplaceWord } from '../../application/replaceWord';
-import { OFFENSE_LEVEL_LABELS } from '../../domain/labels/offenseLevel.labels';
-import { GENDER_LABELS } from '../../domain/labels/gender.labels';
 import { CopyNickButton } from './CopyNickButton';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
-import { Box, Button, Card, Group, Paper, Text } from '@mantine/core';
+import { Box, Button, Card, Group, LoadingOverlay, Paper, Text } from '@mantine/core';
 import { IconReload } from '@tabler/icons-react';
+import { useState } from 'react';
 
 export function Nick() {
   const nick = useNickStore(s => s.nick);
   const setNick = useNickStore(s => s.setNick);
   const executeWithAltcha = useExecuteWithAltcha();
-
+  const [isReloading, setIsReloading] = useState(false); 
   const { mutate: reloadWord, isPending: reloadingWord } = useReplaceWord();
 
   if (!nick) return null;
@@ -27,6 +26,7 @@ export function Nick() {
       },
       {
         onSuccess: (newNick) => {
+          setIsReloading(false);
           setNick(newNick);
         }
       }
@@ -35,6 +35,7 @@ export function Nick() {
 
   return (
     <Card>
+      <LoadingOverlay visible={isReloading || reloadingWord} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
       <Box ta="center">
       <h2>Ton pseudo</h2>
       { /* 
@@ -56,11 +57,12 @@ export function Nick() {
           <Text component='span'>{word.label}</Text>
 
           <Button size="xs"
-            onClick={() =>
+            onClick={() => {
+              setIsReloading(true);
               executeWithAltcha(() => {
                 handleReloadWord(word);
               })
-            }
+            }}
             variant="subtle"
             disabled={reloadingWord}
             aria-label={`Remplacer le mot ${word.label}`}

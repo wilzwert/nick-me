@@ -5,9 +5,11 @@ import { OffenseLevelGauge } from './OffenseLevelJauge';
 import { useCriteriaStore } from '../stores/criteria.store';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
 import { Box, Button, Card, Group, LoadingOverlay, Radio, Stack } from '@mantine/core';
+import { useState } from 'react';
 
 
 export function NickForm() {
+  const [isSubmitted, setSubmitted] = useState(false);
   const criteria = useCriteriaStore(s => s.criteria);
   const setCriteria = useCriteriaStore(s => s.setCriteria);
   const executeWithAltcha = useExecuteWithAltcha();
@@ -18,11 +20,13 @@ export function NickForm() {
   
     <Card>
     <Box pos="relative">
-      <LoadingOverlay visible={isPending} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
+      <LoadingOverlay visible={isPending || isSubmitted} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
       <form 
        onSubmit={e => {
          e.preventDefault();
+         setSubmitted(true);
          executeWithAltcha(() => {
+          setSubmitted(false);
            generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
          });
        }}>
@@ -43,7 +47,7 @@ export function NickForm() {
         <Box>
         <Button 
           type="submit" 
-          disabled={isPending}
+          disabled={isPending || isSubmitted}
         >Go</Button>
         </Box>
       </Stack>

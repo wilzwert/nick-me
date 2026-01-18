@@ -1,10 +1,9 @@
-import { ActionIcon, Button, Card, Container, Group, List, Paper, Stack, Text, ThemeIcon } from "@mantine/core";
+import { Button, Card, Group, List, Paper, Stack, Text, ThemeIcon } from "@mantine/core";
 import { useCriteriaStore } from "../stores/criteria.store";
 import { useNickHistoryStore } from "../stores/nick-history.store";
 import { useNickStore } from "../stores/nick.store";
 import { CopyNickButton } from "./CopyNickButton";
-import styles from './NickHistory.module.css';
-import { IconCircleCheck, IconHistory, IconX } from "@tabler/icons-react";
+import { IconHistory, IconX } from "@tabler/icons-react";
 
 export function NickHistory() {
   const history = useNickHistoryStore(s => s.history);

@@ -45,7 +45,7 @@ export function OffenseLevelGauge({ value, onChange }: Props) {
         styles={{
           track: {
             height: 6,
-            background: 'linear-gradient(to right, var(--mantine-primary-color-filled), red)',
+            background: 'linear-gradient(to right, var(--mantine-primary-color-filled), rgb(78, 15, 37))',
           },
            bar: {
             height: 6,
