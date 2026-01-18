@@ -1,0 +1,9 @@
+@import url(https://fonts.googleapis.com/css?family=Righteous);
+
+h1 {
+    color: #fff;
+    display: inline-block;
+    font-family: 'Righteous', serif;
+    font-size: 12em;
+    position: relative;
+}
