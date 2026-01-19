@@ -12,7 +12,7 @@ export function CopyNickButton({ nick }: Props) {
   return (
     <CopyButton value={nick.words.map(w => w.label).join(' ')} timeout={2000}>
       {({ copied, copy }) => (
-      <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
+      <Tooltip label={copied ? 'Copié' : 'Copier'} withArrow position="right">
           <ActionIcon color={copied ? 'teal' : 'gray'} variant="subtle" onClick={copy}>
             {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
           </ActionIcon>
