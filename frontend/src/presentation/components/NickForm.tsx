@@ -4,9 +4,12 @@ import { useGenerateNick } from '../../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
 import { useCriteriaStore } from '../stores/criteria.store';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
+import { Box, Button, Card, Group, LoadingOverlay, Radio, Stack } from '@mantine/core';
+import { useState } from 'react';
 
 
 export function NickForm() {
+  const [isSubmitted, setSubmitted] = useState(false);
   const criteria = useCriteriaStore(s => s.criteria);
   const setCriteria = useCriteriaStore(s => s.setCriteria);
   const executeWithAltcha = useExecuteWithAltcha();
@@ -14,38 +17,42 @@ export function NickForm() {
   const { mutate: generateNick, isPending } = useGenerateNick();
 
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        executeWithAltcha(() => {
-          generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
-        });
-      }}
-    >
-      {/* Gender */}
-      <fieldset>
-        <legend>Genre</legend>
-        {GENDER_ORDER.map(g => (
-          <label key={g}>
-            <input
-              type="radio"
-              name="gender"
-              checked={criteria.gender === g}
-              onChange={() => { setCriteria({gender: g, offenseLevel: criteria.offenseLevel}); }}
-            />
-            {GENDER_LABELS[g]}
-          </label>
-        ))}
-      </fieldset>
+  
+    <Card>
+    <Box pos="relative">
+      <LoadingOverlay visible={isPending || isSubmitted} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
+      <form 
+       onSubmit={e => {
+         e.preventDefault();
+         setSubmitted(true);
+         executeWithAltcha(() => {
+          setSubmitted(false);
+           generateNick({ gender: criteria.gender, offenseLevel: criteria.offenseLevel });
+         });
+       }}>
+       <Stack gap={20}>
+          <Radio.Group
+            name="gender"
+            label="Choisissez un genre"
+            value={criteria.gender}
+          >
+            <Group mt="xs" justify='center'>
+              {GENDER_ORDER.map(g => (
+                <Radio key={g} value={g} checked={criteria.gender === g} label={GENDER_LABELS[g]} onChange={() => { setCriteria({gender: g, offenseLevel: criteria.offenseLevel}); }}/>
+              ))}
+            </Group>
+          </Radio.Group>
 
-      {/* OffenseLevel Gauge */}
-      <fieldset>
-        <legend>Niveau d'offense</legend>
-        <OffenseLevelGauge value={criteria.offenseLevel} onChange={(offenseLevel) => {setCriteria({gender: criteria.gender, offenseLevel}); }} />
-        
-      </fieldset>
-
-      <button disabled={isPending}>Go</button>
-    </form>
+          <OffenseLevelGauge value={criteria.offenseLevel} onChange={(offenseLevel) => {setCriteria({gender: criteria.gender, offenseLevel}); }} />
+        <Box>
+        <Button 
+          type="submit" 
+          disabled={isPending || isSubmitted}
+        >Go</Button>
+        </Box>
+      </Stack>
+      </form>
+    </Box>
+    </Card>
   );
 }
