@@ -1,5 +1,4 @@
 import { AppShell, Container, Stack, Box } from '@mantine/core';
-import { FooterIcons } from './components/FooterIcons';
 import { useNickStore } from './stores/nick.store';
 import { useEffect, useRef, useState } from 'react';
 import './AppLayout.css';

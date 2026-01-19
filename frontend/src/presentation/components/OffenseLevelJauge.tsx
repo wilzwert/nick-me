@@ -1,7 +1,7 @@
 import type { OffenseLevel } from '../../domain/model/OffenseLevel';
 import { OFFENSE_LEVEL_VALUES } from '../../domain/model/OffenseLevel';
 import { OFFENSE_LEVEL_LABELS } from '../../domain/labels/offenseLevel.labels';
-import { Box, Group, Slider, Stack, Text } from '@mantine/core';
+import { Slider, Stack, Text } from '@mantine/core';
 
 interface Props {
   value: OffenseLevel;
