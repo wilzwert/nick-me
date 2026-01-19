@@ -3,6 +3,7 @@ import { FooterIcons } from './components/FooterIcons';
 import { useNickStore } from './stores/nick.store';
 import { useEffect, useRef, useState } from 'react';
 import './AppLayout.css';
+import { Footer } from './components/Footer';
 
 const BACKGROUND_COUNT: number=3;
 
@@ -25,9 +26,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       footer={{ height: 60 }}
     >
         <AppShell.Footer>
-        <Box py="md">
-          <FooterIcons />
-        </Box>
+          <Box py="md">
+            <Footer />
+          </Box>
         </AppShell.Footer>
         <AppShell.Main
             className={`main main-${bgIndex}`}
