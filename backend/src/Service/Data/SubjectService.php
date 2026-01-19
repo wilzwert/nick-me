@@ -12,6 +12,7 @@ use App\Specification\Criterion\ValueCriterionCheck;
 use App\Specification\Sort;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -20,8 +21,9 @@ class SubjectService implements SubjectServiceInterface
 {
     public function __construct(
         private readonly SubjectRepositoryInterface $repository,
-        private readonly EntityManagerInterface $entityManager)
-    {
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ClockInterface $clock,
+    ) {
     }
 
     public function createOrUpdate(Word $word): Subject
@@ -82,7 +84,7 @@ class SubjectService implements SubjectServiceInterface
      */
     public function incrementUsageCount(GrammaticalRole $grammaticalRole): void
     {
-        $grammaticalRole->incrementUsageCount();
+        $grammaticalRole->incrementUsageCount($this->clock->now());
         $this->save($grammaticalRole);
     }
 }

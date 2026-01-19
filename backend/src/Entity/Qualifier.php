@@ -26,6 +26,9 @@ class Qualifier implements GrammaticalRole
     #[ORM\Column(type: 'integer')]
     private int $usageCount = 0;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $lastUsedAt;
+
     public function __construct(Word $word, QualifierPosition $position)
     {
         $this->word = $word;
@@ -54,8 +57,14 @@ class Qualifier implements GrammaticalRole
         return $this;
     }
 
-    public function incrementUsageCount(): void
+    public function incrementUsageCount(\DateTimeImmutable $usedAt): void
     {
         ++$this->usageCount;
+        $this->lastUsedAt = $usedAt;
+    }
+
+    public function getLastUsedAt(): ?\DateTimeImmutable
+    {
+        return $this->lastUsedAt;
     }
 }

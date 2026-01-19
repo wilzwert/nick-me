@@ -9,15 +9,17 @@ use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
 use App\Repository\NickRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
-class NickService implements NickServiceInterface
+readonly class NickService implements NickServiceInterface
 {
     public function __construct(
-        private readonly NickRepositoryInterface $repository,
-        private readonly EntityManagerInterface $entityManager,
+        private NickRepositoryInterface $repository,
+        private EntityManagerInterface  $entityManager,
+        private ClockInterface          $clock,
     ) {
     }
 
@@ -39,12 +41,18 @@ class NickService implements NickServiceInterface
 
     public function getOrCreate(Subject $subject, Qualifier $qualifier, WordGender $targetGender, OffenseLevel $offenseLevel, string $label): Nick
     {
-        return $this->repository->getByProperties($subject, $qualifier, $targetGender) ?? new Nick(
-            $label,
-            $subject,
-            $qualifier,
-            $targetGender,
-            $offenseLevel
-        );
+        if (!($nick = $this->repository->getByProperties($subject, $qualifier, $targetGender))) {
+            $nick = new Nick(
+                $label,
+                $subject,
+                $qualifier,
+                $targetGender,
+                $offenseLevel,
+                $now = $this->clock->now(),
+                $now
+            );
+            $this->save($nick);
+        }
+        return $nick;
     }
 }

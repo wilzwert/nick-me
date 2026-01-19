@@ -4,9 +4,11 @@ namespace App\Service\Data;
 
 use App\Dto\Properties\MaintainWordProperties;
 use App\Entity\Word;
+use App\Enum\MessageType;
 use App\Exception\WordNotFoundException;
 use App\Repository\WordRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -17,6 +19,7 @@ class WordService implements WordServiceInterface
         private readonly WordRepositoryInterface $wordRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly WordSluggerInterface $slugger,
+        private readonly ClockInterface $clock,
     ) {
     }
 
@@ -51,7 +54,9 @@ class WordService implements WordServiceInterface
                 gender: $spec->getGender(),
                 lang: $spec->getLang(),
                 offenseLevel: $spec->getOffenseLevel(),
-                status: $spec->getStatus()
+                status: $spec->getStatus(),
+                createdAt: $now = $this->clock->now(),
+                updatedAt: $now,
             );
         }
 

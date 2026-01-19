@@ -16,11 +16,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AssignedGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Clock\ClockInterface;
 
 class AppFixtures extends Fixture
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ClockInterface $clock,
+    ) {
     }
 
     /**
@@ -94,6 +97,8 @@ class AppFixtures extends Fixture
         $wordsToCreate = $this->getWordsToCreate();
         $subjects = $qualifiers = [];
 
+        $now = $this->clock->now();
+
         foreach ($wordsToCreate as $wordToCreate) {
             $word = new Word(
                 slug: $wordToCreate['slug'],
@@ -101,7 +106,9 @@ class AppFixtures extends Fixture
                 gender: $wordToCreate['gender'],
                 lang: $wordToCreate['lang'],
                 offenseLevel: $wordToCreate['offenseLevel'],
-                status: WordStatus::APPROVED
+                status: WordStatus::APPROVED,
+                createdAt: $now,
+                updatedAt: $now,
             );
 
             $wordIdReflectionProperty->setValue($word, $wordToCreate['id']);
@@ -128,7 +135,9 @@ class AppFixtures extends Fixture
             subject: $subjects[3],
             qualifier: $qualifiers[7],
             targetGender: WordGender::M,
-            offenseLevel: OffenseLevel::MEDIUM
+            offenseLevel: OffenseLevel::MEDIUM,
+            createdAt: $now,
+            lastUsedAt: $now
         );
         $nickIdReflectionProperty->setValue($nick, 1);
         $manager->persist($nick);

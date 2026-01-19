@@ -12,6 +12,7 @@ use App\Specification\Criterion\ValueCriterion;
 use App\Specification\Criterion\ValueCriterionCheck;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 
 /**
  * @author Wilhelm Zwertvaegher
@@ -20,8 +21,9 @@ class QualifierService implements QualifierServiceInterface
 {
     public function __construct(
         private readonly QualifierRepositoryInterface $repository,
-        private readonly EntityManagerInterface $entityManager)
-    {
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ClockInterface $clock,
+    ) {
     }
 
     public function createOrUpdate(Word $word, MaintainQualifierProperties $command): Qualifier
@@ -92,7 +94,7 @@ class QualifierService implements QualifierServiceInterface
      */
     public function incrementUsageCount(GrammaticalRole $grammaticalRole): void
     {
-        $grammaticalRole->incrementUsageCount();
+        $grammaticalRole->incrementUsageCount($this->clock->now());
         $this->save($grammaticalRole);
     }
 }

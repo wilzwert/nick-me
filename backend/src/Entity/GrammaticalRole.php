@@ -11,5 +11,5 @@ interface GrammaticalRole
 
     public function getUsageCount(): int;
 
-    public function incrementUsageCount(): void;
+    public function incrementUsageCount(\DateTimeImmutable $usedAt): void;
 }

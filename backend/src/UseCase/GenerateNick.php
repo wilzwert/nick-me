@@ -13,14 +13,14 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * @author Wilhelm Zwertvaegher
  */
-class GenerateNick implements GenerateNickInterface
+readonly class GenerateNick implements GenerateNickInterface
 {
     public function __construct(
-        private readonly NickGeneratorServiceInterface $nickGeneratorService,
-        private readonly NickServiceInterface $nickService,
-        private readonly SubjectServiceInterface $subjectService,
-        private readonly QualifierServiceInterface $qualifierService,
-        private readonly EntityManagerInterface $entityManager,
+        private NickGeneratorServiceInterface $nickGeneratorService,
+        private NickServiceInterface $nickService,
+        private SubjectServiceInterface $subjectService,
+        private QualifierServiceInterface $qualifierService,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
