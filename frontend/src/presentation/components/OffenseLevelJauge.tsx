@@ -23,38 +23,38 @@ export function OffenseLevelGauge({ value, onChange }: Props) {
   return (
       <Stack gap="40">
         <label htmlFor="offense-level">
-        <Text size="sm">
-          Niveau d'offense
-        </Text>
-      </label>
-      
-      <Slider 
-        id="offense-level"
-        min={min}
-        max={max}
-        defaultValue={5} 
-        value={value}
-        marks={marks}
-        labelAlwaysOn={true}
-        restrictToMarks
-        label={(value) => 
-            OFFENSE_LEVEL_LABELS[Number(value) as OffenseLevel]
-        }
+          <Text size="sm">
+            Niveau d'offense
+          </Text>
+        </label>
+        <Slider 
+          pl={20} pr={20}
+          id="offense-level"
+          min={min}
+          max={max}
+          defaultValue={5} 
+          value={value}
+          marks={marks}
+          labelAlwaysOn={true}
+          restrictToMarks
+          label={(value) => 
+              OFFENSE_LEVEL_LABELS[Number(value) as OffenseLevel]
+          }
 
-        onChange={e => onChange(e as OffenseLevel)}
-        styles={{
-          track: {
-            height: 6,
-            background: 'linear-gradient(to right, var(--mantine-primary-color-filled), rgb(78, 15, 37))',
-          },
-           bar: {
-            height: 6,
-            background: 'rgba(0, 0, 0, 0)',
-          },
-          markLabel: { display: 'none' },
-          thumb: { width: 20, height: 20 },
-        }}
-      />
+          onChange={e => onChange(e as OffenseLevel)}
+          styles={{
+            track: {
+              height: 6,
+              background: 'linear-gradient(to right, var(--mantine-primary-color-filled), rgb(78, 15, 37))',
+            },
+            bar: {
+              height: 6,
+              background: 'rgba(0, 0, 0, 0)',
+            },
+            markLabel: { display: 'none' },
+            thumb: { width: 20, height: 20 },
+          }}
+        />
       </Stack>
   );
 }

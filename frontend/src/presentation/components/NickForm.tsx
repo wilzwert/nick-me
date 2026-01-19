@@ -4,7 +4,7 @@ import { useGenerateNick } from '../../application/generateNick';
 import { OffenseLevelGauge } from './OffenseLevelJauge';
 import { useCriteriaStore } from '../stores/criteria.store';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
-import { Box, Button, Card, Group, LoadingOverlay, Radio, Stack } from '@mantine/core';
+import { Box, Button, Card, Center, Group, LoadingOverlay, Radio, Stack } from '@mantine/core';
 import { useState } from 'react';
 
 
@@ -36,13 +36,13 @@ export function NickForm() {
             label="Choisissez un genre"
             value={criteria.gender}
           >
-            <Group mt="xs">
+            <Group mt="xs" justify='center'>
               {GENDER_ORDER.map(g => (
                 <Radio key={g} value={g} checked={criteria.gender === g} label={GENDER_LABELS[g]} onChange={() => { setCriteria({gender: g, offenseLevel: criteria.offenseLevel}); }}/>
               ))}
             </Group>
           </Radio.Group>
-        
+          
           <OffenseLevelGauge value={criteria.offenseLevel} onChange={(offenseLevel) => {setCriteria({gender: criteria.gender, offenseLevel}); }} />
         <Box>
         <Button 
