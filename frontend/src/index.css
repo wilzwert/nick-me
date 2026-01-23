@@ -30,3 +30,11 @@ body,
   white-space: nowrap;
   border: 0;
 }
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
