@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Enum\MessageStatus;
-use App\Enum\MessageType;
+use App\Enum\NotificationStatus;
+use App\Enum\NotificationType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,28 +11,27 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'message')]
-class Message
+class Notification
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 10, enumType: MessageType::class)]
-    private MessageType $type;
+    #[ORM\Column(type: 'string', length: 10, enumType: NotificationType::class)]
+    private NotificationType $type;
 
-    #[ORM\ManyToOne(targetEntity: Word::class)]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Word $word;
+    #[ORM\Column(type: 'string', length: 100)]
+    private ?string $recipientEmail;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private ?string $senderEmail;
+    #[ORM\Column(type: 'text')]
+    private string $subject;
 
     #[ORM\Column(type: 'text')]
     private string $content;
 
-    #[ORM\Column(type: 'string', length: 10, enumType: MessageStatus::class)]
-    private MessageStatus $status;
+    #[ORM\Column(type: 'string', length: 10, enumType: NotificationStatus::class)]
+    private NotificationStatus $status;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
@@ -41,17 +40,17 @@ class Message
     private \DateTimeImmutable $statusUpdatedAt;
 
     public function __construct(
-        MessageType $type,
-        ?Word $word,
-        ?string $senderEmail,
+        NotificationType $type,
+        string $recipientEmail,
+        string $subject,
         string $content,
-        MessageStatus $status,
+        NotificationStatus $status,
         \DateTimeImmutable $createdAt,
         \DateTimeImmutable $statusUpdatedAt)
     {
         $this->type = $type;
-        $this->word = $word;
-        $this->senderEmail = $senderEmail;
+        $this->recipientEmail = $recipientEmail;
+        $this->subject = $subject;
         $this->content = $content;
         $this->status = $status;
         $this->createdAt = $createdAt;
@@ -63,19 +62,19 @@ class Message
         return $this->id;
     }
 
-    public function getType(): MessageType
+    public function getType(): NotificationType
     {
         return $this->type;
     }
 
-    public function getWord(): ?Word
+    public function getRecipientEmail(): ?string
     {
-        return $this->word;
+        return $this->recipientEmail;
     }
 
-    public function getSenderEmail(): ?string
+    public function getSubject(): string
     {
-        return $this->senderEmail;
+        return $this->subject;
     }
 
     public function getContent(): string
@@ -83,7 +82,7 @@ class Message
         return $this->content;
     }
 
-    public function getStatus(): MessageStatus
+    public function getStatus(): NotificationStatus
     {
         return $this->status;
     }

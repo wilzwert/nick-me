@@ -4,7 +4,7 @@ namespace App\Service\Data;
 
 use App\Dto\Properties\MaintainWordProperties;
 use App\Entity\Word;
-use App\Enum\MessageType;
+use App\Enum\NotificationType;
 use App\Exception\WordNotFoundException;
 use App\Repository\WordRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;

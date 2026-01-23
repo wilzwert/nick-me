@@ -5,12 +5,11 @@ namespace App\Enum;
 /**
  * @author Wilhelm Zwertvaegher
  */
-enum MessageStatus: string implements Enum
+enum NotificationType: string implements Enum
 {
-    case PENDING = 'pending';
-    case SENT = 'sent';
-    case FAILED = 'failed';
-    case READ = 'read';
+    case CONTACT = 'contact';
+    case REPORT = 'report';
+    case SUGGESTION = 'suggestion';
 
     public static function fromString(string $value): Enum
     {

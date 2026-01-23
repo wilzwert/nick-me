@@ -12,6 +12,7 @@ parameters:
     altcha.secret_key: '%env(ALTCHA_SECRET_KEY)%'
     altcha.header_payload_key: 'X-Altcha-Payload'
     altcha.token_expiry_seconds: '%env(ALTCHA_TOKEN_EXPIRY_SECONDS)%'
+    recipient.admin: '%env(RECIPIENT_ADMIN)%'
 
 services:
     # default configuration for services in *this* file
@@ -33,6 +34,17 @@ services:
     AltchaOrg\Altcha\Altcha:
         arguments:
             $hmacKey: '%env(ALTCHA_SECRET_KEY)%'
+
+    _instanceof:
+        # commands should be handled through command bus only
+        App\MessageHandler\CommandHandler:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+        # events should be handled through event bus only
+        App\MessageHandler\EventHandler:
+            tags:
+                - { name: messenger.message_handler, bus: event.bus }
+
 
 when@test:
     parameters:
