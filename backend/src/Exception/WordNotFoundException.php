@@ -5,6 +5,6 @@ namespace App\Exception;
 /**
  * @author Wilhelm Zwertvaegher
  */
-class WordNotFoundException extends \Exception
+class WordNotFoundException extends DomainException
 {
 }

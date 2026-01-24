@@ -7,7 +7,7 @@ use App\Service\Data\NotificationServiceInterface;
 /**
  * @author Wilhelm Zwertvaegher
  */
-readonly class ContactCommand
+readonly class CreateContactCommand
 {
     public function __construct(private string $senderEmail, private string $content)
     {

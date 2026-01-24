@@ -26,13 +26,14 @@ readonly class NotificationService implements NotificationServiceInterface
 
     public function create(NotificationProps $props): Notification
     {
+        $now = $this->clock->now();
         $message = new Notification(
             $props->getType(),
             $props->getRecipientEmail(),
             $props->getSubject(),
             $props->getContent(),
             NotificationStatus::PENDING,
-            $now = $this->clock->now(),
+            $now,
             $now
         );
 

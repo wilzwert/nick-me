@@ -7,26 +7,27 @@ use App\Tests\Support\ApiUrl;
 use App\Tests\Support\TestRequestParameters;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
+
 use function PHPUnit\Framework\assertNotEmpty;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
-class ContactControllerIT extends AltchaWebTestCase
+class SuggestionControllerIT extends AltchaWebTestCase
 {
     #[Test]
-    public function shouldCreateMessage(): void
+    public function shouldCreateSuggestion(): void
     {
         $this->requestWithValidAltcha(
             new TestRequestParameters(
                 method: 'POST',
-                uri: ApiUrl::build(ApiUrl::CONTACT_ENDPOINT),
+                uri: ApiUrl::build(ApiUrl::SUGGESTION_ENDPOINT),
                 server: [
                     'CONTENT_TYPE' => 'application/json',
                 ],
                 content: json_encode([
                     'senderEmail' => 'test@example.com',
-                    'content' => 'This is a test message',
+                    'label' => 'MyNewWord',
                 ])
             )
         );
@@ -39,13 +40,11 @@ class ContactControllerIT extends AltchaWebTestCase
         $this->requestWithValidAltcha(
             new TestRequestParameters(
                 method: 'POST',
-                uri: ApiUrl::build(ApiUrl::CONTACT_ENDPOINT),
+                uri: ApiUrl::build(ApiUrl::SUGGESTION_ENDPOINT),
                 server: [
                     'CONTENT_TYPE' => 'application/json',
                 ],
                 content: json_encode([
-                    'senderEmail' => 'test',
-                    'content' => 'This is a test message',
                 ])
             )
         );
@@ -56,9 +55,30 @@ class ContactControllerIT extends AltchaWebTestCase
     }
 
     #[Test]
+    public function whenWordExistsThenShouldReturn409(): void
+    {
+        $this->requestWithValidAltcha(
+            new TestRequestParameters(
+                method: 'POST',
+                uri: ApiUrl::build(ApiUrl::SUGGESTION_ENDPOINT),
+                server: [
+                    'CONTENT_TYPE' => 'application/json',
+                ],
+                content: json_encode([
+                    'label' => 'Nucleaire',
+                ])
+            )
+        );
+        self::assertResponseStatusCodeSame(Response::HTTP_CONFLICT);
+        $response = $this->client->getResponse();
+        $jsonContent = json_decode($response->getContent());
+        assertNotEmpty($jsonContent);
+    }
+
+    #[Test]
     public function whenAltchaIsInvalidThenShouldReturn401(): void
     {
-        $this->requestWithInvalidAltcha(new TestRequestParameters('POST', ApiUrl::build(ApiUrl::CONTACT_ENDPOINT)));
+        $this->requestWithInvalidAltcha(new TestRequestParameters('POST', ApiUrl::build(ApiUrl::SUGGESTION_ENDPOINT)));
         self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 }

@@ -50,3 +50,4 @@ when@test:
     parameters:
         base_data.subject_csv: '%kernel.project_dir%/resources/data/subject_test.csv'
         base_data.qualifier_csv: '%kernel.project_dir%/resources/data/qualifier_test.csv'
+        recipient.admin: 'admin@example.com'

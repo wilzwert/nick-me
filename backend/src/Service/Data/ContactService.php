@@ -2,11 +2,8 @@
 
 namespace App\Service\Data;
 
-use App\Dto\Command\ContactCommand;
+use App\Dto\Command\CreateContactCommand;
 use App\Entity\Contact;
-use App\Entity\Notification;
-use App\Enum\NotificationStatus;
-use App\Service\Notification\NotificationProps;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
 
@@ -26,7 +23,7 @@ readonly class ContactService implements ContactServiceInterface
         $this->entityManager->persist($contact);
     }
 
-    public function create(ContactCommand $command): Contact
+    public function create(CreateContactCommand $command): Contact
     {
         $contact = new Contact(
             senderEmail: $command->getSenderEmail(),

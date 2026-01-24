@@ -6,6 +6,7 @@ use App\Dto\Command\GetWordCommand;
 use App\Entity\GrammaticalRole;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
+use App\Exception\NoWordFoundException;
 use App\Service\Data\GrammaticalRoleServiceInterface;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;
@@ -42,7 +43,7 @@ class WordFinder implements WordFinderInterface
         $this->services = $servicesByWordType;
     }
 
-    public function findSimilar(GetWordCommand $command): GrammaticalRole
+    public function findSimilar(GetWordCommand $command): ?GrammaticalRole
     {
         $service = $this->services[$command->getRole()->value];
         $previous = $command->getPrevious() ?? $service->findByWordId($command->getPreviousId());

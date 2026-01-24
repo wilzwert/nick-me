@@ -52,14 +52,9 @@ class QualifierService implements QualifierServiceInterface
         $this->entityManager->persist($qualifier);
     }
 
-    public function findOneRandomly(WordCriteria $criteria): Qualifier
+    public function findOneRandomly(WordCriteria $criteria): ?Qualifier
     {
-        $result = $this->repository->findOne($criteria);
-        if (empty($result)) {
-            throw new \LogicException('Could not find a Qualifier');
-        }
-
-        return $result;
+        return $this->repository->findOne($criteria);
     }
 
     public function getGrammaticalRole(): GrammaticalRoleType

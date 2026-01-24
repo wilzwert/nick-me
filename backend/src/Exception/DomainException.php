@@ -5,6 +5,6 @@ namespace App\Exception;
 /**
  * @author Wilhelm Zwertvaegher
  */
-class NickNotFoundException extends DomainException
+class DomainException extends \Exception
 {
 }

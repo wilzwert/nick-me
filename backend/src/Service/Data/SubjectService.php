@@ -50,9 +50,9 @@ class SubjectService implements SubjectServiceInterface
         $this->entityManager->persist($subject);
     }
 
-    public function findOneRandomly(WordCriteria $criteria): Subject
+    public function findOneRandomly(WordCriteria $criteria): ?Subject
     {
-        return $this->repository->findOne($criteria, Sort::RANDOM);
+        return $this->repository->findOne($criteria);
     }
 
     public function getGrammaticalRole(): GrammaticalRoleType

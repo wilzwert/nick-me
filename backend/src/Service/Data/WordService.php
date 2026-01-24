@@ -23,6 +23,11 @@ class WordService implements WordServiceInterface
     ) {
     }
 
+    public function getByLabel(string $label): ?Word
+    {
+        return $this->wordRepository->findBySlug($this->slugger->slug($label));
+    }
+
     /**
      * @throws WordNotFoundException
      */

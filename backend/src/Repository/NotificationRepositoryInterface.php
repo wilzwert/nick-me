@@ -10,4 +10,9 @@ use App\Entity\Notification;
 interface NotificationRepositoryInterface
 {
     public function getById(int $id): ?Notification;
+
+    /**
+     * @return array<Notification>
+     */
+    public function findAll(): array;
 }

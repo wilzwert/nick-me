@@ -26,7 +26,7 @@ class Suggestion
     private \DateTimeImmutable $createdAt;
 
     public function __construct(
-        string $creatorEmail,
+        ?string $creatorEmail,
         string $label,
         \DateTimeImmutable $createdAt,
     ) {

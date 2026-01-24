@@ -13,7 +13,7 @@ use App\Specification\WordCriteria;
  */
 interface SubjectServiceInterface extends GrammaticalRoleServiceInterface
 {
-    public function findOneRandomly(WordCriteria $criteria): Subject;
+    public function findOneRandomly(WordCriteria $criteria): ?Subject;
 
     public function createOrUpdate(Word $word): Subject;
 
