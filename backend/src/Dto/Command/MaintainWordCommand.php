@@ -7,6 +7,7 @@ use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
 use App\Enum\WordStatus;
+use App\Exception\ValidationErrorMessage;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -16,8 +17,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class MaintainWordCommand
 {
     public function __construct(
-        #[Assert\NotBlank]
-        #[Assert\Length(min: 2)]
+        #[Assert\NotBlank(message: ValidationErrorMessage::FIELD_CANNOT_BE_EMPTY)]
+        #[Assert\Length(min: 2, minMessage: ValidationErrorMessage::FIELD_VALUE_TOO_SHORT)]
         private readonly string $label,
         private readonly WordGender $gender,
         private readonly Lang $lang,
@@ -34,7 +35,7 @@ class MaintainWordCommand
     public function validate(ExecutionContextInterface $context, mixed $payload): void
     {
         if ($this->asQualifier && empty($this->qualifierPosition)) {
-            $context->buildViolation('Qualifier position cannot be empty when creating a qualifier.')
+            $context->buildViolation(ValidationErrorMessage::QUALIFIER_POSITION_CANNOT_BE_EMPTY)
                 ->atPath('qualifierPosition')
                 ->addViolation();
         }

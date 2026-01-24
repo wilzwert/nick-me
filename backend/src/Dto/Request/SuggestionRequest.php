@@ -2,6 +2,7 @@
 
 namespace App\Dto\Request;
 
+use App\Exception\ValidationErrorMessage;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -10,20 +11,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 readonly class SuggestionRequest
 {
     public function __construct(
-        #[Assert\Email]
+        #[Assert\Email(message: ValidationErrorMessage::INVALID_EMAIL)]
         #[Assert\NoSuspiciousCharacters]
         private ?string $senderEmail,
-        #[Assert\NotBlank]
+        #[Assert\NotBlank(message: ValidationErrorMessage::FIELD_CANNOT_BE_EMPTY)]
         #[Assert\Regex(
             pattern: '/<[^>]+>/',
-            message: 'Le message ne doit pas contenir de HTML.',
+            message: ValidationErrorMessage::FIELD_CANNOT_CONTAIN_HTML,
             match: false
         )]
         private string $label)
     {
     }
 
-    public function getSenderEmail(): string
+    public function getSenderEmail(): ?string
     {
         return $this->senderEmail;
     }

@@ -41,11 +41,12 @@ class DomainExceptionNormalizer extends ExceptionNormalizer
     /**
      * @param DomainException $throwable
      */
-    protected function getErrorCode(\Throwable $throwable): string
+    #[\Override]
+    protected function getErrorCode(\Throwable $throwable): ErrorCode
     {
         return match ($throwable::class) {
-            WordAlreadyExistsException::class => ErrorCode::ENTITY_ALREADY_EXISTS->getCode(),
-            default => ErrorCode::UNKNOWN_ERROR->getCode(),
+            WordAlreadyExistsException::class => ErrorCode::ENTITY_EXISTS,
+            default => parent::getErrorCode($throwable),
         };
     }
 

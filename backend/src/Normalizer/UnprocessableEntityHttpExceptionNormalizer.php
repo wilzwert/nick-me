@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use App\Exception\ErrorCode;
+use App\Exception\ErrorMessage;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,14 +43,14 @@ class UnprocessableEntityHttpExceptionNormalizer extends ExceptionNormalizer
             $propertyPath = $violation->getPropertyPath();
             /** @var class-string<Constraint> $constraintClass */
             $constraintClass = $violation->getConstraint() ? $violation->getConstraint()::class : null;
-            $detailCode = $constraintClass ? $constraintClass::getErrorName($violation->getCode()) : ErrorCode::UNKNOWN_ERROR->getCode();
+            $detailCode = $constraintClass ? $constraintClass::getErrorName($violation->getCode()) : 'UNKNOWN_ERROR';
             if (!isset($errorsAsArray[$propertyPath])) {
                 $errorsAsArray[$propertyPath] = [];
             }
             if (!isset($errorsAsArray[$propertyPath][$detailCode])) {
                 $errorsAsArray[$propertyPath][$detailCode] = [];
             }
-            $errorsAsArray[$propertyPath][$detailCode][strtolower($detailCode)] = $violation->getMessage();
+            $errorsAsArray[$propertyPath][$detailCode][strtolower($detailCode)] = $this->translator->translate($violation->getMessage());
         }
 
         return $errorsAsArray;
@@ -61,9 +62,14 @@ class UnprocessableEntityHttpExceptionNormalizer extends ExceptionNormalizer
     }
 
     #[\Override]
-    protected function getErrorCode(\Throwable $throwable): string
+    protected function getErrorCode(\Throwable $throwable): ErrorCode
     {
-        return 'validation-error';
+        return ErrorCode::VALIDATION_ERROR;
+    }
+
+    protected function getMessage(\Throwable $throwable): string
+    {
+        return ErrorMessage::VALIDATION_FAILED;
     }
 
     #[\Override]

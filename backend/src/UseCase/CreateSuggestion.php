@@ -4,6 +4,7 @@ namespace App\UseCase;
 
 use App\Dto\Command\CreateSuggestionCommand;
 use App\Entity\Suggestion;
+use App\Exception\ErrorMessage;
 use App\Exception\WordAlreadyExistsException;
 use App\Message\CommandBus;
 use App\Message\SendNotificationCommand;
@@ -34,7 +35,7 @@ readonly class CreateSuggestion implements CreateSuggestionInterface
         // first, let's try and find an existing word
         $existingWord = $this->wordService->getByLabel($command->getLabel());
         if (null !== $existingWord) {
-            throw new WordAlreadyExistsException(sprintf('Word %s already exists', $command->getLabel()));
+            throw new WordAlreadyExistsException();
         }
         $suggestion = $this->suggestionService->create($command);
         $notificationProps = $this->notificationFactory->create($suggestion);

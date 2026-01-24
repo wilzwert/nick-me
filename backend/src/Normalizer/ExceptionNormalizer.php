@@ -2,6 +2,8 @@
 
 namespace App\Normalizer;
 
+use App\Exception\ErrorCode;
+use App\Exception\ErrorTranslator;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -12,6 +14,11 @@ abstract class ExceptionNormalizer implements NormalizerInterface
 {
     use ClockAwareTrait;
 
+    public function __construct(protected readonly ErrorTranslator $translator)
+    {
+    }
+
+
     /**
      * @return array<string, array<string, string[]|int[]>>
      */
@@ -19,19 +26,15 @@ abstract class ExceptionNormalizer implements NormalizerInterface
 
     abstract protected function getStatus(\Throwable $throwable): int;
 
-    protected function getErrorCode(\Throwable $throwable): string
+    protected function getErrorCode(\Throwable $throwable): ErrorCode
     {
-        return 'internal-error';
+        return ErrorCode::INTERNAL;
     }
 
     protected function getMessage(\Throwable $throwable): string
     {
-        return $throwable->getMessage();
+        return $this->translator->translate($throwable->getMessage());
     }
-
-    /**
-     * @throws \InvalidArgumentException
-     */
 
     /**
      * @param array<string, mixed> $context
@@ -44,7 +47,7 @@ abstract class ExceptionNormalizer implements NormalizerInterface
             'timestamp' => $this->now()->format(\DateTimeInterface::RFC3339_EXTENDED),
             'status' => $this->getStatus($data),
             'error' => $this->getErrorCode($data),
-            'message' => $this->getMessage($data),
+            'message' => $this->translator->translate($this->getMessage($data)),
             'errors' => $this->normalizeErrors($data),
         ];
     }

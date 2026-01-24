@@ -7,4 +7,8 @@ namespace App\Exception;
  */
 class WordAlreadyExistsException extends DomainException
 {
+    public function __construct($code = 0, ?\Exception $previous = null)
+    {
+        parent::__construct(ErrorCode::ENTITY_EXISTS, ErrorMessage::WORD_ALREADY_EXISTS, $code, $previous);
+    }
 }

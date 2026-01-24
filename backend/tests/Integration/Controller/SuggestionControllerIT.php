@@ -73,6 +73,7 @@ class SuggestionControllerIT extends AltchaWebTestCase
         $response = $this->client->getResponse();
         $jsonContent = json_decode($response->getContent());
         assertNotEmpty($jsonContent);
+        dump($jsonContent);
     }
 
     #[Test]

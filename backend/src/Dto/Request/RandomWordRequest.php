@@ -5,6 +5,7 @@ namespace App\Dto\Request;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
+use App\Exception\ValidationErrorMessage;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,7 +23,7 @@ class RandomWordRequest implements Request
      * @param list<int> $exclusions
      */
     public function __construct(
-        #[Assert\Type('integer')]
+        #[Assert\Type('integer', message: ValidationErrorMessage::INVALID_FIELD_VALUE)]
         private int $previousId,
         private GrammaticalRoleType $role,
         private WordGender $gender,

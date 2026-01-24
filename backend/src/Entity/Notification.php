@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Wilhelm Zwertvaegher
  */
 #[ORM\Entity]
-#[ORM\Table(name: 'message')]
+#[ORM\Table(name: 'notification')]
 class Notification
 {
     #[ORM\Id]

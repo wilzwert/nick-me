@@ -7,4 +7,8 @@ namespace App\Exception;
  */
 class WordNotFoundException extends DomainException
 {
+    public function __construct($code = 0, ?\Exception $previous = null)
+    {
+        parent::__construct(ErrorCode::ENTITY_NOT_FOUND, ErrorMessage::WORD_NOT_FOUND, $code, $previous);
+    }
 }
