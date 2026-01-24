@@ -1,3 +1,4 @@
+import { ApiError } from '../domain/model/ApiError';
 import { useAltchaStore } from '../presentation/stores/altcha.store';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '';
@@ -9,7 +10,6 @@ export async function createSuggestion(params: {
   senderEmail: string|null;
   label: string;
 }): Promise<void> {
-
   
   const altchaToken = useAltchaStore.getState().token;
 
@@ -23,9 +23,10 @@ export async function createSuggestion(params: {
     body: JSON.stringify(params)
   });
 
+  const body = await res.json();
   if (!res.ok) {
-    throw new Error('Failed to create suggestion');
+    throw new ApiError({ status: res.status, error: body.error, message: body.message });
   }
 
-  return res.json();
+  return body;
 }

@@ -1,3 +1,4 @@
+import { ApiError } from '../domain/model/ApiError';
 import { useAltchaStore } from '../presentation/stores/altcha.store';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '';
@@ -23,9 +24,10 @@ export async function sendContactMessage(params: {
     body: JSON.stringify(params)
   });
 
+  const body = await res.json();
   if (!res.ok) {
-    throw new Error('Failed to send contact message');
+    throw new ApiError({ status: res.status, error: body.error, message: body.message });
   }
 
-  return res.json();
+  return body;
 }

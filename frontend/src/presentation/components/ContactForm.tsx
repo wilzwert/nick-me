@@ -2,74 +2,59 @@ import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
 import { Box, Button, Card, LoadingOverlay, Stack, Textarea, TextInput } from '@mantine/core';
 import { useState } from 'react';
 import { useSendContactMessage } from '../../application/sendContact';
-
-
-interface ContactFormValues {
-  senderEmail: string;
-  content: string;
-}
+import { useForm } from '@mantine/form';
 
 
 export function ContactForm({ onClose }: { onClose?: () => void }) {
-  const [form, setForm] = useState<ContactFormValues>({
-    senderEmail: "",
-    content: "",
-  });
-  const [errors, setErrors] = useState<Partial<ContactFormValues>>({});
-  const [isSubmitted, setSubmitted] = useState(false);
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: { senderEmail: '', content: '' },
 
+    // functions will be used to validate values at corresponding key
+    validate: {
+      content: (value) => (value.length < 10 ? 'Le message doit comporter au moins 10 caractères' : null),
+      senderEmail: (value) => (null === value || /^\S+@\S+$/.test(value) ? null : 'Email invalide'),
+    },
+  });
+  
+  const [isSubmitted, setSubmitted] = useState(false);
   const executeWithAltcha = useExecuteWithAltcha();
   const { mutate: sendContact, isPending } = useSendContactMessage();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const newErrors: Partial<ContactFormValues> = {};
-      if (!form.senderEmail) newErrors.senderEmail = "Email requis";
-      if (!form.content) newErrors.content = "Message requis";
-      setErrors(newErrors);
-
-      if (Object.keys(newErrors).length === 0) {
-         executeWithAltcha(() => {
-            sendContact(form, {
-              onSuccess: () => {
-                setForm({ senderEmail: "", content: "" });
-                if (onClose) onClose();
-              }
-            });
-            setSubmitted(false);
-         });
-      }
-  };
 
   return (
   
     <Card>
     <Box pos="relative">
       <LoadingOverlay visible={isPending || isSubmitted} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={form.onSubmit((values) => {
+          setSubmitted(true);
+          executeWithAltcha(() => {
+            sendContact(values, {
+              onSuccess: () => {
+                form.reset();
+                if (onClose) onClose();
+              }
+            });
+            setSubmitted(false);
+          })
+        })}>
        <Stack gap={20}>
 
         <TextInput
-          type="email"
+          label="Votre email"
+          required
           name="senderEmail"
-          value={form.senderEmail}
-          onChange={handleChange}
           placeholder="Votre email"
+          {...form.getInputProps('senderEmail')}
         />
-        {errors.senderEmail && <span className="error">{errors.senderEmail}</span>}
 
         <Textarea
+          label="Votre message"
+          required
           name="content"
-          value={form.content}
-          onChange={handleChange}
           placeholder="Votre message"
+          {...form.getInputProps('content')}
         />
-        {errors.content && <span className="error">{errors.content}</span>}
           
         <Box>
         <Button 

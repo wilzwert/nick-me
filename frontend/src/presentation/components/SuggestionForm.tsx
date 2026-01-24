@@ -11,7 +11,7 @@ export function SuggestionForm({ onClose }: { onClose?: () => void }) {
 
     // functions will be used to validate values at corresponding key
     validate: {
-      label: (value) => (value.length < 2 ? 'Le mot doit comporter au moins 2 lettres' : null),
+      label: (value) => (value.length < 2 ? 'Le mot doit comporter au moins 2 caractères' : null),
       senderEmail: (value) => (null === value || /^\S+@\S+$/.test(value) ? null : 'Email invalide'),
     },
   });
