@@ -22,4 +22,9 @@ class ReportRepository extends ServiceEntityRepository implements ReportReposito
     {
         return parent::find($id);
     }
+
+    public function getByNickIdAndSenderEmail(int $nickId, string $email): ?Report
+    {
+        return parent::findOneBy(['nickId' => $nickId, 'senderEmail' => $email]);
+    }
 }

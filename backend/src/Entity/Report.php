@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'report')]
+#[ORM\UniqueConstraint(name: 'uq_report_properties', columns: ['nick_id', 'sender_email'])]
 class Report
 {
     #[ORM\Id]

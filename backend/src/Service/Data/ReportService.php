@@ -6,6 +6,7 @@ use App\Dto\Command\CreateReportCommand;
 use App\Entity\Report;
 use App\Exception\NickNotFoundException;
 use App\Repository\NickRepositoryInterface;
+use App\Repository\ReportRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
 
@@ -16,6 +17,7 @@ readonly class ReportService implements ReportServiceInterface
 {
     public function __construct(
         private NickRepositoryInterface $nickRepository,
+        private ReportRepositoryInterface $reportRepository,
         private EntityManagerInterface $entityManager,
         private ClockInterface $clock,
     ) {
@@ -31,6 +33,11 @@ readonly class ReportService implements ReportServiceInterface
         $nick = $this->nickRepository->getById($command->getNickId());
         if (null === $nick) {
             throw new NickNotFoundException();
+        }
+
+        $existingReport = $this->reportRepository->getByNickIdAndSenderEmail($nick->getId(), $command->getSenderEmail());
+        if (null !== $existingReport) {
+            return $existingReport;
         }
 
         $report = new Report(
