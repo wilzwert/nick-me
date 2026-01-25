@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
+use App\Application\UseCase\CreateContactInterface;
 use App\Dto\Command\CreateContactCommand;
 use App\Dto\Request\ContactRequest;
-use App\UseCase\CreateContactInterface;
-use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

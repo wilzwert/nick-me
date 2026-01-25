@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\Command;
 
+use App\Application\UseCase\GenerateNickInterface;
 use App\Dto\Command\GenerateNickCommand;
 use App\Dto\Result\GeneratedNickData;
 use App\Dto\Result\GeneratedNickWord;
@@ -14,7 +15,6 @@ use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
 use App\Enum\WordStatus;
-use App\UseCase\GenerateNickInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

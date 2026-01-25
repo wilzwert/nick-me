@@ -4,7 +4,8 @@ namespace App\Service\Data;
 
 use App\Entity\Notification;
 use App\Enum\NotificationStatus;
-use App\Service\Notification\NotificationProps;
+use App\Repository\NotificationRepository;
+use App\Service\Notification\Factory\NotificationProps;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
 
@@ -14,9 +15,15 @@ use Psr\Clock\ClockInterface;
 readonly class NotificationService implements NotificationServiceInterface
 {
     public function __construct(
+        private NotificationRepository $notificationRepository,
         private EntityManagerInterface $entityManager,
         private ClockInterface $clock,
     ) {
+    }
+
+    public function getById(int $id): ?Notification
+    {
+        return $this->notificationRepository->getById($id);
     }
 
     public function save(Notification $notification): void
@@ -40,5 +47,11 @@ readonly class NotificationService implements NotificationServiceInterface
         $this->save($message);
 
         return $message;
+    }
+
+    public function updateStatus(Notification $notification, NotificationStatus $notificationStatus): void
+    {
+        $notification->setStatus($notificationStatus, $this->clock->now());
+        $this->save($notification);
     }
 }

@@ -13,6 +13,7 @@ parameters:
     altcha.header_payload_key: 'X-Altcha-Payload'
     altcha.token_expiry_seconds: '%env(ALTCHA_TOKEN_EXPIRY_SECONDS)%'
     recipient.admin: '%env(RECIPIENT_ADMIN)%'
+    email.sender: '%env(EMAIL_SENDER)%'
 
 services:
     # default configuration for services in *this* file
@@ -35,6 +36,11 @@ services:
         arguments:
             $hmacKey: '%env(ALTCHA_SECRET_KEY)%'
 
+    App\Service\Notification\Sender\EmailSender:
+        arguments:
+            $renderer: '@App\Service\Notification\Renderer\HtmlNotificationRenderer'
+            $textRenderer: '@App\Service\Notification\Renderer\TextNotificationRenderer'
+
     _instanceof:
         # commands should be handled through command bus only
         App\MessageHandler\CommandHandler:
@@ -46,8 +52,10 @@ services:
                 - { name: messenger.message_handler, bus: event.bus }
 
 
+
 when@test:
     parameters:
         base_data.subject_csv: '%kernel.project_dir%/resources/data/subject_test.csv'
         base_data.qualifier_csv: '%kernel.project_dir%/resources/data/qualifier_test.csv'
         recipient.admin: 'admin@example.com'
+        email.sender: 'admin@nick.me'

@@ -25,6 +25,6 @@ class ReportRepository extends ServiceEntityRepository implements ReportReposito
 
     public function getByNickIdAndSenderEmail(int $nickId, string $email): ?Report
     {
-        return parent::findOneBy(['nickId' => $nickId, 'senderEmail' => $email]);
+        return parent::findOneBy(['nick' => $nickId, 'senderEmail' => $email]);
     }
 }

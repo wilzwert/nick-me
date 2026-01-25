@@ -2,11 +2,11 @@
 
 namespace App\Command;
 
+use App\Application\UseCase\GenerateNickInterface;
 use App\Dto\Command\GenerateNickCommand;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
-use App\UseCase\GenerateNickInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;

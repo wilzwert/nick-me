@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Dto\Command\CreateContactCommand;
+use App\Application\UseCase\CreateSuggestionInterface;
 use App\Dto\Command\CreateSuggestionCommand;
-use App\Dto\Request\ContactRequest;
 use App\Dto\Request\SuggestionRequest;
-use App\UseCase\CreateContactInterface;
-use App\UseCase\CreateSuggestionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

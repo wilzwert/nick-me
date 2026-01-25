@@ -39,6 +39,8 @@ class Notification
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $statusUpdatedAt;
 
+    private array $notificationLogs;
+
     public function __construct(
         NotificationType $type,
         string $recipientEmail,
@@ -85,6 +87,15 @@ class Notification
     public function getStatus(): NotificationStatus
     {
         return $this->status;
+    }
+
+    public function setStatus(NotificationStatus $status, \DateTimeImmutable $statusUpdatedAt): self
+    {
+        if ($this->status !== $status) {
+            $this->status = $status;
+            $this->statusUpdatedAt = $statusUpdatedAt;
+        }
+        return $this;
     }
 
     public function getCreatedAt(): \DateTimeImmutable

@@ -8,8 +8,8 @@ namespace App\Enum;
 enum NotificationStatus: string implements Enum
 {
     case PENDING = 'pending';
-    case SENT = 'sent';
-    case FAILED = 'failed';
+    case HANDLED = 'handled';
+
     case READ = 'read';
 
     public static function fromString(string $value): Enum

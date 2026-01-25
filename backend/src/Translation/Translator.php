@@ -19,6 +19,7 @@ class Translator implements TranslatorInterface
         ErrorMessage::NICK_NOT_FOUND => 'Le pseudo est introuvable',
         ErrorMessage::NO_SUBJECT_FOUND => 'Aucun sujet trouvé',
         ErrorMessage::NO_QUALIFIER_FOUND => 'Aucun qualificatif trouvé',
+        ErrorMessage::NOTIFICATION_NOT_FOUND => 'Notification introuvable',
         ErrorMessage::VALIDATION_FAILED => 'Saisie invalide',
         ValidationErrorMessage::UNKNOWN_ERROR => 'Erreur inconnue',
         ValidationErrorMessage::INVALID_EMAIL => 'Email incorrect',
