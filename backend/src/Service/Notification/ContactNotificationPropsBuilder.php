@@ -33,7 +33,7 @@ readonly class ContactNotificationPropsBuilder implements NotificationPropsBuild
         }
 
         return new NotificationProps(
-            NotificationType::SUGGESTION,
+            NotificationType::CONTACT,
             $this->adminEmail,
             'Site contact',
             sprintf(

@@ -29,14 +29,20 @@ readonly class ReportNotificationPropsBuilder implements NotificationPropsBuilde
     public function buildProps(object $source): NotificationProps
     {
         if (!is_a($source, Report::class)) {
-            throw new \InvalidArgumentException('$source must be a Report');
+            throw new \InvalidArgumentException('$source must be a Contact');
         }
 
         return new NotificationProps(
             NotificationType::REPORT,
             $this->adminEmail,
             'Nick report',
-            sprintf('A nick has been reported : nick : %s, reason: %s', $source->getNick()->getLabel(), $source->getReason()),
+            sprintf(
+                "A nick has been reported : %s (%d)\nBy: %s\nReason : %s",
+                $source->getNick()->getLabel(),
+                $source->getNick()->getId(),
+                $source->getSenderEmail(),
+                $source->getReason()
+            ),
         );
     }
 }

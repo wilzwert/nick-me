@@ -12,6 +12,8 @@ class ApiUrl
     public const string CONTACT_ENDPOINT = '/api/contact';
     public const string SUGGESTION_ENDPOINT = '/api/suggestion';
 
+    public const string REPORT_ENDPOINT = '/api/report';
+
     public static function build($endpoint, $query = ''): string
     {
         return sprintf('%s?%s', $endpoint, $query);
