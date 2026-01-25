@@ -4,6 +4,7 @@ import { useNickHistoryStore } from "../stores/nick-history.store";
 import { useNickStore } from "../stores/nick.store";
 import { CopyNickButton } from "./CopyNickButton";
 import { IconHistory, IconX } from "@tabler/icons-react";
+import { ReportNickButton } from "./ReportNickButton";
 
 export function NickHistory() {
   const history = useNickHistoryStore(s => s.history);
@@ -55,14 +56,12 @@ export function NickHistory() {
             </Text>
             </Paper>
             <CopyNickButton nick={nick} />
-            <Button 
-            variant="subtle"
-          size="xs"
-            onClick={() => {
+            <Button variant="subtle" size="xs" onClick={() => {
               removeFromHistory(nick);
             }}>
                 <IconX aria-label="Supprimer"/>
             </Button>
+            <ReportNickButton nick={nick} />
             </Group>
           </List.Item>
         ))}

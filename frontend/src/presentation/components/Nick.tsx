@@ -6,6 +6,7 @@ import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
 import { Box, Button, Card, Group, LoadingOverlay, Paper, Text } from '@mantine/core';
 import { IconReload } from '@tabler/icons-react';
 import { useState } from 'react';
+import { ReportNickButton } from './ReportNickButton';
 
 export function Nick() {
   const nick = useNickStore(s => s.nick);
@@ -14,7 +15,9 @@ export function Nick() {
   const [isReloading, setIsReloading] = useState(false); 
   const { mutate: reloadWord, isPending: reloadingWord } = useReplaceWord();
 
-  if (!nick) return null;
+  if (!nick) {
+    return null;
+  }
 
   const handleReloadWord = (word: Word) => {
     reloadWord(
@@ -32,7 +35,6 @@ export function Nick() {
       }
     );
   };
-
   return (
     <Card>
       <LoadingOverlay visible={isReloading || reloadingWord} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
@@ -83,7 +85,9 @@ export function Nick() {
 
       <div className="nick-actions">
         <CopyNickButton nick={nick} />
+        <ReportNickButton nick={nick} />
       </div>
+      
       </Group>
       </Box>
     </Card>

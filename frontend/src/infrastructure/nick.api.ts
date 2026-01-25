@@ -36,7 +36,7 @@ export async function generateNick(params: {
     throw new ApiError({ status: res.status, error: body.error, message: body.message });
   }
 
-  return res.json();
+  return body;
 }
 
 /**
@@ -71,5 +71,10 @@ export async function replaceWord(params: {
     throw new Error('Failed to replace word');
   }
 
-  return res.json();
+  const body = await res.json();
+  if (!res.ok) {
+    throw new ApiError({ status: res.status, error: body.error, message: body.message });
+  }
+
+  return body;
 }
