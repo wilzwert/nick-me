@@ -6,7 +6,6 @@ use App\Dto\Command\GetWordCommand;
 use App\Entity\GrammaticalRole;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
-use App\Exception\NoWordFoundException;
 use App\Service\Data\GrammaticalRoleServiceInterface;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;

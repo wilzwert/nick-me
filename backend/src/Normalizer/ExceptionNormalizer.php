@@ -3,7 +3,7 @@
 namespace App\Normalizer;
 
 use App\Exception\ErrorCode;
-use App\Exception\ErrorTranslator;
+use App\Translation\TranslatorInterface;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -14,7 +14,7 @@ abstract class ExceptionNormalizer implements NormalizerInterface
 {
     use ClockAwareTrait;
 
-    public function __construct(protected readonly ErrorTranslator $translator)
+    public function __construct(protected readonly TranslatorInterface $translator)
     {
     }
 

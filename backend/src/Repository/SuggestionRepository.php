@@ -8,7 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Contact>
+ * @extends ServiceEntityRepository<Suggestion>
  *
  * @author Wilhelm Zwertvaegher
  */

@@ -6,7 +6,6 @@ use App\Dto\Command\GenerateNickCommand;
 use App\Dto\Command\GetWordCommand;
 use App\Dto\Result\GeneratedNickData;
 use App\Dto\Result\GeneratedNickWord;
-use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
 use App\Entity\Word;
@@ -15,7 +14,8 @@ use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
 use App\Exception\NickNotFoundException;
-use App\Exception\NoWordFoundException;
+use App\Exception\NoQualifierFoundException;
+use App\Exception\NoSubjectFoundException;
 use App\Service\Data\NickServiceInterface;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
@@ -115,7 +115,8 @@ class NickGeneratorService implements NickGeneratorServiceInterface
 
     /**
      * @throws NickNotFoundException
-     * @throws NoWordFoundException
+     * @throws NoSubjectFoundException
+     * @throws NoQualifierFoundException
      */
     private function updateNick(GenerateNickCommand $command): GeneratedNickData
     {
@@ -143,7 +144,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
                     )
                 );
                 if (null === $subject) {
-                    throw new NoWordFoundException('Cannot find similar subject');
+                    throw new NoSubjectFoundException();
                 }
                 break;
             case GrammaticalRoleType::QUALIFIER:
@@ -160,7 +161,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
                     )
                 );
                 if (null === $qualifier) {
-                    throw new NoWordFoundException('Cannot find similar qualifier');
+                    throw new NoQualifierFoundException();
                 }
                 break;
         }
@@ -169,7 +170,10 @@ class NickGeneratorService implements NickGeneratorServiceInterface
     }
 
     /**
-     * @throws NoWordFoundException
+     * @param GenerateNickCommand $command
+     * @return GeneratedNickData
+     * @throws NoQualifierFoundException
+     * @throws NoSubjectFoundException
      */
     private function createNick(GenerateNickCommand $command): GeneratedNickData
     {
@@ -191,7 +195,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
             )
         );
         if (null === $subject) {
-            throw new NoWordFoundException('Cannot find random subject');
+            throw new NoSubjectFoundException();
         }
         $targetGender = $this->computeTargetGender($command, $subject);
 
@@ -218,15 +222,18 @@ class NickGeneratorService implements NickGeneratorServiceInterface
             )
         );
         if (null === $qualifier) {
-            throw new NoWordFoundException('Cannot find random qualifier');
+            throw new NoQualifierFoundException();
         }
 
         return $this->buildGeneratedNick($subject, $qualifier, $targetGender);
     }
 
     /**
-     * @throws NoWordFoundException
+     * @param GenerateNickCommand $command
+     * @return GeneratedNickData
      * @throws NickNotFoundException
+     * @throws NoQualifierFoundException
+     * @throws NoSubjectFoundException
      */
     public function generateNick(GenerateNickCommand $command): GeneratedNickData
     {
