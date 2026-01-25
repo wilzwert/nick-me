@@ -4,28 +4,28 @@
 # ANCHORS
 # TODO  x-worker-base will be used when async workers are implemented
 # ================================
-#x-worker-base: &worker-base
-#  build:
-#    context: ./
-#    dockerfile: worker/Dockerfile
-#  environment:
-#    APP_ENV: dev
-#  volumes:
-#    - ../../backend:/app:cached
-#  depends_on:
-#    - ampq
-#    - db
-#    - redis
-#  restart: unless-stopped
-#  healthcheck:
-#    test: ''
-#    disable: true
-#  networks:
-#    - app
-#    - messenger
-#    - db
-#    - mail
-#    - cache
+x-worker-base: &worker-base
+  build:
+    context: ./
+    dockerfile: worker/Dockerfile
+  environment:
+    APP_ENV: dev
+  volumes:
+    - ../../backend:/app:cached
+  depends_on:
+    - ampq
+    - db
+    - redis
+  restart: unless-stopped
+  healthcheck:
+    test: ''
+    disable: true
+  networks:
+    - app
+    - messenger
+    - db
+    - mail
+    - cache
 
 services:
   mail:
@@ -165,16 +165,15 @@ services:
       - mail
       - cache
 
-# TODO consumers will be implemented later
-#  consumer-async:
-#    container_name: "${APP_NAME}-consumer-async"
-#    <<: *worker-base
-#    command: ['php', 'bin/console', 'messenger:consume', 'async', '-vv']
-#
-#  consumer-failed:
-#    container_name: "${APP_NAME}-consumer-failed"
-#    <<: *worker-base
-#    command: ['php', 'bin/console', 'messenger:consume', 'failed', '-vv']
+  consumer-async:
+    container_name: "${APP_NAME}-consumer-async"
+    <<: *worker-base
+    command: ['php', 'bin/console', 'messenger:consume', 'async', '-vv']
+
+  consumer-failed:
+    container_name: "${APP_NAME}-consumer-failed"
+    <<: *worker-base
+    command: ['php', 'bin/console', 'messenger:consume', 'failed', '-vv']
 
 volumes:
   postgresql_data:
