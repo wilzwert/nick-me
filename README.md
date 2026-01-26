@@ -17,26 +17,29 @@ Generated nick are made up of two words : a Subject (i.e. the "main" nick subjec
 Backend :
 - fetch random nick according to an offense level and a gender
 - fetch a random word to replace a word of a previous nick
+- new word suggestion API endpoint
+- nick reporting API endpoint : the goal here is to be _gently_ offensive, event in MAX offense level,
+  so it's important that users are able to report words that go a bit too far
 - CLI for bulk nicks generation
 - CLI for base data import
 - API endpoints protected by Altcha
 
  Frontend :
-- nick generation and display, history in local storage (WIP)
 - Altcha implementation
+- nick generation and display, history in local storage
+- contact form
+- nick reporting form
+- word suggestion form
+- merge About / Legal info content
 
 ## Roadmap
 Backend :
-- add an endpoint to suggest a new word : data is limited at the moment, the more words the more fun !
-- add an endpoint to report an offensive word : the goal here is to be _gently_ offensive, event in MAX offense level, 
-so it's important that users are able to report words that go a bit too far
+
 - protect the API with rate limiting, and app tokens (for discord bot)
 - create admin endpoints
-- create an endpoint to contact me
 
 Frontend :
-- add a contact form
-- add an "About" page
+- create a basic admin zone
 
 Other
 - create a Discord Bot
