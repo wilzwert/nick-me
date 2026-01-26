@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { generateToastId } from "./toast-id-generator";
 
 export type ToastType = "success" | "error" | "info";
 
@@ -19,10 +20,10 @@ export const useToastStore = create<ToastStore>((set, get) => ({
   toasts: [],
 
   addToast: ({ type, message, duration = 2000 }) => {
-    const id = crypto.randomUUID();
+    const id = generateToastId();
     set((state) => ({ toasts: [...state.toasts, { id, type, message, duration }] }));
 
-    // auto-remove après duration
+    // auto-remove after given duration
     setTimeout(() => {
       get().removeToast(id);
     }, duration);

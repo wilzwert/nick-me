@@ -1,18 +1,12 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useGenerateNick } from './generateNick';
 import { generateNick } from '../infrastructure/nick.api';
 import { useNickStore } from '../presentation/stores/nick.store';
 import { useNickHistoryStore } from '../presentation/stores/nick-history.store';
 import { useCriteriaStore } from '../presentation/stores/criteria.store';
-import type { ReactNode } from 'react';
 import type { Nick } from '../domain/model/Nick';
-
-const wrapper = ({ children }:  { children: ReactNode }) => {
-  const client = new QueryClient();
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-};
+import { createTestWrapper } from '../test/createTestWrapper';
 
 describe('useGenerateNick', () => {
   beforeEach(() => {
@@ -34,7 +28,7 @@ describe('useGenerateNick', () => {
 
     mockedGenerateNick.mockResolvedValue(mockNick);
 
-    const { result } = renderHook(() => useGenerateNick(), { wrapper });
+    const { result } = renderHook(() => useGenerateNick(), { wrapper: createTestWrapper() });
 
     await act(async () => {
       // explicitly trigger the mutation

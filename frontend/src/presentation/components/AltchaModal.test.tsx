@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { useAltchaStore } from '../stores/altcha.store';
 import { AltchaModal } from './AltchaModal';
+import { act } from 'react';
 
 describe('AltchaModal', () => {
   beforeEach(() => {
@@ -41,8 +42,9 @@ describe('AltchaModal', () => {
     const event = new CustomEvent('statechange', {
       detail: { state: 'verified', payload: 'TOKEN_123' },
     });
-
-    widget!.dispatchEvent(event);
+    act(() =>
+      widget!.dispatchEvent(event)
+    );
 
     // check setPayload has been called with the correct token
     expect(setPayloadSpy).toHaveBeenCalledWith('TOKEN_123');
