@@ -62,5 +62,7 @@ readonly class SendNotificationCommandHandler implements SendNotificationCommand
         }
 
         $this->entityManager->flush();
+        // clearing the EM may help with memory consumption
+        $this->entityManager->clear();
     }
 }
