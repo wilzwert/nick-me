@@ -39,6 +39,12 @@ class Word
     #[ORM\Column(type: 'string', length: 10, enumType: WordStatus::class)]
     private WordStatus $status;
 
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $updatedAt;
+
     public function __construct(
         string $slug,
         string $label,
@@ -46,6 +52,8 @@ class Word
         Lang $lang,
         OffenseLevel $offenseLevel,
         WordStatus $status,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt,
     ) {
         $this->slug = $slug;
         $this->label = $label;
@@ -53,6 +61,8 @@ class Word
         $this->lang = $lang;
         $this->offenseLevel = $offenseLevel;
         $this->status = $status;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public function getId(): ?int
@@ -118,5 +128,15 @@ class Word
     public function setStatus(WordStatus $status): void
     {
         $this->status = $status;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }

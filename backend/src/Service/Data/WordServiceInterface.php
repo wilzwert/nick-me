@@ -12,5 +12,7 @@ interface WordServiceInterface
 {
     public function createOrUpdate(MaintainWordProperties $spec): Word;
 
+    public function getByLabel(string $label): ?Word;
+
     public function save(Word $word): void;
 }

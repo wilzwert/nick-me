@@ -1,5 +1,5 @@
 
-import { MantineProvider, useMantineColorScheme } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import './App.css'
 import { AltchaModal } from './presentation/components/AltchaModal';
@@ -9,6 +9,7 @@ import { NickHistory } from './presentation/components/NickHistory';
 import { theme } from './theme';
 import { AppLayout } from './presentation/AppLayout';
 import { AppTitle } from './presentation/components/AppTitle';
+import { ToastContainer } from './presentation/components/ToastContainer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Nick />
         <NickHistory />
         <AltchaModal />
+        <ToastContainer />
       </AppLayout>
     </MantineProvider>
   );

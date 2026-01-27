@@ -3,10 +3,13 @@
 namespace App\DataFixtures;
 
 use App\Entity\Nick;
+use App\Entity\Notification;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
 use App\Entity\Word;
 use App\Enum\Lang;
+use App\Enum\NotificationStatus;
+use App\Enum\NotificationType;
 use App\Enum\OffenseLevel;
 use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
@@ -16,11 +19,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AssignedGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Clock\ClockInterface;
 
 class AppFixtures extends Fixture
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ClockInterface $clock,
+    ) {
     }
 
     /**
@@ -68,6 +74,10 @@ class AppFixtures extends Fixture
         $classMetadata->setIdGenerator(new AssignedGenerator());
         $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
+        $classMetadata = $this->entityManager->getClassMetadata(Notification::class);
+        $classMetadata->setIdGenerator(new AssignedGenerator());
+        $classMetadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+
         $reflectionClass = new \ReflectionClass(Word::class);
         $wordIdReflectionProperty = $reflectionClass->getProperty('id');
         $wordIdReflectionProperty->setAccessible(true);
@@ -84,15 +94,47 @@ class AppFixtures extends Fixture
         $nickIdReflectionProperty = $reflectionClass->getProperty('id');
         $nickIdReflectionProperty->setAccessible(true);
 
-        return [$wordIdReflectionProperty, $subjectIdReflectionProperty, $qualifierIdReflectionProperty, $nickIdReflectionProperty];
+        $reflectionClass = new \ReflectionClass(Notification::class);
+        $notificationIdReflectionProperty = $reflectionClass->getProperty('id');
+        $notificationIdReflectionProperty->setAccessible(true);
+
+        return [
+            $wordIdReflectionProperty,
+            $subjectIdReflectionProperty,
+            $qualifierIdReflectionProperty,
+            $nickIdReflectionProperty,
+            $notificationIdReflectionProperty,
+        ];
+    }
+
+    private function updateSequences(): void
+    {
+        $tables = ['word', 'subject', 'qualifier', 'nick', 'notification'];
+
+        foreach ($tables as $table) {
+            $this->entityManager->getConnection()->executeStatement(
+                sprintf(
+                    'SELECT setval(pg_get_serial_sequence(\'%1$s\',\'id\'), (SELECT MAX(id) FROM %1$s))',
+                    $table
+                )
+            );
+        }
     }
 
     public function load(ObjectManager $manager): void
     {
-        [$wordIdReflectionProperty, $subjectIdReflectionProperty, $qualifierIdReflectionProperty, $nickIdReflectionProperty] = $this->prepareMetadata();
+        [
+            $wordIdReflectionProperty,
+            $subjectIdReflectionProperty,
+            $qualifierIdReflectionProperty,
+            $nickIdReflectionProperty,
+            $notificationIdReflectionProperty,
+        ] = $this->prepareMetadata();
 
         $wordsToCreate = $this->getWordsToCreate();
         $subjects = $qualifiers = [];
+
+        $now = $this->clock->now();
 
         foreach ($wordsToCreate as $wordToCreate) {
             $word = new Word(
@@ -101,7 +143,9 @@ class AppFixtures extends Fixture
                 gender: $wordToCreate['gender'],
                 lang: $wordToCreate['lang'],
                 offenseLevel: $wordToCreate['offenseLevel'],
-                status: WordStatus::APPROVED
+                status: WordStatus::APPROVED,
+                createdAt: $now,
+                updatedAt: $now,
             );
 
             $wordIdReflectionProperty->setValue($word, $wordToCreate['id']);
@@ -128,25 +172,41 @@ class AppFixtures extends Fixture
             subject: $subjects[3],
             qualifier: $qualifiers[7],
             targetGender: WordGender::M,
-            offenseLevel: OffenseLevel::MEDIUM
+            offenseLevel: OffenseLevel::MEDIUM,
+            createdAt: $now,
+            lastUsedAt: $now
         );
         $nickIdReflectionProperty->setValue($nick, 1);
         $manager->persist($nick);
 
+        // create a Notification
+        $notification = new Notification(
+            type: NotificationType::CONTACT,
+            recipientEmail: 'test@example.com',
+            subject: 'Contact notification subject',
+            content: 'Contact notification content',
+            status: NotificationStatus::PENDING,
+            createdAt: $now,
+            statusUpdatedAt: $now
+        );
+        $notificationIdReflectionProperty->setValue($notification, 1);
+        $manager->persist($notification);
+
+        $notification = new Notification(
+            type: NotificationType::SUGGESTION,
+            recipientEmail: 'test@example.com',
+            subject: 'Suggestion notification subject',
+            content: 'Suggestion notification content',
+            status: NotificationStatus::HANDLED,
+            createdAt: $now,
+            statusUpdatedAt: $now
+        );
+        $notificationIdReflectionProperty->setValue($notification, 2);
+        $manager->persist($notification);
+
         $manager->flush();
 
-        // update sequences to allow further creation with auto id generation
-        $this->entityManager->getConnection()->executeStatement(
-            "SELECT setval(pg_get_serial_sequence('word','id'), (SELECT MAX(id) FROM word))"
-        );
-        $this->entityManager->getConnection()->executeStatement(
-            "SELECT setval(pg_get_serial_sequence('subject','id'), (SELECT MAX(id) FROM subject))"
-        );
-        $this->entityManager->getConnection()->executeStatement(
-            "SELECT setval(pg_get_serial_sequence('qualifier','id'), (SELECT MAX(id) FROM qualifier))"
-        );
-        $this->entityManager->getConnection()->executeStatement(
-            "SELECT setval(pg_get_serial_sequence('nick','id'), (SELECT MAX(id) FROM nick))"
-        );
+        // update id sequences to allow further entities creation
+        $this->updateSequences();
     }
 }

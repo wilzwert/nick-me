@@ -42,7 +42,7 @@ class WordFinder implements WordFinderInterface
         $this->services = $servicesByWordType;
     }
 
-    public function findSimilar(GetWordCommand $command): GrammaticalRole
+    public function findSimilar(GetWordCommand $command): ?GrammaticalRole
     {
         $service = $this->services[$command->getRole()->value];
         $previous = $command->getPrevious() ?? $service->findByWordId($command->getPreviousId());

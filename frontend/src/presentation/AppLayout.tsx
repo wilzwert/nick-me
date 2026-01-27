@@ -10,15 +10,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     const nick = useNickStore(s => s.nick);
     const [bgIndex, setBgIndex] = useState(0);
     const prevNickRef = useRef<number | null>(null);
-
+    
     useEffect(() => {
-        if (!nick) return;
-        if (nick.id !== prevNickRef.current) {
+        if (nick && nick.id !== prevNickRef.current) {
             setBgIndex((i) => (i + 1) % BACKGROUND_COUNT);
-            prevNickRef.current = nick.id;
+            prevNickRef.current = nick!.id;
         }
-    }, [nick]);
-
+    }, [nick]); 
+    
   return (
     <AppShell
       padding="md"

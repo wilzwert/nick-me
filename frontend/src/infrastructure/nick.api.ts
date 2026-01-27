@@ -3,6 +3,7 @@ import type { Gender } from '../domain/model/Gender';
 import type { Nick } from '../domain/model/Nick';
 import type { OffenseLevel } from '../domain/model/OffenseLevel';
 import type { WordRole } from '../domain/model/Word';
+import { ApiError } from '../domain/model/ApiError';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '';
 
@@ -30,12 +31,12 @@ export async function generateNick(params: {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', 'X-Altcha-Payload': altchaToken.payload }
   });
-
+  const body = await res.json();
   if (!res.ok) {
-    throw new Error('Failed to generate nick');
+    throw new ApiError({ status: res.status, error: body.error, message: body.message });
   }
 
-  return res.json();
+  return body;
 }
 
 /**
@@ -70,5 +71,10 @@ export async function replaceWord(params: {
     throw new Error('Failed to replace word');
   }
 
-  return res.json();
+  const body = await res.json();
+  if (!res.ok) {
+    throw new ApiError({ status: res.status, error: body.error, message: body.message });
+  }
+
+  return body;
 }

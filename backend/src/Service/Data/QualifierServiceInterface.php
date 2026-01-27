@@ -14,7 +14,7 @@ use App\Specification\WordCriteria;
  */
 interface QualifierServiceInterface extends GrammaticalRoleServiceInterface
 {
-    public function findOneRandomly(WordCriteria $criteria): Qualifier;
+    public function findOneRandomly(WordCriteria $criteria): ?Qualifier;
 
     public function createOrUpdate(Word $word, MaintainQualifierProperties $command): Qualifier;
 

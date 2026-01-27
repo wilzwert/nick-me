@@ -6,7 +6,7 @@ use App\Entity\Subject;
 use App\Specification\DoctrineQueryBuilder;
 use App\Specification\Sort;
 use App\Specification\WordCriteria;
-use App\Specification\WordCriteriaService;
+use App\Specification\WordCriteriaBuilder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SubjectRepository extends ServiceEntityRepository implements SubjectRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry, private readonly WordCriteriaService $wordCriteriaService)
+    public function __construct(ManagerRegistry $registry, private readonly WordCriteriaBuilder $wordCriteriaService)
     {
         parent::__construct($registry, Subject::class);
     }

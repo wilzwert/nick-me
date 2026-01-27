@@ -14,7 +14,6 @@ ENV UID=${UID} \
     GID=${GID} \
     DOCKER_GID=${DOCKER_GID} \
     APP_USER=${APP_USER} \
-    APP_ENV=dev \
     XDEBUG_MODE=off
 
 # Install sudo to allow our entrypoint to set ownership on docker.sock
@@ -60,9 +59,9 @@ FROM frankenphp_base AS frankenphp_dev
 RUN groupadd -g ${DOCKER_GID} docker && usermod -aG docker ${APP_USER}
 
 # Configure PHP
-COPY --link php.ini-dev /usr/local/etc/php/php.ini
+COPY --link frankenphp/php.ini-dev /usr/local/etc/php/php.ini
 
-ENV APP_ENV=dev XDEBUG_MODE=off
+ENV XDEBUG_MODE=off
 
 VOLUME /app/var/
 

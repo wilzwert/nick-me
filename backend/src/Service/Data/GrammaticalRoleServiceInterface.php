@@ -23,7 +23,7 @@ interface GrammaticalRoleServiceInterface
     public function findByWordId(int $wordId): ?GrammaticalRole;
 
     /**
-     * A service for.
+     * Find a similar GrammaticalRole.
      *
      * @param T $other
      *

@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Application\UseCase\GetWordInterface;
 use App\Dto\Command\GetWordCommand;
 use App\Dto\Request\RandomWordRequest;
 use App\Dto\Request\RequestFromQuery;
-use App\UseCase\GetWordInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Application\UseCase\MaintainWord;
 use App\Dto\Command\MaintainWordCommand;
 use App\Dto\Csv\CsvQualifier;
 use App\Dto\Csv\CsvSubject;
@@ -11,7 +12,6 @@ use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
 use App\Enum\WordStatus;
 use App\Service\Data\WordSluggerInterface;
-use App\UseCase\MaintainWord;
 use League\Csv\Reader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;

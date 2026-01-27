@@ -37,18 +37,28 @@ class Nick
     #[ORM\Column(type: 'integer')]
     private int $usageCount = 0;
 
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $lastUsedAt;
+
     public function __construct(
         string $label,
         Subject $subject,
         Qualifier $qualifier,
         WordGender $targetGender,
         OffenseLevel $offenseLevel,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $lastUsedAt,
     ) {
         $this->label = $label;
         $this->subject = $subject;
         $this->qualifier = $qualifier;
         $this->targetGender = $targetGender;
         $this->offenseLevel = $offenseLevel;
+        $this->createdAt = $createdAt;
+        $this->lastUsedAt = $lastUsedAt;
     }
 
     public function getId(): int
@@ -89,5 +99,15 @@ class Nick
     public function getUsageCount(): int
     {
         return $this->usageCount;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getLastUsedAt(): \DateTimeImmutable
+    {
+        return $this->lastUsedAt;
     }
 }

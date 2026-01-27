@@ -4,28 +4,28 @@
 # ANCHORS
 # TODO  x-worker-base will be used when async workers are implemented
 # ================================
-#x-worker-base: &worker-base
-#  build:
-#    context: ./
-#    dockerfile: worker/Dockerfile
-#  environment:
-#    APP_ENV: dev
-#  volumes:
-#    - ../../backend:/app:cached
-#  depends_on:
-#    - ampq
-#    - db
-#    - redis
-#  restart: unless-stopped
-#  healthcheck:
-#    test: ''
-#    disable: true
-#  networks:
-#    - app
-#    - messenger
-#    - db
-#    - mail
-#    - cache
+x-worker-base: &worker-base
+  build:
+    context: ./
+    dockerfile: worker/Dockerfile
+  environment:
+    APP_ENV: consumer
+  volumes:
+    - ../../backend:/app:cached
+  depends_on:
+    - ampq
+    - db
+    - redis
+  restart: unless-stopped
+  healthcheck:
+    test: ''
+    disable: true
+  networks:
+    - app
+    - messenger
+    - db
+    - mail
+    - cache
 
 services:
   mail:
@@ -122,6 +122,7 @@ services:
       - ../../backend/composer.json:/app/composer.json
       - ../../backend/composer.lock:/app/composer.lock
       - ../../backend/.env:/app/.env
+      - ../../backend/.env.dev.local:/app/.env.dev
       - ../../backend/.env.dev.local:/app/.env.dev.local
       - ../../backend/.env.test:/app/.env.test
       - ../../backend/phpunit.dist.xml:/app/phpunit.dist.xml
@@ -131,7 +132,7 @@ services:
 
 
       # bad performance when mounting vendor on Windows machines
-      # - ../../backend/vendor:/app/vendor:delegated
+      - ../../backend/vendor:/app/vendor:delegated
       # Windows (WSL) / Linux
       # Mounting docker socket is necessary to enable TestContainers to create containers
       # On windows hosts, you may be able to comment this line, expose the docker API via TCP in Docker Desktop
@@ -165,16 +166,15 @@ services:
       - mail
       - cache
 
-# TODO consumers will be implemented later
-#  consumer-async:
-#    container_name: "${APP_NAME}-consumer-async"
-#    <<: *worker-base
-#    command: ['php', 'bin/console', 'messenger:consume', 'async', '-vv']
-#
-#  consumer-failed:
-#    container_name: "${APP_NAME}-consumer-failed"
-#    <<: *worker-base
-#    command: ['php', 'bin/console', 'messenger:consume', 'failed', '-vv']
+  consumer-async:
+    container_name: "${APP_NAME}-consumer-async"
+    <<: *worker-base
+    command: ['php', 'bin/console', 'messenger:consume', 'async', '-vv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000']
+
+  consumer-failed:
+    container_name: "${APP_NAME}-consumer-failed"
+    <<: *worker-base
+    command: ['php', 'bin/console', 'messenger:consume', 'failed', '-vv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000']
 
 volumes:
   postgresql_data:

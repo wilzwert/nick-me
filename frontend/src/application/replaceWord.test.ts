@@ -1,0 +1,56 @@
+import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { useNickStore } from '../presentation/stores/nick.store';
+import { useNickHistoryStore } from '../presentation/stores/nick-history.store';
+import type { Nick } from '../domain/model/Nick';
+import { replaceWord } from '../infrastructure/nick.api';
+import { useReplaceWord } from './replaceWord';
+import { createTestWrapper } from '../test/createTestWrapper';
+
+describe('useReplaceWord', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    useNickStore.setState({ nick: null });
+    useNickHistoryStore.setState({ history: [] });
+  });
+
+  it('updates stores on success', async () => {
+    const mockNick: Nick = {
+      id: 1,
+      gender: 'M',
+      offenseLevel: 10,
+      words: [
+        { id: 1, label: 'Subject', role: 'subject' },  
+        { id: 2, label: 'Qualifier', role: 'qualifier' }
+      ]
+    };
+
+    useNickStore.setState({ nick: mockNick });
+
+    const mockNewNick: Nick = {
+      id: 1,
+      gender: 'M',
+      offenseLevel: 10,
+      words: [
+        { id: 1, label: 'Subject', role: 'subject' },  
+        {id: 3, label: 'Word', role: 'qualifier' }
+      ]
+    };
+
+    vi.mock('../infrastructure/nick.api');
+    const mockedReplaceWord = replaceWord as unknown as MockedFunction<typeof replaceWord>;
+
+    mockedReplaceWord.mockResolvedValue(mockNewNick);
+
+    const { result } = renderHook(() => useReplaceWord(), { wrapper: createTestWrapper() });
+
+
+    await act(async () => {
+      // explicitly trigger the mutation
+      result.current.mutate({ role: 'qualifier', gender: 'F', offenseLevel: 10, previousId: 2 });
+    });
+    
+    expect(useNickStore.getState().nick).toEqual(mockNewNick);
+    expect(useNickHistoryStore.getState().history[0]).toEqual(mockNewNick);
+  });
+});

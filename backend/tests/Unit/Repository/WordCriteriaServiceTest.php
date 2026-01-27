@@ -11,7 +11,7 @@ use App\Specification\Criterion\OffenseConstraintType;
 use App\Specification\Criterion\OffenseLevelCriterion;
 use App\Specification\DefaultCriterionConverter;
 use App\Specification\WordCriteria;
-use App\Specification\WordCriteriaService;
+use App\Specification\WordCriteriaBuilder;
 use App\Tests\Fakes\FakeQueryBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -19,11 +19,11 @@ use PHPUnit\Framework\TestCase;
 
 class WordCriteriaServiceTest extends TestCase
 {
-    private WordCriteriaService $underTest;
+    private WordCriteriaBuilder $underTest;
 
     protected function setUp(): void
     {
-        $this->underTest = new WordCriteriaService(new DefaultCriterionConverter());
+        $this->underTest = new WordCriteriaBuilder(new DefaultCriterionConverter());
     }
 
     #[Test]
