@@ -3,7 +3,7 @@
 namespace App\Tests\Support;
 
 use App\Security\Service\AltchaServiceInterface;
-use App\Tests\Fakes\FakeAltchaService;
+use App\Tests\Support\Stub\FakeAltchaService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 

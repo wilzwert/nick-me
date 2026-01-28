@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Fakes;
+namespace App\Tests\Support\Stub;
 
 use AltchaOrg\Altcha\Challenge;
 use App\Security\Service\AltchaServiceInterface;

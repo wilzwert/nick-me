@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Fakes;
+namespace App\Tests\Support\Fake;
 
 use App\Specification\QueryBuilderInterface;
 
