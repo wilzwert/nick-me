@@ -1,6 +1,6 @@
 name: Frontend CI - Tests and analysis
 concurrency:
-  group: ${{ github.ref }}.frontend
+  group: ${{ github.ref }}.ci-frontend
   cancel-in-progress: true
 on:
   # CI should be able to run manually
@@ -9,9 +9,10 @@ on:
   # CI should run on pull requests and push on main branch
   # some steps are executed only on pushes on main branch
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
+    types: [opened, synchronize, reopened]
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 jobs:
 
   frontend-tests-analysis:
