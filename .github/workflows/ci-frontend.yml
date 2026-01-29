@@ -102,6 +102,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
         with:
+          projectBaseDir: frontend
           args: >
            -Dsonar.organization=wilzwert
            -Dsonar.projectKey=NickMe_frontend
@@ -116,6 +117,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
         with:
+          projectBaseDir: frontend
           args: >
             -Dsonar.organization=wilzwert
             -Dsonar.projectKey=NickMe_frontend
