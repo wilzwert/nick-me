@@ -22,14 +22,15 @@ export function OffenseLevelGauge({ value, onChange }: Props) {
   
   return (
       <Stack gap="40">
-        <label htmlFor="offense-level">
-          <Text size="sm">
-            Niveau d'offense
-          </Text>
-        </label>
+        <Text size="sm" id="offense-level-label">
+          Niveau d'offense
+        </Text>
         <Slider 
+          id="offense-level-slider"
+          aria-labelledby="offense-level-label"
           pl={20} pr={20}
-          id="offense-level"
+          aria-label="Niveau d'offense"
+          thumbProps={{ 'aria-label': 'Niveau d\'offense' }}
           min={min}
           max={max}
           defaultValue={5} 
@@ -40,7 +41,6 @@ export function OffenseLevelGauge({ value, onChange }: Props) {
           label={(value) => 
               OFFENSE_LEVEL_LABELS[Number(value) as OffenseLevel]
           }
-
           onChange={e => onChange(e as OffenseLevel)}
           styles={{
             track: {

@@ -32,6 +32,7 @@ export const useAltchaStore = create<AltchaStore>((set, get) => ({
     );
 
     if (callback) {
+      console.log('Altcha token received, executing callback');
       callback(payload);
     } 
   },
@@ -43,6 +44,7 @@ export const useAltchaStore = create<AltchaStore>((set, get) => ({
     const { token } = get();
     if (token && token.payload && Date.now() < token.expiresAt) {
       set({ callback: null });
+      console.log('Altcha token already available, executing callback immediately');
       callback(token.payload);
       return;
     }
