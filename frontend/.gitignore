@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.env.*
 
 node_modules
 dist
@@ -14,6 +15,7 @@ dist-ssr
 
 # coverage and tests output
 coverage
+.scannerwork
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +27,10 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

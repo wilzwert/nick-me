@@ -11,9 +11,9 @@ export function Footer() {
     const [suggestionOpen, setSuggestionOpen] = useState(false);
 
     const items = [
-    { icon: <Tooltip label="À propos"><IconInfoCircle size={20} title="À propos"/></Tooltip>, onClick: setAboutOpen},
-    { icon: <Tooltip label="Suggérer un mot"><IconBulb size={20} title="Suggérer un mot"/></Tooltip>, onClick: setSuggestionOpen},
-    { icon: <Tooltip label="Contact"><IconMail size={20} title="Contact"/></Tooltip>, onClick: setContactOpen},
+    { label: "À propos", icon: <IconInfoCircle size={20} title="À propos"/>, onClick: setAboutOpen},
+    { label: "Suggérer un mot", icon: <Tooltip label="Suggérer un mot"><IconBulb size={20} title="Suggérer un mot"/></Tooltip>, onClick: setSuggestionOpen},
+    { label: "Contact", icon: <Tooltip label="Contact"><IconMail size={20} title="Contact"/></Tooltip>, onClick: setContactOpen},
   ];
 
     
@@ -22,9 +22,11 @@ export function Footer() {
     <>
       <Group justify="center" align="end" gap="xl">
           {items.map((item, i) => (
-          <ActionIcon key={i} variant="subtle" size="lg" component="a" onClick={() => item.onClick(true)}>
-              {item.icon}
-          </ActionIcon>
+            <Tooltip key={i} label={item.label} position="top" withArrow>
+              <ActionIcon key={i} variant="subtle" size="lg"  onClick={() => item.onClick(true)} aria-label={item.label}>
+                  {item.icon}
+              </ActionIcon>
+            </Tooltip>
           ))}
       </Group>
 

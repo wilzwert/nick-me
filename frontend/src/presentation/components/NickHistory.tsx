@@ -1,4 +1,4 @@
-import { Button, Card, Group, List, Paper, Stack, Text, ThemeIcon } from "@mantine/core";
+import { Button, Card, Group, List, Paper, Stack, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import { useCriteriaStore } from "../stores/criteria.store";
 import { useNickHistoryStore } from "../stores/nick-history.store";
 import { useNickStore } from "../stores/nick.store";
@@ -15,7 +15,7 @@ export function NickHistory() {
   if (!history.length) return null;
 
   return (
-    <Card>
+    <Card className="nick-history-display">
     <Stack gap={10}>
       <h3>Historique</h3>
       <List
@@ -56,11 +56,13 @@ export function NickHistory() {
             </Text>
             </Paper>
             <CopyNickButton nick={nick} />
-            <Button variant="subtle" size="xs" onClick={() => {
-              removeFromHistory(nick);
-            }}>
-                <IconX aria-label="Supprimer"/>
-            </Button>
+                <Button variant="subtle" size="xs" onClick={() => {
+                  removeFromHistory(nick);
+                }}>
+                  <Tooltip label="Supprimer de l'historique" withArrow position="bottom">
+                    <IconX aria-label="Supprimer"/>
+                  </Tooltip>
+                </Button>
             <ReportNickButton nick={nick} />
             </Group>
           </List.Item>

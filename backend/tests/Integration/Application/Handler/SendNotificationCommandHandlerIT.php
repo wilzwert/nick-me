@@ -10,8 +10,8 @@ use App\Message\SendNotificationCommand;
 use App\Repository\NotificationLogRepositoryInterface;
 use App\Service\Notification\Dispatcher\NotificationDispatcherInterface;
 use App\Service\Notification\Sender\EmailSender;
-use App\Tests\Fakes\FakeErrorSender;
 use App\Tests\Support\AppTestData;
+use App\Tests\Support\Fake\FakeErrorSender;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

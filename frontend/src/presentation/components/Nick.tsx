@@ -36,7 +36,7 @@ export function Nick() {
     );
   };
   return (
-    <Card>
+    <Card className='nick-display'>
       <LoadingOverlay visible={isReloading || reloadingWord} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
       <Box ta="center">
       <h2>Ton pseudo</h2>
@@ -56,7 +56,7 @@ export function Nick() {
       {nick.words.map(word => (
         <Paper key={word.id} p={16}>
 
-          <Text component='span'>{word.label}</Text>
+          <Text component='span' className='nick-word'>{word.label}</Text>
 
           <Button size="xs"
             onClick={() => {
