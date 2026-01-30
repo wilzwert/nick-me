@@ -78,16 +78,16 @@ jobs:
 
       # we only update pages if code has actually been pushed to main branch, or if workflow is run manually on main branch
       - name: Publish frontend coverage report to Github Pages
-        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master' }}
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./frontend/coverage/unit
           destination_dir: ./coverage-frontend
 
-      # we only update codecov if code has actually been pushed to main branch, or if workflow is run manually on main branc
+      # we only update codecov if code has actually been pushed to main branch, or if workflow is run manually on main branch
       - name: Upload frontend coverage report to Codecov
-        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/master' }}
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
