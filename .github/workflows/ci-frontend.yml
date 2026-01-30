@@ -1,6 +1,6 @@
 name: Frontend CI - Tests and analysis
 concurrency:
-  group: ${{ github.ref }}.ci-frontend
+  group: ${{ github.ref }}.frontend
   cancel-in-progress: true
 on:
   # CI should be able to run manually
@@ -9,10 +9,9 @@ on:
   # CI should run on pull requests and push on main branch
   # some steps are executed only on pushes on main branch
   pull_request:
-    branches: [ "main" ]
-    types: [opened, synchronize, reopened]
+    branches: [ "master" ]
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 jobs:
 
   frontend-tests-analysis:
@@ -103,7 +102,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
         with:
-          projectBaseDir: frontend
           args: >
            -Dsonar.organization=wilzwert
            -Dsonar.projectKey=NickMe_frontend
@@ -118,7 +116,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
         with:
-          projectBaseDir: frontend
           args: >
             -Dsonar.organization=wilzwert
             -Dsonar.projectKey=NickMe_frontend
@@ -130,8 +127,6 @@ jobs:
       - name: SonarQube Quality Gate Check
         id: quality-gate
         uses: sonarsource/sonarqube-quality-gate-action@master
-        with:
-          scanMetadataReportFile: 'frontend/.scannerwork/report-task.txt'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
         continue-on-error: true
