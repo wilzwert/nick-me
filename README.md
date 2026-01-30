@@ -1,11 +1,17 @@
 # nick-me
 
+[![Frontend CI](https://img.shields.io/github/actions/workflow/status/wilzwert/nick-me/ci_frontend.yml?label=Frontend%20CI&logo=Github)](https://github.com/wilzwert/nick-me/actions/workflows/ci_frontend.yml)
 [![Backend CI](https://img.shields.io/github/actions/workflow/status/wilzwert/nick-me/ci_backend.yml?label=Backend%20CI&logo=Github)](https://github.com/wilzwert/nick-me/actions/workflows/ci_backend.yml)
 
 [![Backend coverage](https://img.shields.io/codecov/c/gh/wilzwert/nick-me/main?flag=backend&label=Backend%20coverage&logo=PHP)](https://wilzwert.github.io/nick-me/backend-coverage/)
 [![Backend Quality Gate Status](https://img.shields.io/sonar/quality_gate/NickMe_backend?server=https%3A%2F%2Fsonarcloud.io&logo=sonarcloud&label=Backend%20quality%20gate)](https://sonarcloud.io/summary/new_code?id=NickMe_backend)
 
+[![Frontend coverage](https://img.shields.io/codecov/c/gh/wilzwert/nick-me/main?flag=frontend&label=Frontend%20coverage&logo=Vite)](https://wilzwert.github.io/nick-me/frontend-coverage/)
+[![Frontend Quality Gate Status](https://img.shields.io/sonar/quality_gate/NickMe_frontend?server=https%3A%2F%2Fsonarcloud.io&logo=sonarcloud&label=Frontend%20quality%20gate)](https://sonarcloud.io/summary/new_code?id=NickMe_frontend)
+
 [Backend coverage report](https://wilzwert.github.io/nick-me/backend-coverage/)
+
+[Frontend coverage report](https://wilzwert.github.io/nick-me/frontend-coverage/)
 
 ## Overview
 
