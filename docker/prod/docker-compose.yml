@@ -1,0 +1,31 @@
+# See .env to set useful environment vars
+services:
+  app-prod:
+    build:
+      context: ../../
+      dockerfile: docker/prod/frankenphp/Dockerfile
+      target: frankenphp_prod
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        APP_USER: ${APP_USER:-symfony}
+    container_name: "${APP_NAME}-web-prod"
+    restart: unless-stopped
+    user: ${APP_USER:-symfony}
+
+    # comment the following line in production, it allows to have nice human-readable logs in dev
+    tty: true
+
+
+      # macOS (UNTESTED): it seems that to allow Testcontainers to create containers, the docker API should be exposed through TCP
+      # in Docker Desktop
+      # Then the DOCKER_HOST var below should be set (change port if necessary)
+      # DOCKER_HOST: tcp://host.docker.internal:2375
+
+    ports:
+      - "8082:80"   # FrankenPHP
+    networks:
+      - app
+networks:
+  app:
+    driver: bridge

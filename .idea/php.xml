@@ -181,6 +181,7 @@
       <path value="$PROJECT_DIR$/backend/vendor/symfony/twig-bridge" />
       <path value="$PROJECT_DIR$/backend/vendor/symfony/twig-bundle" />
       <path value="$PROJECT_DIR$/backend/vendor/symfony/doctrine-messenger" />
+      <path value="$PROJECT_DIR$/backend/vendor/runtime/frankenphp-symfony" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

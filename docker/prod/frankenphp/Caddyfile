@@ -1,0 +1,37 @@
+{
+	debug
+	skip_install_trust
+	log {
+		output stdout
+		format console
+	}
+    frankenphp
+    auto_https off
+    admin off
+}
+:80 {
+    root * /app/public
+
+    encode zstd br gzip
+
+	file_server {
+		hide *.php
+	}
+
+	# FrankenPHP + Symfony
+    frankenphp {
+        # Worker mode
+        worker {
+            # Symfony command
+            command php /app/public/index.php
+            # workers count
+            num 4
+        }
+
+        # Env vars
+        env APP_DEBUG=0
+    }
+
+    # Fallback to index.php (Symfony Symfony)
+    try_files {path} /index.php
+}
