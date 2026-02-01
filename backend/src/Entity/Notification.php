@@ -39,8 +39,6 @@ class Notification
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $statusUpdatedAt;
 
-    private array $notificationLogs;
-
     public function __construct(
         NotificationType $type,
         string $recipientEmail,

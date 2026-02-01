@@ -15,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NotificationLogRepository extends ServiceEntityRepository implements NotificationLogRepositoryInterface
 {
-    public function __construct(ManagerRegistry $managerRegistry, EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct($managerRegistry, NotificationLog::class);
     }
