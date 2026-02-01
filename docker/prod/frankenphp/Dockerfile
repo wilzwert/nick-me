@@ -18,10 +18,8 @@ ENV UID=${UID} \
 RUN addgroup --gid ${GID} ${APP_USER} \
  && adduser --uid ${UID} --gid ${GID} --disabled-password --gecos "" ${APP_USER}
 
-RUN chown -R ${APP_USER}:${APP_USER} /app
-
-RUN mkdir /app/var \
-    && chown -R ${APP_USER}:${APP_USER} /app/var
+RUN mkdir ./var \
+    && chown -R ${APP_USER}:${APP_USER} ./var
 
 # allows startup even if running as non-root user
 # otherwise caddy will e.g. try to create a certificate in /data/caddy which is not writable as non-root by default
@@ -38,7 +36,7 @@ RUN install-php-extensions \
     amqp
 
 # Caddyfile
-COPY --link docker/prod/frankenphp/Caddyfile /etc/caddy/Caddyfile
+# COPY --link docker/prod/frankenphp/Caddyfile /etc/frankenphp/Caddyfile
 
 HEALTHCHECK --start-period=60s CMD curl -f http://localhost:2019/metrics || exit 1
 
@@ -50,20 +48,33 @@ ENV XDEBUG_MODE=off \
     FRANKENPHP_CONFIG="worker ./public/index.php" \
     APP_RUNTIME=Runtime\FrankenPhpSymfony\Runtime
 
+WORKDIR /app
+
 # Configure PHP
 COPY --link docker/prod/frankenphp/php.ini-prod /usr/local/etc/php/php.ini
 
-COPY backend/ /app/
-COPY backend/composer.json backend/composer.lock /app/
+COPY backend/composer.json backend/composer.lock ./
 
-RUN composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+RUN composer install --no-progress --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+
+RUN composer dump-autoload --classmap-authoritative --no-dev
+
+COPY backend/ ./
+
+RUN pwd \
+    && ls -lah \
+    && ls -lah bin
 
 COPY --link docker/prod/frankenphp/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/
 
+RUN chown -R ${APP_USER}:${APP_USER} ./
+
 USER ${APP_USER}
 
-ENV FRANKENPHP_CONFIG="worker /app/public/index.php"
+ENV FRANKENPHP_CONFIG="worker /app/public/index.php 42"
+ENV MAX_REQUESTS=200
 ENV APP_RUNTIME="Runtime\\FrankenPhpSymfony\\Runtime"
-ENV SERVER_NAME=localhost
+ENV SERVER_NAME=":80"
+ENV APP_DEBUG=0
 
 EXPOSE 80

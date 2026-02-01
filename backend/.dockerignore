@@ -1,0 +1,12 @@
+/.env.*
+/config/secrets/prod/prod.decrypt.private.php
+/public/uploads/
+/var/*
+/phpunit.xml
+/.phpunit.cache/
+/coverage
+phpstan.neon
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+.scannerwork
+resources
