@@ -18,14 +18,13 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 readonly class GetWord implements GetWordInterface
 {
     /**
-     * @var GrammaticalRoleServiceInterface
+     * @var array<string, GrammaticalRoleServiceInterface<GrammaticalRole>>
      */
     private array $services;
 
     /**
-     * @template T of GrammaticalRole
      *
-     * @param GrammaticalRoleServiceInterface $services
+     * @param iterable<GrammaticalRoleServiceInterface<GrammaticalRole>> $services
      */
     public function __construct(
         #[AutowireIterator('app.word_type_data_service')]

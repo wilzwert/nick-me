@@ -181,13 +181,14 @@
       <path value="$PROJECT_DIR$/backend/vendor/symfony/twig-bridge" />
       <path value="$PROJECT_DIR$/backend/vendor/symfony/twig-bundle" />
       <path value="$PROJECT_DIR$/backend/vendor/symfony/doctrine-messenger" />
+      <path value="$PROJECT_DIR$/backend/vendor/runtime/frankenphp-symfony" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
     <interpreters>
       <interpreter id="29ffc7a3-5aef-4524-862a-dde7d58477ff" name="app" home="docker-compose://DATA" auto="false" debugger_id="php.debugger.XDebug">
         <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_COMPOSE_SERVICE_NAME="app" DOCKER_REMOTE_PROJECT_PATH="/opt/project">
-          <type_data command="EXEC" />
+          <type_data command="RUN" />
           <dockerComposeConfigurationPaths>
             <item value="$PROJECT_DIR$/docker/dev/docker-compose.yml" />
           </dockerComposeConfigurationPaths>
@@ -270,8 +271,8 @@
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <phpunit_by_interpreter interpreter_id="29ffc7a3-5aef-4524-862a-dde7d58477ff" custom_loader_path="/app/vendor/autoload.php" phpunit_phar_path="" />
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/backend/vendor/autoload.php" />
+      <phpunit_by_interpreter interpreter_id="29ffc7a3-5aef-4524-862a-dde7d58477ff" custom_loader_path="/app/vendor/autoload.php" phpunit_phar_path="" />
     </phpunit_settings>
   </component>
   <component name="Psalm">

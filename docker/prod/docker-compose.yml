@@ -1,0 +1,72 @@
+# This file may be used to "test" prod build locally
+# It must not be used in production because deployment is done in a GitHub workflow
+
+# ================================
+# ANCHORS
+# ================================
+x-worker-base: &worker-base
+  build:
+    context: ../../
+    dockerfile: docker/prod/worker/Dockerfile
+    args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        APP_USER: ${APP_USER:-symfony}
+  env_file:
+    - .env
+  environment:
+    APP_ENV: consumer
+  restart: unless-stopped
+  networks:
+    - app
+  healthcheck:
+    test: ''
+    disable: true
+
+# See .env to set useful environment vars
+services:
+  app-prod:
+    env_file:
+      - .env
+    build:
+      context: ../../
+      dockerfile: docker/prod/frankenphp/Dockerfile
+      target: frankenphp_prod
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        APP_USER: ${APP_USER:-symfony}
+    environment:
+      - "SERVER_NAME=:80"
+    container_name: "${APP_NAME}-web-prod"
+    restart: unless-stopped
+    user: ${APP_USER:-symfony}
+    # volumes:
+    #  - ./frankenphp/Caddyfile:/etc/frankenphp/Caddyfile
+
+    # comment the following line in production, it allows to have nice human-readable logs in dev
+    tty: true
+
+
+      # macOS (UNTESTED): it seems that to allow Testcontainers to create containers, the docker API should be exposed through TCP
+      # in Docker Desktop
+      # Then the DOCKER_HOST var below should be set (change port if necessary)
+      # DOCKER_HOST: tcp://host.docker.internal:2375
+
+    ports:
+      - "8082:80"   # FrankenPHP
+    networks:
+      - app
+  consumer-async:
+    container_name: "${APP_NAME}-prod-consumer-async"
+    <<: *worker-base
+    command: [ 'php', 'bin/console', 'messenger:consume', 'async', '-vv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000' ]
+
+  consumer-failed:
+    container_name: "${APP_NAME}-prod-consumer-failed"
+    <<: *worker-base
+    command: [ 'php', 'bin/console', 'messenger:consume', 'failed', '-vv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000' ]
+
+networks:
+  app:
+    driver: bridge

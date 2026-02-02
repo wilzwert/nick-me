@@ -2,7 +2,6 @@
 
 # ================================
 # ANCHORS
-# TODO  x-worker-base will be used when async workers are implemented
 # ================================
 x-worker-base: &worker-base
   build:
@@ -79,7 +78,7 @@ services:
     restart: unless-stopped
     environment:
       RABBITMQ_DEFAULT_USER: ${APP_NAME}
-      RABBITMQ_DEFAULT_PASS: ${AMPQ_PASSWORD}
+      RABBITMQ_DEFAULT_PASS: ${AMQP_PASSWORD}
     ports:
       - "15673:15672"
     volumes:
@@ -139,9 +138,18 @@ services:
       # and then set DOCKER_HOST env variable, although it's not recommended
       - /var/run/docker.sock:/var/run/docker.sock:rw
     environment:
-      - XDEBUG_MODE=debug
-      - XDEBUG_START_WITH_REQUEST=yes
-      - XDEBUG_CONFIG=client_host=host.docker.internal
+      XDEBUG_MODE: debug
+      XDEBUG_START_WITH_REQUEST: yes
+      XDEBUG_CONFIG=client_host: host.docker.internal
+      POSTGRES_HOST: ${APP_NAME}-db
+      POSTGRES_DB: ${APP_NAME}
+      POSTGRES_USER: ${APP_NAME}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      AMQP_HOST: ${APP_NAME}-ampq
+      AMQP_VHOST: %2f
+      AMQP_USER: ${APP_NAME}
+      AMQP_PASSWORD: ${AMQP_PASSWORD}
 
     # comment the following line in production, it allows to have nice human-readable logs in dev
     tty: true

@@ -1,7 +1,7 @@
 import { ApiError } from '../domain/model/ApiError';
 import { useAltchaStore } from '../presentation/stores/altcha.store';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? '';
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '';
 
 /**
  * Sends a contact message

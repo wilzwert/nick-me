@@ -65,8 +65,6 @@ ENV XDEBUG_MODE=off
 
 VOLUME /app/var/
 
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-
 RUN set -eux; \
 	install-php-extensions \
 		xdebug \

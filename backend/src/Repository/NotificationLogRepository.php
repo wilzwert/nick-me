@@ -15,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NotificationLogRepository extends ServiceEntityRepository implements NotificationLogRepositoryInterface
 {
-    public function __construct(ManagerRegistry $managerRegistry, EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct($managerRegistry, NotificationLog::class);
     }
@@ -26,16 +26,6 @@ class NotificationLogRepository extends ServiceEntityRepository implements Notif
     public function findByNotificationId(int $notificationId): array
     {
         return parent::findBy(['notification' => $notificationId]);
-    }
-
-    /**
-     * @param int $notificationId
-     * @param string $sender
-     * @return array<NotificationLog>
-     */
-    public function findByNotificationIdAndSender(int $notificationId, string $sender): array
-    {
-        return parent::findBy(['notification' => $notificationId, 'sender' => $sender]);
     }
 
     /**

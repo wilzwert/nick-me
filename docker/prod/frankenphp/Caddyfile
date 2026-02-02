@@ -1,0 +1,23 @@
+{
+	debug
+	skip_install_trust
+	log {
+		output stdout
+		format console
+	}
+    auto_https off
+    admin off
+}
+:80 {
+    root * /app/public
+
+    encode zstd br gzip
+
+    # static files
+    file_server {
+        hide **/*.env **/.git* **/secret/*
+    }
+
+    # Fallback to index.php (Symfony Symfony)
+    try_files {path} /index.php
+}
