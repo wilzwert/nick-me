@@ -1,0 +1,41 @@
+# Frontend
+# Logs
+frontend/logs
+frontend/*.log
+frontend/.env
+frontend/.env.*
+
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+frontend/*.local
+
+# coverage and tests output
+frontend/coverage
+# Sonar
+frontend/sonar-project.properties
+frontend/.scannerwork
+frontend/sonar.bat
+
+# Editor directories and files
+frontend/.vscode/*
+frontend/!.vscode/extensions.json
+frontend/.idea
+
+# Playwright
+frontend//playwright-report/
+
+# Backend
+backend/config/secrets/prod/prod.decrypt.private.php
+backend/public/uploads/
+backend/phpunit.xml
+backend/.phpunit.cache/
+backend/coverage
+backend/phpstan.neon
+backend/.php-cs-fixer.php
+backend/.php-cs-fixer.cache
+
+# Sonar
+backend/sonar-project.properties
+backend/.scannerwork
+backend/sonar.bat

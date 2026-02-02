@@ -1,3 +1,6 @@
+# This file may be used to "test" prod build locally
+# It must not be used in production because deployment is done in a GitHub workflow
+
 # ================================
 # ANCHORS
 # ================================
@@ -14,6 +17,8 @@ x-worker-base: &worker-base
   environment:
     APP_ENV: consumer
   restart: unless-stopped
+  networks:
+    - app
   healthcheck:
     test: ''
     disable: true
