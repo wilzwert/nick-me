@@ -5,7 +5,7 @@ import type { OffenseLevel } from '../domain/model/OffenseLevel';
 import type { WordRole } from '../domain/model/Word';
 import { ApiError } from '../domain/model/ApiError';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? '';
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '';
 
 /**
  * Generates a new complete Nick
@@ -21,7 +21,7 @@ export async function generateNick(params: {
   if (!altchaToken) {
     throw new Error('Altcha token is required to replace word');
   }
-
+  
   const query = new URLSearchParams({
     gender: params.gender,
     offenseLevel: String(params.offenseLevel)

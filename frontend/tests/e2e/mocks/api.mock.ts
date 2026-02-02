@@ -9,7 +9,6 @@ export async function mockApi(page: Page) {
     const url = route.request().url()
     const method = route.request().method()
    
-    console.log('Mocking API request:', method, url);
     if (url.includes('/nick?') && method === 'GET') {
       return route.fulfill(nickMocks.response());
     }

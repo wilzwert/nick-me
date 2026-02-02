@@ -1,5 +1,5 @@
 import { type Nick } from '../../domain/model/Nick';
-import { ActionIcon, Button, Modal, Tooltip } from '@mantine/core';
+import { Button, Modal, Tooltip } from '@mantine/core';
 import { IconReport } from '@tabler/icons-react';
 import { useState } from 'react';
 import { ReportForm } from './ReportForm';
