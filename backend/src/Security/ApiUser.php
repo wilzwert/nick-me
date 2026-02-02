@@ -25,7 +25,6 @@ readonly class ApiUser implements UserInterface
         return $this->roles;
     }
 
-    #[\Deprecated]
     public function eraseCredentials(): void
     {
     }

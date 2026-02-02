@@ -29,16 +29,6 @@ class NotificationLogRepository extends ServiceEntityRepository implements Notif
     }
 
     /**
-     * @param int $notificationId
-     * @param string $sender
-     * @return array<NotificationLog>
-     */
-    public function findByNotificationIdAndSender(int $notificationId, string $sender): array
-    {
-        return parent::findBy(['notification' => $notificationId, 'sender' => $sender]);
-    }
-
-    /**
      * @return array<NotificationLog>
      */
     public function findByNotificationIdAndSenderAndStatus(int $notificationId, string $sender, NotificationLogStatus $status): array

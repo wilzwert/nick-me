@@ -19,13 +19,6 @@ interface NotificationLogRepositoryInterface
     /**
      * @param int $notificationId
      * @param string $sender
-     * @return array<NotificationLog>
-     */
-    public function findByNotificationIdAndSender(int $notificationId, string $sender): array;
-
-    /**
-     * @param int $notificationId
-     * @param string $sender
      * @param NotificationLogStatus $status
      * @return array<NotificationLog>
      */
