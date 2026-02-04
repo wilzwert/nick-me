@@ -1,5 +1,12 @@
-# This file may be used to "test" prod build locally
-# It must not be used in production because deployment is done in a GitHub workflow
+# This file may be used to "docker compose up" a prod build locally
+# Build testing should only be done locally, on a dev machine
+# It relies on the dev local environment that must be setup beforehand
+# It only mimics the one in prod environment
+# It does not provide dependencies such as redis, rabbitmq, postgres or mailer : it is design to use local dev containers
+# that should exist within your dev environment (see /docker/dev/docker-compose.yml)
+# The .env file is provided with some default config very similar to the dev environment
+# In case a prod build must be done locally as a last resort, then you should use docker build/push anyway, not docker compose
+# and in any case the containers env vars should be set in the prod environment/server, not locally on build
 
 # ================================
 # ANCHORS
@@ -19,6 +26,7 @@ x-worker-base: &worker-base
   restart: unless-stopped
   networks:
     - app
+    - nick-me_db
   healthcheck:
     test: ''
     disable: true
@@ -41,18 +49,6 @@ services:
     container_name: "${APP_NAME}-web-prod"
     restart: unless-stopped
     user: ${APP_USER:-symfony}
-    # volumes:
-    #  - ./frankenphp/Caddyfile:/etc/frankenphp/Caddyfile
-
-    # comment the following line in production, it allows to have nice human-readable logs in dev
-    tty: true
-
-
-      # macOS (UNTESTED): it seems that to allow Testcontainers to create containers, the docker API should be exposed through TCP
-      # in Docker Desktop
-      # Then the DOCKER_HOST var below should be set (change port if necessary)
-      # DOCKER_HOST: tcp://host.docker.internal:2375
-
     ports:
       - "8082:80"   # FrankenPHP
     networks:
@@ -68,5 +64,18 @@ services:
     command: [ 'php', 'bin/console', 'messenger:consume', 'failed', '-vv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000' ]
 
 networks:
+  db:
+    driver: bridge
+    external: true
   app:
     driver: bridge
+    external: true
+  messenger:
+    driver: bridge
+    external: true
+  mail:
+    driver: bridge
+    external: true
+  cache:
+    driver: bridge
+    external: true

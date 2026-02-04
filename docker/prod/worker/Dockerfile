@@ -50,3 +50,9 @@ COPY backend/composer.json backend/composer.lock ./
 RUN composer install --no-progress --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 RUN composer dump-autoload --classmap-authoritative --no-dev
+
+RUN chown -Rf ${APP_USER}:${APP_USER} ./
+
+RUN ls -la ./
+
+USER ${APP_USER}
