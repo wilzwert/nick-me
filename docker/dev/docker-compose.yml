@@ -7,6 +7,8 @@ x-worker-base: &worker-base
   build:
     context: ./
     dockerfile: worker/Dockerfile
+  env_file:
+    - .env
   environment:
     APP_ENV: consumer
   volumes:
@@ -131,26 +133,18 @@ services:
 
 
       # bad performance when mounting vendor on Windows machines
-      - ../../backend/vendor:/app/vendor:delegated
+      # - ../../backend/vendor:/app/vendor:delegated
       # Windows (WSL) / Linux
       # Mounting docker socket is necessary to enable TestContainers to create containers
       # On windows hosts, you may be able to comment this line, expose the docker API via TCP in Docker Desktop
       # and then set DOCKER_HOST env variable, although it's not recommended
       - /var/run/docker.sock:/var/run/docker.sock:rw
+    env_file:
+      - .env
     environment:
       XDEBUG_MODE: debug
       XDEBUG_START_WITH_REQUEST: yes
       XDEBUG_CONFIG=client_host: host.docker.internal
-      POSTGRES_HOST: ${APP_NAME}-db
-      POSTGRES_DB: ${APP_NAME}
-      POSTGRES_USER: ${APP_NAME}
-      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      AMQP_HOST: ${APP_NAME}-ampq
-      AMQP_VHOST: %2f
-      AMQP_USER: ${APP_NAME}
-      AMQP_PASSWORD: ${AMQP_PASSWORD}
-
     # comment the following line in production, it allows to have nice human-readable logs in dev
     tty: true
 
@@ -177,12 +171,12 @@ services:
   consumer-async:
     container_name: "${APP_NAME}-consumer-async"
     <<: *worker-base
-    command: ['php', 'bin/console', 'messenger:consume', 'async', '-vv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000']
+    command: ['php', 'bin/console', 'messenger:consume', 'async', '-vvv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000']
 
   consumer-failed:
     container_name: "${APP_NAME}-consumer-failed"
     <<: *worker-base
-    command: ['php', 'bin/console', 'messenger:consume', 'failed', '-vv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000']
+    command: ['php', 'bin/console', 'messenger:consume', 'failed', '-vvv', '--memory-limit=128M', '--time-limit=3600', '--limit=1000']
 
 volumes:
   postgresql_data:

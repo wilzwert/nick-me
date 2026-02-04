@@ -34,6 +34,7 @@ backend/coverage
 backend/phpstan.neon
 backend/.php-cs-fixer.php
 backend/.php-cs-fixer.cache
+backend/var/*
 
 # Sonar
 backend/sonar-project.properties
