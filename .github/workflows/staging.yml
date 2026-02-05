@@ -1,0 +1,13 @@
+name: Staging
+
+on:
+  # Staging should be able to run manually
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
