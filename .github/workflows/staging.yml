@@ -63,6 +63,7 @@ jobs:
       - name: Start FrankenPHP container
         run: |
           docker run -d \
+            --network ${{ job.container.network }}
             --name nickme-backend-ci \
             --env APP_ENV="prod" \
             --env APP_DEBUG="0" \
