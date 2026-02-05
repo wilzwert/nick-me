@@ -35,9 +35,6 @@ RUN install-php-extensions \
     zip \
     amqp
 
-# Caddyfile
-# COPY --link docker/prod/frankenphp/Caddyfile /etc/frankenphp/Caddyfile
-
 HEALTHCHECK --start-period=60s CMD curl -f http://localhost:2019/metrics || exit 1
 
 

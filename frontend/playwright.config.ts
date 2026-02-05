@@ -30,7 +30,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
-    baseURL: process.env.BASE_URL || 'http://localhost:5173',
+    baseURL: process.env.BASE_URL || 'http://localhost:5174',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
@@ -76,13 +76,13 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: 
-    process.env.MOCK_API === 'true'
-    ? {
-        command: 'npm run dev',
-        url: process.env.BASE_URL || 'http://localhost:5173',
-        reuseExistingServer: !process.env.CI,
-      }
-    : undefined
+  webServer: {
+    command: 'npm run dev -- --port 5174',
+    url: process.env.BASE_URL || 'http://localhost:5174',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+    stdout: 'pipe',
+    stderr: 'pipe',
+  }
   ,
 });
