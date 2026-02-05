@@ -44,6 +44,11 @@ RUN pecl install amqp \
 
 RUN docker-php-ext-install intl
 
+# entrypoint
+COPY --link --chmod=755 docker/prod/worker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chown ${APP_USER}:${APP_USER} /usr/local/bin/docker-entrypoint \
+    && chmod +x /usr/local/bin/docker-entrypoint
+
 COPY backend/ ./
 COPY backend/composer.json backend/composer.lock ./
 
@@ -56,3 +61,5 @@ RUN chown -Rf ${APP_USER}:${APP_USER} ./
 RUN ls -la ./
 
 USER ${APP_USER}
+
+ENTRYPOINT ["docker-entrypoint"]

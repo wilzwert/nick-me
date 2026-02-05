@@ -1,0 +1,131 @@
+name: Staging
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  staging:
+
+    runs-on: ubuntu-latest
+
+    env:
+      APP_ENV: "staging"
+      APP_SECRET: "appsecret"
+      ALTCHA_SECRET_KEY: "altchakey"
+      DATABASE_URL: "postgres://test:test@localhost:5432/testdb?serverVersion=16&charset=utf8"
+      MESSENGER_TRANSPORT_DSN: "amqp://guest:guest@localhost:5672"
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+      rabbitmq:
+        image: rabbitmq:4-management
+        ports:
+          - 5672:5672
+          - 15672:15672
+        options: >-
+          --health-cmd="rabbitmqctl status"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build FrankenPHP prod image
+        working-directory: docker/prod
+        run: |
+          docker build \
+            --progress=plain --no-cache \
+            --build-arg UID=2007 --build-arg GID=2007 --build-arg APP_USER=nickme \
+            -f frankenphp/Dockerfile \
+            -t nickme-app:ci \
+            ../../
+
+      - name: Start FrankenPHP container
+        run: |
+          docker run -d \
+            --name nickme-backend-ci \
+            --env APP_ENV="prod" \
+            --env APP_DEBUG="0" \
+            --env APP_SECRET="appsecret" \
+            --env ALTCHA_SECRET_KEY="altchasecret" \
+            --env DATABASE_URL="postgres://test:test@localhost:5432/testdb?serverVersion=16&charset=utf8" \
+            --env MESSENGER_TRANSPORT_DSN="amqp://guest:guest@localhost:5672" \
+            nickme-app:ci
+
+      - name: Temporary env print
+        run: |
+          docker run --rm my-symfony-app:ci ls -la src
+
+      - name: Run migrations & warmup cache & load test data
+        run: |
+          docker exec nickme-backend-ci php bin/console cache:warmup
+          docker exec nickme-backend-ci php bin/console doctrine:migrations:migrate --no-interaction
+          docker exec nickme-backend-ci php bin/console app:data:load
+
+      - name: Wait for backend
+        run: |
+          for i in {1..30}; do
+            curl -sf http://localhost:80/altcha && exit 0
+            echo "Waiting for backend..."
+            sleep 2
+          done
+          echo "Backend not reachable"
+          exit 1
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install playwright
+        working-directory: frontend
+        run: npx playwright install --with-deps
+
+      - name: Run E2E tests
+        working-directory: frontend
+        env:
+          VITE_API_BASE_URL: http://localhost:80
+          VITE_ALTCHA_CHALLENGE_URL: http://localhost:80/altcha
+          VITE_ALTCHA_TOKEN_EXPIRY_SECONDS: 60
+          VITE_ALTCHA_TEST: true
+          MOCK_API: false
+          CI: true
+        run: |
+          npm run test:e2e
+          
+
+      - name: Show backend logs
+        if: failure()
+        working-directory: backend
+        run: docker logs nickme-backend-ci
+
+      - name: Stop FrankenPHP
+        if: always()
+        run: |
+          echo "➡️ Stopping FrankenPHP..."
+          kill $FRANKENPHP_PID
+          wait $FRANKENPHP_PID || true
