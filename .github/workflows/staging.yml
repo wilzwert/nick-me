@@ -72,10 +72,6 @@ jobs:
             --env MESSENGER_TRANSPORT_DSN="amqp://guest:guest@localhost:5672" \
             nickme-app:ci
 
-      - name: Temporary env print
-        run: |
-          docker run --rm my-symfony-app:ci ls -la src
-
       - name: Run migrations & warmup cache & load test data
         run: |
           docker exec nickme-backend-ci php bin/console cache:warmup
