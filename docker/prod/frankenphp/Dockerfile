@@ -52,11 +52,11 @@ COPY --link docker/prod/frankenphp/php.ini-prod /usr/local/etc/php/php.ini
 
 COPY backend/composer.json backend/composer.lock ./
 
+COPY backend/ ./
+
 RUN composer install --no-progress --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 RUN composer dump-autoload --classmap-authoritative --no-dev
-
-COPY backend/ ./
 
 RUN pwd \
     && ls -lah \
