@@ -68,8 +68,8 @@ jobs:
             --env APP_DEBUG="0" \
             --env APP_SECRET="appsecret" \
             --env ALTCHA_SECRET_KEY="altchasecret" \
-            --env DATABASE_URL="postgres://test:test@localhost:5432/testdb?serverVersion=16&charset=utf8" \
-            --env MESSENGER_TRANSPORT_DSN="amqp://guest:guest@localhost:5672" \
+            --env DATABASE_URL="postgres://test:test@postgres:5432/testdb?serverVersion=16&charset=utf8" \
+            --env MESSENGER_TRANSPORT_DSN="amqp://guest:guest@rabbitmq:5672" \
             nickme-app:ci
 
       - name: Run migrations & warmup cache & load test data
