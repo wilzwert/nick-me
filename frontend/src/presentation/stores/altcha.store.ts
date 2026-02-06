@@ -3,6 +3,8 @@ import { create } from 'zustand';
 const ALTCHA_ENABLED = import.meta.env.VITE_ALTCHA_ENABLED === 'true';
 const ALTCHA_TOKEN_EXPIRY_SECONDS = parseInt(import.meta.env.VITE_ALTCHA_TOKEN_EXPIRY_SECONDS);
 
+console.log(ALTCHA_ENABLED);
+
 type AltchaToken = {
   payload: string;
   expiresAt: number;
@@ -37,12 +39,14 @@ export const useAltchaStore = create<AltchaStore>((set, get) => ({
     } 
   },
   setCallback: (callback: (() => void) | null) => {
+    console.log('setting altcha callback');
     if (!callback) {
       set({ callback: null });
       return;
     }
 
     if(!ALTCHA_ENABLED) {
+      console.log('bypassing disabled Altcha');
       set({ callback: null });
       callback();
       return;
