@@ -3,7 +3,6 @@ import 'altcha'
 
 const ALTCHA_CHALLENGE_URL = import.meta.env.VITE_ALTCHA_CHALLENGE_URL ?? '';
 const VITE_ALTCHA_TOKEN_EXPIRY_SECONDS = parseInt(import.meta.env.VITE_ALTCHA_TOKEN_EXPIRY_SECONDS);
-const ALTCHA_TEST = import.meta.env.VITE_ALTCHA_TEST === 'true';
 
 export function AltchaModal() {
   const setPayload = useAltchaStore(s => s.setPayload);
@@ -19,5 +18,5 @@ export function AltchaModal() {
   if (!pending) {
     return null;
   }
-  return <altcha-widget auto="onload" expire={VITE_ALTCHA_TOKEN_EXPIRY_SECONDS*1000} test={ALTCHA_TEST} onstatechange={handleStateChange} challengeurl={ALTCHA_CHALLENGE_URL} credentials='same-origin'></altcha-widget>;
+  return <altcha-widget auto="onload" expire={VITE_ALTCHA_TOKEN_EXPIRY_SECONDS*1000} onstatechange={handleStateChange} challengeurl={ALTCHA_CHALLENGE_URL} credentials='same-origin'></altcha-widget>;
 }

@@ -9,6 +9,7 @@
 parameters:
     base_data.subject_csv: '%kernel.project_dir%/resources/data/subject.csv'
     base_data.qualifier_csv: '%kernel.project_dir%/resources/data/qualifier.csv'
+    altcha.enabled: '%env(bool:ALTCHA_ENABLED)%'
     altcha.secret_key: '%env(ALTCHA_SECRET_KEY)%'
     altcha.header_payload_key: 'X-Altcha-Payload'
     altcha.token_expiry_seconds: '%env(ALTCHA_TOKEN_EXPIRY_SECONDS)%'
