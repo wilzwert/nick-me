@@ -9,14 +9,14 @@ on:
       - completed
 
 jobs:
-  deployment-backend:
+  deploy-backend:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment: production
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Login to registry
         run: |
@@ -29,6 +29,8 @@ jobs:
         run: |
           docker build \
             -f docker/prod/frankenphp/Dockerfile \
+            --progress=plain --no-cache \
+            --build-arg UID=${{ secrets.DOCKER_BUILD_UID }} --build-arg GID=${{ secrets.DOCKER_BUILD_GID }} --build-arg APP_USER=${{ secrets.DOCKER_BUILD_USER }} \
             -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest \
             -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:sha-${{ github.sha }} \
             .
@@ -43,39 +45,66 @@ jobs:
         run: |
           docker build \
             -f docker/prod/worker/Dockerfile \
-            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest \
-            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:sha-${{ github.sha }} \
+            --progress=plain --no-cache \
+            --build-arg UID=${{ secrets.DOCKER_BUILD_UID }} --build-arg GID=${{ secrets.DOCKER_BUILD_GID }} --build-arg APP_USER=${{ secrets.DOCKER_BUILD_USER }} \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_CONSUMER_IMAGE_NAME }}:latest \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_CONSUMER_IMAGE_NAME }}:sha-${{ github.sha }} \
             .
 
       - name: Push consumer Docker image
         run: |
-          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest
-          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:sha-${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_CONSUMER_IMAGE_NAME }}:latest
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_CONSUMER_IMAGE_NAME }}:sha-${{ github.sha }}
 
-      - name: Deploy
+      - name: Deploy backend
         uses: appleboy/ssh-action@v1.2.4
         with:
-            host: ${{ vars.BACKEND_HOST }}
-            port: ${{ secrets.BACKEND_HOST_SSH_PORT }}
-            username: ${{ secrets.BACKEND_HOST_SSH_USERNAME }}
-            key: ${{ secrets.BACKEND_HOST_SSH_KEY }}
+            host: ${{ secrets.HOST }}
+            port: ${{ secrets.HOST_SSH_PORT }}
+            username: ${{ secrets.HOST_SSH_USERNAME }}
+            key: ${{ secrets.HOST_SSH_KEY }}
             script: |
               cd /opt/deploy-tools
-              ./deploy.sh myjobs-backend sha-${{ github.sha }}
+              ./deploy.sh ${{ secrets.HOST_BACKEND_APP_NAME }} sha-${{ github.sha }}
 
   deploy-frontend:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend
     environment: production
-    env:
-      VITE_API_BASE_URL: ${{ vars.BACKEND_API_URL }}
-      VITE_ALTCHA_CHALLENGE_URL: ${{ vars.BACKEND_API_URL }}/altcha
-      API_SECURE: ${{ vars.BACKEND_API_SECURE }}
-      ALTCHA_ENABLED: 'true'
-
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Login to registry
+        run: |
+          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY_HOST }} \
+            -u "${{ secrets.REGISTRY_USERNAME }}" \
+            --password-stdin
+
+      # Build + tag frontend Docker image
+      - name: Build frontend Docker image
+        run: |
+          docker build \
+            -f docker/prod/frontend/Dockerfile \
+            --progress=plain --no-cache \
+            --build-arg UID=${{ secrets.DOCKER_BUILD_UID }} --build-arg GID=${{ secrets.DOCKER_BUILD_GID }} --build-arg APP_USER=${{ secrets.DOCKER_BUILD_USER }} \
+            --build-arg VITE_API_BASE_URL=${{ secrets.API_BASE_URL }} --build-arg VITE_ALTCHA_CHALLENGE_URL=${{ secrets.ALTCHA_CHALLENGE_URL }} \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.FRONTEND_IMAGE_NAME }}:latest \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.FRONTEND_IMAGE_NAME }}:sha-${{ github.sha }} \
+            .
+
+      - name: Push frontend Docker image
+        run: |
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.FRONTEND_IMAGE_NAME }}:latest
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.FRONTEND_IMAGE_NAME }}:sha-${{ github.sha }}
+
+      - name: Deploy frontend
+        uses: appleboy/ssh-action@v1.2.4
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.HOST_SSH_PORT }}
+          username: ${{ secrets.HOST_SSH_USERNAME }}
+          key: ${{ secrets.HOST_SSH_KEY }}
+          script: |
+            cd /opt/deploy-tools
+            ./deploy.sh ${{ secrets.HOST_FRONTEND_APP_NAME }} sha-${{ github.sha }}
