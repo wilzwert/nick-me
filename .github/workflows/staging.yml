@@ -64,6 +64,7 @@ jobs:
         run: |
           docker run -d \
             --network ${{ job.container.network }} \
+            -p 80:80 \
             --name nickme-backend-ci \
             --env APP_ENV="prod" \
             --env APP_DEBUG="0" \
@@ -119,10 +120,3 @@ jobs:
         if: failure()
         working-directory: backend
         run: docker logs nickme-backend-ci
-
-      - name: Stop FrankenPHP
-        if: always()
-        run: |
-          echo "➡️ Stopping FrankenPHP..."
-          kill $FRANKENPHP_PID
-          wait $FRANKENPHP_PID || true
