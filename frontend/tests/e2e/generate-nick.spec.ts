@@ -2,6 +2,7 @@ import { test } from './fixtures/apiError';
 import { expect } from '@playwright/test';
 
 test('nick is generated and displayed', async ({ page, autoApiMock }) => {
+    console.log('API_BASE_URL', process.env.VITE_API_BASE_URL);
     await page.goto('/')
     await page.getByRole('radio', { name: 'Neutre' }).check();
     const slider = page.getByRole('slider');

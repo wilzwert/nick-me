@@ -109,7 +109,7 @@ jobs:
           VITE_API_BASE_URL: http://localhost:80
           VITE_ALTCHA_CHALLENGE_URL: http://localhost:80/altcha
           VITE_ALTCHA_TOKEN_EXPIRY_SECONDS: 60
-          VITE_ALTCHA_TEST: true
+          VITE_ALTCHA_TEST: false
           MOCK_API: false
           CI: true
         run: |
