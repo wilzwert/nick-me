@@ -8,7 +8,12 @@ use AltchaOrg\Altcha\ChallengeOptions;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
+ *
+ * ALTCHA is fully disabled when ALTCHA_ENABLED=false
+ * This happens typically in e2e testing in CI/Staging
+ * In that case, backend verification is bypassed and frontend does not request challenges.
  * @author Wilhelm Zwertvaegher
+ *
  */
 class AltchaService implements AltchaServiceInterface
 {
@@ -16,6 +21,8 @@ class AltchaService implements AltchaServiceInterface
         private readonly Altcha $altcha,
         #[Autowire('%altcha.token_expiry_seconds%')]
         private readonly int $altchaTokenExpirySeconds,
+        #[Autowire('%altcha.enabled%')]
+        private readonly bool $altchaEnabled,
     ) {
     }
 
@@ -32,6 +39,10 @@ class AltchaService implements AltchaServiceInterface
 
     public function verifySolution(string $data): bool
     {
+        if (!$this->altchaEnabled) {
+            return true;
+        }
+
         return $this->altcha->verifySolution($data);
     }
 }
