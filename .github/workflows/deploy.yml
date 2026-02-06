@@ -1,0 +1,81 @@
+name: Deployment
+
+on:
+  # deploy should be able to run manually or when staging succeeds
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Staging"]
+    types:
+      - completed
+
+jobs:
+  deployment-backend:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Login to registry
+        run: |
+          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY_HOST }} \
+            -u "${{ secrets.REGISTRY_USERNAME }}" \
+            --password-stdin
+
+      # Build + tag main Docker image
+      - name: Build main backend Docker image
+        run: |
+          docker build \
+            -f docker/prod/frankenphp/Dockerfile \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:sha-${{ github.sha }} \
+            .
+
+      - name: Push main backend Docker image
+        run: |
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:sha-${{ github.sha }}
+
+      # Build + tag consumer Docker image
+      - name: Build consumer Docker image
+        run: |
+          docker build \
+            -f docker/prod/worker/Dockerfile \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:sha-${{ github.sha }} \
+            .
+
+      - name: Push consumer Docker image
+        run: |
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:latest
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.BACKEND_IMAGE_NAME }}:sha-${{ github.sha }}
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.2.4
+        with:
+            host: ${{ vars.BACKEND_HOST }}
+            port: ${{ secrets.BACKEND_HOST_SSH_PORT }}
+            username: ${{ secrets.BACKEND_HOST_SSH_USERNAME }}
+            key: ${{ secrets.BACKEND_HOST_SSH_KEY }}
+            script: |
+              cd /opt/deploy-tools
+              ./deploy.sh myjobs-backend sha-${{ github.sha }}
+
+  deploy-frontend:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    environment: production
+    env:
+      VITE_API_BASE_URL: ${{ vars.BACKEND_API_URL }}
+      VITE_ALTCHA_CHALLENGE_URL: ${{ vars.BACKEND_API_URL }}/altcha
+      API_SECURE: ${{ vars.BACKEND_API_SECURE }}
+      ALTCHA_ENABLED: 'true'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
