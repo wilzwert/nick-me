@@ -1,5 +1,9 @@
 name: Deployment
 
+concurrency:
+  group: ${{ github.ref }}.deploy
+  cancel-in-progress: true
+
 on:
   # deploy should be able to run manually or when staging succeeds
   workflow_dispatch:
@@ -89,6 +93,7 @@ jobs:
             --progress=plain --no-cache \
             --build-arg UID=${{ secrets.DOCKER_BUILD_UID }} --build-arg GID=${{ secrets.DOCKER_BUILD_GID }} --build-arg APP_USER=${{ secrets.DOCKER_BUILD_USER }} \
             --build-arg VITE_API_BASE_URL=${{ secrets.API_BASE_URL }} --build-arg VITE_ALTCHA_CHALLENGE_URL=${{ secrets.ALTCHA_CHALLENGE_URL }} \
+            --build-arg ALTCHA_ENABLED=true \
             -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.FRONTEND_IMAGE_NAME }}:latest \
             -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.FRONTEND_IMAGE_NAME }}:sha-${{ github.sha }} \
             .
