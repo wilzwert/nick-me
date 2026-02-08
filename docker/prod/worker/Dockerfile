@@ -1,7 +1,41 @@
-FROM php:8.4-cli
+FROM php:8.4-cli-alpine AS build
 
-# Composer
+WORKDIR /app
+
+# Install composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# install build dependencies
+RUN apk add --no-cache --virtual .build-deps \
+        icu-dev \
+        postgresql-dev \
+        rabbitmq-c-dev \
+        zstd-dev \
+        bash \
+        git \
+        unzip \
+        autoconf \
+        g++ \
+        make \
+        pkgconf
+
+# install extensions
+RUN docker-php-ext-install pdo pdo_pgsql
+
+RUN pecl install redis \
+    && docker-php-ext-enable redis
+
+RUN pecl install amqp \
+    && docker-php-ext-enable amqp
+
+COPY backend/ ./
+COPY backend/composer.json backend/composer.lock ./
+
+RUN composer install --no-progress --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+
+RUN composer dump-autoload --classmap-authoritative --no-dev
+
+FROM php:8.4-cli-alpine AS prod
 
 WORKDIR /app
 
@@ -15,50 +49,28 @@ ENV UID=${UID} \
     APP_USER=${APP_USER} \
     XDEBUG_MODE=off
 
-# Create a symfony user to avoid working as root
-RUN addgroup --gid ${GID} ${APP_USER} \
- && adduser --uid ${UID} --gid ${GID} --disabled-password --gecos "" ${APP_USER}
+# Install minimal dependencies
+RUN apk add --no-cache \
+    libpq \
+    rabbitmq-c
 
-RUN chown -R ${APP_USER}:${APP_USER} /app
+# copy extensions
+COPY --from=build /usr/local/lib/php/extensions /usr/local/lib/php/extensions
+COPY --from=build /usr/local/etc/php/conf.d /usr/local/etc/php/conf.d
 
-RUN mkdir /app/var \
-    && chown -R ${APP_USER}:${APP_USER} /app/var
+# copy app
+COPY --from=build /app /app
 
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libicu-dev \
-    libpq-dev \
-    libssl-dev \
-    librabbitmq-dev \
-    libzstd-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN docker-php-ext-install pdo pdo_pgsql
-
-RUN pecl install redis \
-    && docker-php-ext-enable redis
-
-RUN pecl install amqp \
-    && docker-php-ext-enable amqp
-
-RUN docker-php-ext-install intl
+# Create a user to avoid working as root
+RUN addgroup -g ${GID} ${APP_USER} \
+ && adduser -u ${UID} -G ${APP_USER} -D -H -s /bin/sh ${APP_USER}
 
 # entrypoint
 COPY --link --chmod=755 docker/prod/worker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chown ${APP_USER}:${APP_USER} /usr/local/bin/docker-entrypoint \
     && chmod +x /usr/local/bin/docker-entrypoint
 
-COPY backend/ ./
-COPY backend/composer.json backend/composer.lock ./
-
-RUN composer install --no-progress --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
-
-RUN composer dump-autoload --classmap-authoritative --no-dev
-
-RUN chown -Rf ${APP_USER}:${APP_USER} ./
-
-RUN ls -la ./
+RUN chown -R ${APP_USER}:${APP_USER} /app
 
 USER ${APP_USER}
 

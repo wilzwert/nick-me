@@ -29,6 +29,8 @@ frontend//playwright-report/
 backend/config/secrets/prod/prod.decrypt.private.php
 backend/public/uploads/
 backend/phpunit.xml
+backend/.php-cs-fixer.dist.php
+backend/phpstan*
 backend/.phpunit.cache/
 backend/coverage
 backend/phpstan.neon
@@ -36,6 +38,13 @@ backend/.php-cs-fixer.php
 backend/.php-cs-fixer.cache
 backend/var/*
 backend/vendor
+backend/.env.dev
+backend/.env.local
+backend/.env.test
+backend/.env.dev.local
+backend/.gitignore
+backend/tests
+
 
 # Sonar
 backend/sonar-project.properties
