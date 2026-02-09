@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useToastStore } from '../presentation/stores/toast.store';
 import { createReport } from '../infrastructure/report.api';
 import { useCreateReport } from './createReport';
-import { createTestWrapper } from '../test/createTestWrapper';
+import { createTestWrapper } from '../../test-utils/createTestWrapper';
 
 describe('useCreateReport', () => {
   beforeEach(() => {

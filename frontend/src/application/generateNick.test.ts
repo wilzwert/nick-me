@@ -5,7 +5,7 @@ import { generateNick } from '../infrastructure/nick.api';
 import { useNickStore } from '../presentation/stores/nick.store';
 import { useNickHistoryStore } from '../presentation/stores/nick-history.store';
 import type { Nick } from '../domain/model/Nick';
-import { createTestWrapper } from '../test/createTestWrapper';
+import { createTestWrapper } from '../../test-utils/createTestWrapper';
 
 describe('useGenerateNick', () => {
   beforeEach(() => {
