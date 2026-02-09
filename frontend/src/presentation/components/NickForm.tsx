@@ -33,7 +33,7 @@ export function NickForm() {
        <Stack gap={20}>
           <Radio.Group
             name="gender"
-            label="Choisissez un genre"
+            label="Genre"
             value={criteria.gender}
           >
             <Group mt="xs" justify='center'>

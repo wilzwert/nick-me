@@ -1,27 +1,22 @@
 import { type Nick } from '../../domain/model/Nick';
-import { Button, Modal, Tooltip } from '@mantine/core';
+import { Button, Group, Text } from '@mantine/core';
 import { IconReport } from '@tabler/icons-react';
-import { useState } from 'react';
-import { ReportForm } from './ReportForm';
+import { useReportNickStore } from '../stores/report-nick.store';
 
 
 interface Props {
   nick: Nick;
+  onClick?: () => void
 }
 
-export function ReportNickButton({ nick }: Props) {
-  const [reporting, setReporting] = useState(false);
+export function ReportNickButton({ nick, onClick }: Props) {
+  const setNick = useReportNickStore(s => s.setNick);
 
   return (
     <>
-    <Button variant="subtle" size="xs" onClick={() => setReporting(true)}>
-      <Tooltip label='Signaler' withArrow position="bottom">
-          <IconReport size={16} />
-      </Tooltip>
+    <Button fullWidth variant="subtle" size="xs" onClick={() => {setNick(nick); if (onClick) onClick();}}>
+        <Group gap="xs"><IconReport size={16} /> <Text>Signaler</Text></Group>
     </Button>
-    <Modal opened={reporting} onClose={() => setReporting(false)} title={`Signaler "${nick.words.map(w => w.label).join(' ')}"`}>
-      <ReportForm onClose={() => setReporting(false)} nickId={nick.id}/>
-    </Modal>
     </>
   );
 }

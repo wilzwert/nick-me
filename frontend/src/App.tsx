@@ -10,6 +10,7 @@ import { theme } from './theme';
 import { AppLayout } from './presentation/AppLayout';
 import { AppTitle } from './presentation/components/AppTitle';
 import { ToastContainer } from './presentation/components/ToastContainer';
+import { ReportNickModal } from './presentation/components/ReportNickModal';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Nick />
         <NickHistory />
         <AltchaModal />
+        <ReportNickModal />
         <ToastContainer />
       </AppLayout>
     </MantineProvider>
