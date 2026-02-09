@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 import { config as dotenvConfig } from 'dotenv';
-dotenvConfig({ path: ['.env', '.env.local', '.env.e2e', '.env.e2e.local'] });
+dotenvConfig({ path: ['.env.e2e.local', '.env.e2e', '.env.local', '.env' ] });
 
 /**
  * Read environment variables from file.
