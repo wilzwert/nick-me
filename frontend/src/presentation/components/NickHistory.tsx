@@ -1,11 +1,5 @@
-import { Button, Card, Group, List, Menu, Paper, Stack, Text, ThemeIcon } from "@mantine/core";
+import { Card, List, Stack } from "@mantine/core";
 import { useNickHistoryStore } from "../stores/nick-history.store";
-import { useNickStore } from "../stores/nick.store";
-import { CopyNickButton } from "./CopyNickButton";
-import { IconDotsVertical } from "@tabler/icons-react";
-import { ReportNickButton } from "./ReportNickButton";
-import { RemoveNickFromHistoryButton } from "./RemoveNickFromHistoryButton";
-import { useState } from "react";
 import { NickHistoryElement } from "./NickHistoryElement";
 
 export function NickHistory() {
