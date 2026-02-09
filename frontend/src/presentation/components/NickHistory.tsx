@@ -1,5 +1,4 @@
 import { Button, Card, Group, List, Paper, Stack, Text, ThemeIcon, Tooltip } from "@mantine/core";
-import { useCriteriaStore } from "../stores/criteria.store";
 import { useNickHistoryStore } from "../stores/nick-history.store";
 import { useNickStore } from "../stores/nick.store";
 import { CopyNickButton } from "./CopyNickButton";
@@ -10,7 +9,6 @@ export function NickHistory() {
   const history = useNickHistoryStore(s => s.history);
   const removeFromHistory = useNickHistoryStore(s => s.removeNick);
   const setNick = useNickStore(s => s.setNick);
-  const setCriteria = useCriteriaStore(s => s.setCriteria);
 
   if (!history.length) return null;
 
@@ -32,11 +30,10 @@ export function NickHistory() {
           <List.Item key={i}>
             <Group>
               <Paper
-                component="button"   // ⚡️ rend le Paper un vrai <button>
-                type="button"        // nécessaire pour un form
+                component="button"
+                type="button"
                 onClick={
                 () => {
-                    setCriteria({gender: nick.gender, offenseLevel: nick.offenseLevel});
                     setNick(nick);
                 }
               }
@@ -47,8 +44,8 @@ export function NickHistory() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 8,
-                  cursor: 'pointer', // pour la souris
-                  border: 'none',    // supprime la bordure native du bouton
+                  cursor: 'pointer', 
+                  border: 'none',
                 }}
               >
             <Text>
