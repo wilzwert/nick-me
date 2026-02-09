@@ -7,6 +7,7 @@ WORKDIR /app
 # Install PHP extensions
 RUN install-php-extensions \
     @composer \
+    intl \
     pdo_pgsql \
     opcache \
     zip \
@@ -50,6 +51,7 @@ RUN mkdir -p /data/caddy \
 
 # Install PHP extensions
 RUN install-php-extensions \
+    intl \
     pdo_pgsql \
     opcache \
     zip \

@@ -21,12 +21,15 @@ RUN apk add --no-cache --virtual .build-deps \
 
 # install extensions
 RUN docker-php-ext-install pdo pdo_pgsql
+RUN docker-php-ext-install intl
 
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
 RUN pecl install amqp \
-    && docker-php-ext-enable amqp
+    && docker-php-ext-enable
+
+
 
 COPY backend/ ./
 COPY backend/composer.json backend/composer.lock ./
