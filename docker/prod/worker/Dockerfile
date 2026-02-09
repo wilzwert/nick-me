@@ -27,9 +27,7 @@ RUN pecl install redis \
     && docker-php-ext-enable redis
 
 RUN pecl install amqp \
-    && docker-php-ext-enable
-
-
+    && docker-php-ext-enable amqp
 
 COPY backend/ ./
 COPY backend/composer.json backend/composer.lock ./
