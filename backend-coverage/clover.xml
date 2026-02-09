@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1770374895">
-  <project timestamp="1770374895" name="Clover Coverage">
+<coverage generated="1770631686">
+  <project timestamp="1770631686" name="Clover Coverage">
     <package name="App\Application\Handler">
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Application/Handler/SendNotificationCommandHandler.php">
         <class name="App\Application\Handler\SendNotificationCommandHandler" namespace="App\Application\Handler">
@@ -1631,19 +1631,21 @@
     <package name="App\Security\Service">
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Security/Service/AltchaService.php">
         <class name="App\Security\Service\AltchaService" namespace="App\Security\Service">
-          <metrics complexity="3" methods="3" coveredmethods="3" conditionals="3" coveredconditionals="3" statements="7" coveredstatements="7" elements="13" coveredelements="13"/>
+          <metrics complexity="4" methods="3" coveredmethods="0" conditionals="5" coveredconditionals="0" statements="9" coveredstatements="0" elements="17" coveredelements="0"/>
         </class>
-        <line num="15" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
-        <line num="20" type="stmt" count="2"/>
-        <line num="22" type="method" name="createChallenge" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="25" type="stmt" count="1"/>
-        <line num="26" type="stmt" count="1"/>
-        <line num="27" type="stmt" count="1"/>
-        <line num="28" type="stmt" count="1"/>
-        <line num="30" type="stmt" count="1"/>
-        <line num="33" type="method" name="verifySolution" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="35" type="stmt" count="1"/>
-        <metrics loc="38" ncloc="33" classes="1" methods="3" coveredmethods="3" conditionals="3" coveredconditionals="3" statements="7" coveredstatements="7" elements="13" coveredelements="13"/>
+        <line num="20" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="29" type="method" name="createChallenge" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="32" type="stmt" count="0"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="40" type="method" name="verifySolution" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <metrics loc="49" ncloc="39" classes="1" methods="3" coveredmethods="0" conditionals="5" coveredconditionals="0" statements="9" coveredstatements="0" elements="17" coveredelements="0"/>
       </file>
     </package>
     <file name="/home/runner/work/nick-me/nick-me/backend/src/Security/Service/AltchaServiceInterface.php">
@@ -1952,8 +1954,8 @@
         <line num="18" type="stmt" count="27"/>
         <line num="21" type="method" name="format" visibility="public" complexity="5" crap="6.97" count="27"/>
         <line num="24" type="stmt" count="27"/>
-        <line num="25" type="stmt" count="18"/>
-        <line num="28" type="stmt" count="9"/>
+        <line num="25" type="stmt" count="19"/>
+        <line num="28" type="stmt" count="8"/>
         <line num="29" type="stmt" count="7"/>
         <line num="32" type="stmt" count="6"/>
         <line num="33" type="stmt" count="6"/>
@@ -1966,7 +1968,7 @@
         <line num="40" type="stmt" count="6"/>
         <line num="41" type="stmt" count="6"/>
         <line num="42" type="stmt" count="5"/>
-        <line num="46" type="stmt" count="2"/>
+        <line num="46" type="stmt" count="1"/>
         <metrics loc="49" ncloc="45" classes="1" methods="2" coveredmethods="1" conditionals="14" coveredconditionals="13" statements="17" coveredstatements="17" elements="33" coveredelements="31"/>
       </file>
     </package>
@@ -1995,11 +1997,11 @@
     <package name="App\Service\Generator">
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Service/Generator/NickGeneratorService.php">
         <class name="App\Service\Generator\NickGeneratorService" namespace="App\Service\Generator">
-          <metrics complexity="22" methods="6" coveredmethods="3" conditionals="46" coveredconditionals="37" statements="113" coveredstatements="106" elements="165" coveredelements="146"/>
+          <metrics complexity="22" methods="6" coveredmethods="2" conditionals="46" coveredconditionals="36" statements="113" coveredstatements="106" elements="165" coveredelements="144"/>
         </class>
         <line num="37" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="15"/>
         <line num="44" type="stmt" count="15"/>
-        <line num="61" type="method" name="computeTargetGender" visibility="private" complexity="6" crap="13.15" count="12"/>
+        <line num="61" type="method" name="computeTargetGender" visibility="private" complexity="6" crap="16.67" count="12"/>
         <line num="64" type="stmt" count="12"/>
         <line num="65" type="stmt" count="7"/>
         <line num="69" type="stmt" count="5"/>
@@ -2116,7 +2118,7 @@
         <line num="241" type="stmt" count="15"/>
         <line num="242" type="stmt" count="3"/>
         <line num="245" type="stmt" count="12"/>
-        <metrics loc="248" ncloc="198" classes="1" methods="6" coveredmethods="3" conditionals="46" coveredconditionals="37" statements="113" coveredstatements="106" elements="165" coveredelements="146"/>
+        <metrics loc="248" ncloc="198" classes="1" methods="6" coveredmethods="2" conditionals="46" coveredconditionals="36" statements="113" coveredstatements="106" elements="165" coveredelements="144"/>
       </file>
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Service/Generator/WordFinder.php">
         <class name="App\Service\Generator\WordFinder" namespace="App\Service\Generator">
@@ -2428,10 +2430,10 @@
         <line num="31" type="stmt" count="9"/>
         <line num="35" type="stmt" count="20"/>
         <line num="36" type="stmt" count="20"/>
-        <line num="37" type="stmt" count="16"/>
-        <line num="38" type="stmt" count="3"/>
-        <line num="39" type="stmt" count="3"/>
-        <line num="40" type="stmt" count="3"/>
+        <line num="37" type="stmt" count="15"/>
+        <line num="38" type="stmt" count="5"/>
+        <line num="39" type="stmt" count="5"/>
+        <line num="40" type="stmt" count="5"/>
         <line num="41" type="stmt" count="20"/>
         <line num="43" type="stmt" count="20"/>
         <line num="45" type="stmt" count="20"/>
@@ -2630,6 +2632,6 @@
     <file name="/home/runner/work/nick-me/nick-me/backend/src/Translation/TranslatorInterface.php">
       <metrics loc="12" ncloc="9" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="182" loc="6875" ncloc="5879" classes="120" methods="412" coveredmethods="343" conditionals="765" coveredconditionals="616" statements="1203" coveredstatements="1086" elements="2380" coveredelements="2045"/>
+    <metrics files="182" loc="6886" ncloc="5885" classes="120" methods="412" coveredmethods="339" conditionals="767" coveredconditionals="612" statements="1205" coveredstatements="1079" elements="2384" coveredelements="2030"/>
   </project>
 </coverage>
