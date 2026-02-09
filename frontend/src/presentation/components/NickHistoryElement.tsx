@@ -59,7 +59,6 @@ export function NickHistoryElement({ nick }: Props) {
                 onChange={setMenuOpened}
                 menuItemTabIndex={0}
                 id={'nick'+nick.id}
-                withinPortal={import.meta.env.MODE === 'test' ? false  : undefined}
             >
               <Menu.Target>
                 <Button variant="subtle">
