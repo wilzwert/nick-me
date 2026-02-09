@@ -1,6 +1,28 @@
-FROM dunglas/frankenphp:php8.4 AS frankenphp_upstream
+FROM dunglas/frankenphp:php8.4-alpine AS frankenphp_upstream
 
-FROM frankenphp_upstream AS frankenphp_base
+FROM frankenphp_upstream AS builder
+
+WORKDIR /app
+
+# Install PHP extensions
+RUN install-php-extensions \
+    @composer \
+    pdo_pgsql \
+    opcache \
+    zip \
+    amqp
+
+COPY backend/composer.json backend/composer.lock ./
+
+COPY backend/ ./
+
+RUN composer install --no-progress --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts \
+    && rm -rf /root/.composer/cache
+
+RUN composer dump-autoload --classmap-authoritative --no-dev
+
+# PROD
+FROM frankenphp_upstream AS frankenphp_prod
 
 WORKDIR /app
 
@@ -15,8 +37,8 @@ ENV UID=${UID} \
     XDEBUG_MODE=off
 
 # Create a symfony user to avoid working as root
-RUN addgroup --gid ${GID} ${APP_USER} \
- && adduser --uid ${UID} --gid ${GID} --disabled-password --gecos "" ${APP_USER}
+RUN addgroup -g ${GID} ${APP_USER} \
+ && adduser -u ${UID} -G ${APP_USER} -D -H -s /bin/sh ${APP_USER}
 
 RUN mkdir ./var \
     && chown -R ${APP_USER}:${APP_USER} ./var
@@ -28,46 +50,19 @@ RUN mkdir -p /data/caddy \
 
 # Install PHP extensions
 RUN install-php-extensions \
-    @composer \
     pdo_pgsql \
     opcache \
-    intl \
     zip \
     amqp
-
-# Caddyfile
-# COPY --link docker/prod/frankenphp/Caddyfile /etc/frankenphp/Caddyfile
-
-HEALTHCHECK --start-period=60s CMD curl -f http://localhost:2019/metrics || exit 1
-
-
-# PROD
-FROM frankenphp_base AS frankenphp_prod
-
-ENV XDEBUG_MODE=off \
-    FRANKENPHP_CONFIG="worker ./public/index.php" \
-    APP_RUNTIME=Runtime\FrankenPhpSymfony\Runtime
-
-WORKDIR /app
 
 # Configure PHP
 COPY --link docker/prod/frankenphp/php.ini-prod /usr/local/etc/php/php.ini
 
-COPY backend/composer.json backend/composer.lock ./
-
-RUN composer install --no-progress --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
-
-RUN composer dump-autoload --classmap-authoritative --no-dev
-
-COPY backend/ ./
-
-RUN pwd \
-    && ls -lah \
-    && ls -lah bin
-
 COPY --link docker/prod/frankenphp/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/
 
-RUN chown -R ${APP_USER}:${APP_USER} ./
+COPY --from=builder /app /app
+
+RUN chown -R ${APP_USER}:${APP_USER} /app
 
 USER ${APP_USER}
 
@@ -78,3 +73,5 @@ ENV SERVER_NAME=":80"
 ENV APP_DEBUG=0
 
 EXPOSE 80
+
+HEALTHCHECK --start-period=60s CMD curl -f http://localhost:2019/metrics || exit 1
