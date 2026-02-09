@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useToastStore } from '../presentation/stores/toast.store';
 import { sendContactMessage } from '../infrastructure/contact.api';
 import { useSendContactMessage } from './sendContact';
-import { createTestWrapper } from '../test/createTestWrapper';
+import { createTestWrapper } from '../../test-utils/createTestWrapper';
 
 describe('useSendContact', () => {
   beforeEach(() => {

@@ -5,7 +5,7 @@ import { useNickHistoryStore } from '../presentation/stores/nick-history.store';
 import type { Nick } from '../domain/model/Nick';
 import { replaceWord } from '../infrastructure/nick.api';
 import { useReplaceWord } from './replaceWord';
-import { createTestWrapper } from '../test/createTestWrapper';
+import { createTestWrapper } from '../../test-utils/createTestWrapper';
 
 describe('useReplaceWord', () => {
   beforeEach(() => {

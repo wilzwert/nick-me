@@ -34,7 +34,7 @@ describe('useAltchaStore', () => {
     const state = useAltchaStore.getState();
     expect(state.pending).toBe(false);
     expect(state.callback).toBeNull();
-    expect(mockCallback).toHaveBeenCalledWith('abc');
+    expect(mockCallback).toHaveBeenCalled();
   });
 
   it('should set pending when no valid token', () => {

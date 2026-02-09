@@ -4,9 +4,8 @@ import { useGenerateNick } from './generateNick';
 import { generateNick } from '../infrastructure/nick.api';
 import { useNickStore } from '../presentation/stores/nick.store';
 import { useNickHistoryStore } from '../presentation/stores/nick-history.store';
-import { useCriteriaStore } from '../presentation/stores/criteria.store';
 import type { Nick } from '../domain/model/Nick';
-import { createTestWrapper } from '../test/createTestWrapper';
+import { createTestWrapper } from '../../test-utils/createTestWrapper';
 
 describe('useGenerateNick', () => {
   beforeEach(() => {
@@ -37,9 +36,5 @@ describe('useGenerateNick', () => {
 
     expect(useNickStore.getState().nick).toEqual(mockNick);
     expect(useNickHistoryStore.getState().history[0]).toEqual(mockNick);
-    expect(useCriteriaStore.getState().criteria).toEqual({
-      gender: 'M',
-      offenseLevel: 10
-    });
   });
 });

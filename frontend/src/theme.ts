@@ -11,9 +11,9 @@ export const theme = createTheme({
   autoContrast: true,
   
   headings: {
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Poppins, sans-serif',
     sizes: {
-      h1: { fontSize: '66px' },
+      h1: { fontSize: '66px', fontWeight: '600' },
     },
   },
   components: {

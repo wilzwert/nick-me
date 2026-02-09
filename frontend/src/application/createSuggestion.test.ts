@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useToastStore } from '../presentation/stores/toast.store';
 import { createSuggestion } from '../infrastructure/suggestion.api';
 import { useCreateSuggestion } from './createSuggestion';
-import { createTestWrapper } from '../test/createTestWrapper';
+import { createTestWrapper } from '../../test-utils/createTestWrapper';
 
 describe('useCreateSuggestion', () => {
   beforeEach(() => {
