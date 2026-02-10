@@ -4,11 +4,22 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/',
   build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            // une seule règle simple : tout ce qui est node_modules → vendor-[nom-lib]
+            const dirs = id.split("node_modules/")[1].split("/");
+            return dirs[0]; // ex: react, react-dom, @mantine/core, use-latest...
+          }
+        },
+      },
+    },
     outDir: 'dist',
-    sourcemap: false, // optionnel, en prod
+    sourcemap: false,
   },
   plugins: [
-    react(),
+    react()
   ],
   test: {
     environment: 'jsdom',
