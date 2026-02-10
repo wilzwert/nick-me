@@ -7,7 +7,7 @@ interface CriteriaStore {
 }
 
 export const DEFAULT_CRITERIA: Criteria = {
-  gender: 'NEUTRAL',
+  gender: 'AUTO',
   offenseLevel: 5,
 };
 
