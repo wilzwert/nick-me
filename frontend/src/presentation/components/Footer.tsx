@@ -1,6 +1,6 @@
 import { ActionIcon, Group, Modal, Tooltip } from "@mantine/core";
 import { useState } from "react";
-import { IconBulb, IconInfoCircle, IconMail } from "@tabler/icons-react";
+import { IconBrandGithub, IconBulb, IconInfoCircle, IconMail } from "@tabler/icons-react";
 import { About } from "./About";
 import { ContactForm } from "./ContactForm";
 import { SuggestionForm } from "./SuggestionForm";
@@ -12,8 +12,8 @@ export function Footer() {
 
     const items = [
     { label: "À propos", icon: <IconInfoCircle size={20} title="À propos"/>, onClick: setAboutOpen},
-    { label: "Suggérer un mot", icon: <Tooltip label="Suggérer un mot"><IconBulb size={20} title="Suggérer un mot"/></Tooltip>, onClick: setSuggestionOpen},
-    { label: "Contact", icon: <Tooltip label="Contact"><IconMail size={20} title="Contact"/></Tooltip>, onClick: setContactOpen},
+    { label: "Suggérer un mot", icon: <IconBulb size={20} title="Suggérer un mot"/>, onClick: setSuggestionOpen},
+    { label: "Contact", icon: <IconMail size={20} title="Contact"/>, onClick: setContactOpen},
   ];
 
     
@@ -28,6 +28,19 @@ export function Footer() {
               </ActionIcon>
             </Tooltip>
           ))}
+          <Tooltip key={4} label="Github" position="top" withArrow>
+              <ActionIcon 
+                key={4} 
+                variant="subtle" 
+                size="lg"  
+                aria-label="Project Github" 
+                component="a" 
+                href="https://github.com/wilzwert/nick-me"
+                target="_blank"
+                rel="noopener noreferrer">
+                  <IconBrandGithub size={20} title="Github"/>
+              </ActionIcon>
+            </Tooltip>
       </Group>
 
       <Modal opened={aboutOpen} onClose={() => setAboutOpen(false)} title="À propos">
