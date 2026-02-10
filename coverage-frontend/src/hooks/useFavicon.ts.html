@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/application/generateNick.ts</title>
+    <title>Code coverage report for src/hooks/useFavicon.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/application</a> generateNick.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/hooks</a> useFavicon.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -85,57 +85,51 @@
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMutation } from "@tanstack/react-query";
-import { generateNick } from "../infrastructure/nick.api";
-import { useNickStore } from "../presentation/stores/nick.store";
-import type { Nick } from "../domain/model/Nick";
-import type { Gender } from "../domain/model/Gender";
-import type { OffenseLevel } from "../domain/model/OffenseLevel";
-import { useNickHistoryStore } from "../presentation/stores/nick-history.store";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect } from "react";
 &nbsp;
-interface GenerateNickParams {
-  gender: Gender;
-  offenseLevel: OffenseLevel;
+export function useFavicon() {
+  useEffect(() =&gt; {
+    const links = document.querySelectorAll&lt;HTMLLinkElement&gt;("link[rel~='icon']");
+    const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+&nbsp;
+    const updateFavicon = (e?: MediaQueryListEvent) =&gt; {
+      const isDark = e ? e.matches : darkQuery.matches;
+      links.forEach(link =&gt; {
+        const size = link.getAttribute("sizes") || <span class="branch-1 cbranch-no" title="branch not covered" >"32x32";</span>
+        link.href = isDark
+          ? `/favicons/favicon-dark-${size}.png`
+          : `/favicons/favicon-light-${size}.png`;
+      });
+    };
+&nbsp;
+    updateFavicon();
+    darkQuery.addEventListener("change", updateFavicon);
+    return () =&gt; darkQuery.removeEventListener("change", updateFavicon);
+  }, []);
 }
-&nbsp;
-export function useGenerateNick() {
-  const setNick = useNickStore(s =&gt; s.setNick);
-  const addNickToHistory = useNickHistoryStore(s =&gt; s.addNick);
-&nbsp;
-  return useMutation&lt;Nick, Error, GenerateNickParams&gt;({
-    mutationFn: params =&gt; generateNick(params),
-    onSuccess: (nick: Nick) =&gt; {
-      setNick(nick);
-      addNickToHistory(nick);
-    }
-  });
-}</pre></td></tr></table></pre>
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
