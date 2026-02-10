@@ -6,6 +6,7 @@ import { IconDotsVertical } from "@tabler/icons-react";
 import { CopyNickButton } from "./CopyNickButton";
 import { RemoveNickFromHistoryButton } from "./RemoveNickFromHistoryButton";
 import { ReportNickButton } from "./ReportNickButton";
+import styles from './NickHistoryElement.module.css';
 
 interface Props {
   nick: Nick;
@@ -26,7 +27,7 @@ export function NickHistoryElement({ nick }: Props) {
     };
 
     return (
-        <Group>
+        <Group className={menuOpened ? styles.selected : ''}>
               <Paper
                 component="button"
                 type="button"
