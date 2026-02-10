@@ -20,10 +20,13 @@ export default defineConfig({
       reporter: ['html', 'lcov', 'json'],
       reportsDirectory: './coverage/unit',
       exclude: [
+        '**/*.spec.ts',
+        '**/*.test.ts',
         '**/*.d.ts',
         '**/main.tsx',
         '**/*.config.*',
-        "**/tests/e2e/**"
+        "**/tests/e2e/**",
+        "**/test-utils/**"
       ],
     },
   },

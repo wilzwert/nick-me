@@ -55,17 +55,6 @@ for /f "usebackq tokens=1,* delims==" %%A in (".env.local") do (
     )
 )
 
-REM === Specific config ===
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.projectBaseDir=.
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.sources=src/app
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.tests=src/app
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.test.inclusions=src/app/**/*.spec.ts
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.exclusions=.angular,coverage,node_modules,*.json
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.coverage.exclusions=src/app/**/*.spec.ts,node_modules,.angular
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.typescript.lcov.reportPaths=coverage/jest/lcov.info,coverage/e2e/lcov.info
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.javascript.lcov.reportPaths=coverage/jest/lcov.info
-REM set SONAR_ARGS=%SONAR_ARGS% -Dsonar.sourceEncoding=UTF-8
-
 REM === get Git current branch  ===
 for /f "delims=" %%i in ('git rev-parse --abbrev-ref HEAD') do set BRANCH_NAME=%%i
 
