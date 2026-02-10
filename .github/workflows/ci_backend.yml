@@ -1,5 +1,5 @@
 
-name: CI for backend
+name: Backend CI - Tests and analysis
 
 concurrency:
   group: ${{ github.ref }}.ci-backend

@@ -43,24 +43,7 @@ jobs:
         # but some other steps should run anyway
         continue-on-error: true
 
-      # run e2e tests
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      - name: Run e2e tests
-        run: npm run test:e2e
-        continue-on-error: true
-        env:
-          MOCK_API: true
-
-      - name: Upload Playwright HTML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-         name: playwright-report
-         path: ./frontend/playwright-report
-
-      # if coverage report doesn't exist, something bad happened, and we can't go further
+      # if unit coverage report doesn't exist, something bad happened, and we can't go further
       - name: Verify coverage report existence and stop if missing
         run: |
           if [ ! -f "./coverage/unit/lcov.info" ]; then          
@@ -75,6 +58,23 @@ jobs:
           name: frontend-coverage
           path: ./frontend/coverage/unit
           retention-days: 7
+
+      # run e2e tests
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run e2e tests
+        run: npm run test:e2e
+        env:
+          MOCK_API: true
+          VITE_ALTCHA_ENABLED: false
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+         name: playwright-report
+         path: ./frontend/playwright-report
 
       # we only update pages if code has actually been pushed to main branch, or if workflow is run manually on main branch
       - name: Publish frontend coverage report to Github Pages
