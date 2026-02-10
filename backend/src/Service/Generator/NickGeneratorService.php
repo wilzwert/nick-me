@@ -19,7 +19,8 @@ use App\Exception\NoSubjectFoundException;
 use App\Service\Data\NickServiceInterface;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
-use App\Service\Formatter\WordFormatterInterface;
+use App\Service\Nick\NickComposerInterface;
+use App\Service\Nick\WordFormatterInterface;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;
 use App\Specification\Criterion\OffenseConstraintType;
@@ -35,11 +36,11 @@ use Random\RandomException;
 class NickGeneratorService implements NickGeneratorServiceInterface
 {
     public function __construct(
-        private readonly SubjectServiceInterface $subjectService,
+        private readonly SubjectServiceInterface   $subjectService,
         private readonly QualifierServiceInterface $qualifierService,
-        private readonly WordFormatterInterface $formatter,
-        private readonly NickServiceInterface $nickService,
-        private readonly WordFinderInterface $wordFinder,
+        private readonly NickComposerInterface     $nickComposer,
+        private readonly NickServiceInterface      $nickService,
+        private readonly WordFinderInterface       $wordFinder,
     ) {
     }
 
@@ -77,39 +78,21 @@ class NickGeneratorService implements NickGeneratorServiceInterface
 
     private function buildGeneratedNick(Subject $subject, Qualifier $qualifier, WordGender $targetGender): GeneratedNickData
     {
-        // build the generated nick data
-        $words = [
-            new GeneratedNickWord(
-                $subject->getWord()->getId(),
-                $this->formatter->formatLabel($subject->getWord(), $targetGender),
-                GrammaticalRoleType::fromClass($subject::class)
-            ),
-        ];
-        $qualifierWord = new GeneratedNickWord(
-            $qualifier->getWord()->getId(),
-            $this->formatter->formatLabel($qualifier->getWord(), $targetGender),
-            GrammaticalRoleType::fromClass($qualifier::class)
-        );
-        if (QualifierPosition::AFTER === $qualifier->getPosition()) {
-            $words[] = $qualifierWord;
-        } else {
-            array_unshift($words, $qualifierWord);
-        }
+        $generatedNickWords = $this->nickComposer->compose($subject, $qualifier, $subject->getWord()->getLang(), $targetGender);
 
-        $label = implode(' ', array_map(fn (GeneratedNickWord $word) => $word->label, $words));
         $nick = $this->nickService->getOrCreate(
             $subject,
             $qualifier,
             $targetGender,
             $subject->getWord()->getOffenseLevel(),
-            $label
+            $generatedNickWords->getFinalLabel()
         );
 
         return new GeneratedNickData(
             $nick->getTargetGender(),
             $nick->getOffenseLevel(),
             $nick,
-            $words
+            $generatedNickWords->getWords()
         );
     }
 

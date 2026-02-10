@@ -7,12 +7,13 @@ use App\Enum\GrammaticalRoleType;
 /**
  * @author Wilhelm Zwertvaegher
  */
-class GeneratedNickWord
+readonly class GeneratedNickWord
 {
     public function __construct(
         public int $id,
         public string $label,
         public GrammaticalRoleType $type,
+        public string $separatorAfter = ' ',
     ) {
     }
 }
