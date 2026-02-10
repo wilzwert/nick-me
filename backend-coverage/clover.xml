@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1770713146">
-  <project timestamp="1770713146" name="Clover Coverage">
+<coverage generated="1770715118">
+  <project timestamp="1770715118" name="Clover Coverage">
     <package name="App\Application\Handler">
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Application/Handler/SendNotificationCommandHandler.php">
         <class name="App\Application\Handler\SendNotificationCommandHandler" namespace="App\Application\Handler">
@@ -1948,28 +1948,28 @@
     <package name="App\Service\Formatter\Strategy">
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Service/Formatter/Strategy/FrenchFormatterStrategy.php">
         <class name="App\Service\Formatter\Strategy\FrenchFormatterStrategy" namespace="App\Service\Formatter\Strategy">
-          <metrics complexity="6" methods="2" coveredmethods="1" conditionals="14" coveredconditionals="13" statements="17" coveredstatements="17" elements="33" coveredelements="31"/>
+          <metrics complexity="6" methods="2" coveredmethods="1" conditionals="14" coveredconditionals="11" statements="17" coveredstatements="16" elements="33" coveredelements="28"/>
         </class>
         <line num="16" type="method" name="getLang" visibility="public" complexity="1" crap="1" count="27"/>
         <line num="18" type="stmt" count="27"/>
-        <line num="21" type="method" name="format" visibility="public" complexity="5" crap="6.97" count="27"/>
+        <line num="21" type="method" name="format" visibility="public" complexity="5" crap="9.66" count="27"/>
         <line num="24" type="stmt" count="27"/>
-        <line num="25" type="stmt" count="18"/>
-        <line num="28" type="stmt" count="9"/>
+        <line num="25" type="stmt" count="19"/>
+        <line num="28" type="stmt" count="8"/>
         <line num="29" type="stmt" count="7"/>
-        <line num="32" type="stmt" count="7"/>
-        <line num="33" type="stmt" count="7"/>
-        <line num="34" type="stmt" count="7"/>
-        <line num="35" type="stmt" count="7"/>
-        <line num="36" type="stmt" count="7"/>
-        <line num="37" type="stmt" count="7"/>
-        <line num="38" type="stmt" count="7"/>
-        <line num="39" type="stmt" count="7"/>
-        <line num="40" type="stmt" count="7"/>
-        <line num="41" type="stmt" count="7"/>
+        <line num="32" type="stmt" count="6"/>
+        <line num="33" type="stmt" count="6"/>
+        <line num="34" type="stmt" count="6"/>
+        <line num="35" type="stmt" count="6"/>
+        <line num="36" type="stmt" count="6"/>
+        <line num="37" type="stmt" count="6"/>
+        <line num="38" type="stmt" count="6"/>
+        <line num="39" type="stmt" count="6"/>
+        <line num="40" type="stmt" count="6"/>
+        <line num="41" type="stmt" count="6"/>
         <line num="42" type="stmt" count="6"/>
-        <line num="46" type="stmt" count="2"/>
-        <metrics loc="49" ncloc="45" classes="1" methods="2" coveredmethods="1" conditionals="14" coveredconditionals="13" statements="17" coveredstatements="17" elements="33" coveredelements="31"/>
+        <line num="46" type="stmt" count="0"/>
+        <metrics loc="49" ncloc="45" classes="1" methods="2" coveredmethods="1" conditionals="14" coveredconditionals="11" statements="17" coveredstatements="16" elements="33" coveredelements="28"/>
       </file>
     </package>
     <package name="App\Service\Formatter">
@@ -1997,7 +1997,7 @@
     <package name="App\Service\Generator">
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Service/Generator/NickGeneratorService.php">
         <class name="App\Service\Generator\NickGeneratorService" namespace="App\Service\Generator">
-          <metrics complexity="22" methods="6" coveredmethods="3" conditionals="46" coveredconditionals="37" statements="113" coveredstatements="106" elements="165" coveredelements="146"/>
+          <metrics complexity="22" methods="6" coveredmethods="2" conditionals="46" coveredconditionals="36" statements="113" coveredstatements="106" elements="165" coveredelements="144"/>
         </class>
         <line num="37" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="15"/>
         <line num="44" type="stmt" count="15"/>
@@ -2118,7 +2118,7 @@
         <line num="241" type="stmt" count="15"/>
         <line num="242" type="stmt" count="3"/>
         <line num="245" type="stmt" count="12"/>
-        <metrics loc="248" ncloc="198" classes="1" methods="6" coveredmethods="3" conditionals="46" coveredconditionals="37" statements="113" coveredstatements="106" elements="165" coveredelements="146"/>
+        <metrics loc="248" ncloc="198" classes="1" methods="6" coveredmethods="2" conditionals="46" coveredconditionals="36" statements="113" coveredstatements="106" elements="165" coveredelements="144"/>
       </file>
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Service/Generator/WordFinder.php">
         <class name="App\Service\Generator\WordFinder" namespace="App\Service\Generator">
@@ -2430,10 +2430,10 @@
         <line num="31" type="stmt" count="9"/>
         <line num="35" type="stmt" count="20"/>
         <line num="36" type="stmt" count="20"/>
-        <line num="37" type="stmt" count="16"/>
-        <line num="38" type="stmt" count="5"/>
-        <line num="39" type="stmt" count="5"/>
-        <line num="40" type="stmt" count="5"/>
+        <line num="37" type="stmt" count="14"/>
+        <line num="38" type="stmt" count="3"/>
+        <line num="39" type="stmt" count="3"/>
+        <line num="40" type="stmt" count="3"/>
         <line num="41" type="stmt" count="20"/>
         <line num="43" type="stmt" count="20"/>
         <line num="45" type="stmt" count="20"/>
@@ -2632,6 +2632,6 @@
     <file name="/home/runner/work/nick-me/nick-me/backend/src/Translation/TranslatorInterface.php">
       <metrics loc="12" ncloc="9" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="182" loc="6886" ncloc="5885" classes="120" methods="412" coveredmethods="342" conditionals="767" coveredconditionals="617" statements="1205" coveredstatements="1087" elements="2384" coveredelements="2046"/>
+    <metrics files="182" loc="6886" ncloc="5885" classes="120" methods="412" coveredmethods="341" conditionals="767" coveredconditionals="614" statements="1205" coveredstatements="1086" elements="2384" coveredelements="2041"/>
   </project>
 </coverage>
