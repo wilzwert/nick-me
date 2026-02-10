@@ -11,8 +11,12 @@ import { AppLayout } from './presentation/AppLayout';
 import { AppTitle } from './presentation/components/AppTitle';
 import { ToastContainer } from './presentation/components/ToastContainer';
 import { ReportNickModal } from './presentation/components/ReportNickModal';
+import { useFavicon } from './hooks/useFavicon';
 
 function App() {
+
+  useFavicon();
+
   return (
     <MantineProvider theme={theme} defaultColorScheme="auto">
       <AppLayout>  
