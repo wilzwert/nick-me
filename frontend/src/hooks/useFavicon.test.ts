@@ -62,7 +62,7 @@ describe("useFavicon", () => {
     (window.matchMedia as any).mockImplementation(() => ({
       matches: false,
       media: "(prefers-color-scheme: dark)",
-      addEventListener: (event: string, cb: Function) => {
+      addEventListener: (_: string, cb: Function) => {
         listener = cb as any;
       },
       removeEventListener: vi.fn(),
