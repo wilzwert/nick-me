@@ -1,0 +1,14 @@
+.selected {
+  position: relative;
+}
+
+.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  background-color: var(--mantine-color-text);
+  border-radius: 2px;
+}
