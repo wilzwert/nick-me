@@ -82,6 +82,24 @@ There are 2 tests suites : 'Unit' and 'Integration'. You can use the `--testsuit
 
 You may also run tests in your IDE but this requires a bit of configuration (at least in PHPStorm).
 
+### Frontend
+
+To run unit tests : 
+
+`cd frontend`
+
+`npm run test`
+
+Or with coverage `npm run test:coverage`.
+
+To run e2e tests (by default, altcha is disabled and api is mocked, see frontend/.env.e2e)
+
+`cd frontend`
+
+`npm run test:e2e`
+
+Or with UI : `npm run test:e2e:ui`
+
 ## Quality
 
 ### Backend
