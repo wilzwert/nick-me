@@ -15,13 +15,13 @@ test('homepage loads', async ({ page }) => {
   ).toBeVisible();
   const neutralRadio = page.getByRole('radio', { name: 'Neutre' });
   await expect(neutralRadio).toBeVisible();
-  await expect(neutralRadio).toHaveAttribute('checked');
   const femaleRadio = page.getByRole('radio', { name: 'Féminin' });
   await expect(femaleRadio).toBeVisible();
   const maleRadio = page.getByRole('radio', { name: 'Masculin' });
   await expect(maleRadio).toBeVisible();  
   const autoRadio = page.getByRole('radio', { name: 'Peu importe' });
   await expect(autoRadio).toBeVisible();  
+  await expect(autoRadio).toHaveAttribute('checked');
 
 
   // offenseLevel slider
