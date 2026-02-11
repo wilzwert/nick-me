@@ -12,7 +12,6 @@ use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
 use App\Enum\WordStatus;
 use App\Service\Data\WordSluggerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
@@ -32,7 +31,7 @@ class LoadBaseDataCommand extends Command
         #[Autowire('%base_data.subject_csv%')]
         private readonly string $subjectCsvPath,
         #[Autowire('%base_data.qualifier_csv%')]
-        private readonly string $qualifierCsvPath
+        private readonly string $qualifierCsvPath,
     ) {
         parent::__construct();
     }
