@@ -31,11 +31,11 @@ class WordFormatter implements WordFormatterInterface
         }
     }
 
-    public function applyCommonFormat(GeneratedNickWord $generatedNickWord): GeneratedNickWord
+    private function applyCommonFormat(GeneratedNickWord $generatedNickWord): GeneratedNickWord
     {
         return new GeneratedNickWord(
             $generatedNickWord->id,
-            ucfirst(strtolower($generatedNickWord->label)),
+            trim(ucfirst(strtolower($generatedNickWord->label))),
             $generatedNickWord->type
         );
     }

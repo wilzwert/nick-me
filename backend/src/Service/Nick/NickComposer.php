@@ -52,16 +52,8 @@ class NickComposer implements NickComposerInterface
             $grammaticalRoles
         );
 
-        // apply rules if needed
+        // apply rules if available
         $composer = $this->composerRules[$lang->value] ?? null;
-        /*
-        // no specific composer, let's return a default value
-        $result = new GeneratedNickWords(
-            $targetGender,
-            $subject->getWord()->getOffenseLevel(),
-            $generatedWords,
-            ''
-        );*/
         if ($composer) {
             return $composer->apply(
                 new GeneratedNickWords(
