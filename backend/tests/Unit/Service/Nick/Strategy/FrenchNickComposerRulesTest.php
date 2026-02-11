@@ -35,6 +35,9 @@ class FrenchNickComposerRulesTest extends TestCase
         self::assertEquals(Lang::FR, $this->rules->getLang());
     }
 
+    /**
+     * @return list<array{GrammaticalRoleType, GrammaticalRoleType, string, string ,WordGender, OffenseLevel, string}>
+     */
     public static function getTestData(): array
     {
         return [

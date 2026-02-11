@@ -2,9 +2,7 @@
 
 namespace App\Service\Data;
 
-use App\Dto\Command\CreateContactCommand;
 use App\Dto\Command\CreateReportCommand;
-use App\Entity\Contact;
 use App\Entity\Report;
 
 /**

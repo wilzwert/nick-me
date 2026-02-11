@@ -5,10 +5,9 @@ namespace App\Application\UseCase;
 use App\Dto\Command\GetWordCommand;
 use App\Dto\Response\NickWordDto;
 use App\Entity\GrammaticalRole;
-use App\Enum\GrammaticalRoleType;
 use App\Service\Data\GrammaticalRoleServiceInterface;
-use App\Service\Nick\WordFormatterInterface;
 use App\Service\Generator\WordFinderInterface;
+use App\Service\Nick\WordFormatterInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
@@ -23,7 +22,6 @@ readonly class GetWord implements GetWordInterface
     private array $services;
 
     /**
-     *
      * @param iterable<GrammaticalRoleServiceInterface<GrammaticalRole>> $services
      */
     public function __construct(

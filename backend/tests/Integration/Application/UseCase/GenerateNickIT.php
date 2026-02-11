@@ -37,6 +37,9 @@ class GenerateNickIT extends KernelTestCase
         self::assertGreaterThanOrEqual(1, $nick->getUsageCount());
     }
 
+    /**
+     * @return list<list<WordGender>>
+     */
     public static function targetGenders(): array
     {
         return [

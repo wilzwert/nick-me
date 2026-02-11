@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\Notification\Factory;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -15,5 +16,4 @@ interface NotificationPropsBuilder
     public function getSupportedClass(): string;
 
     public function buildProps(object $source): NotificationProps;
-
 }

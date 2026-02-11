@@ -73,35 +73,38 @@ class NickComposerTest extends TestCase
         return $word;
     }
 
+    /**
+     * @return list<array{Subject, Qualifier, Lang, int, string}>
+     */
     public static function getTestData(): array
     {
         // gender having no effect on the specific logic implemented by the NickComposer and tested here,
         // values passed to instantiateWord could be randomly chosen
         return [
             [
-                new Subject(static::instantiateWord('Sacripan', WordGender::M, Lang::FR, OffenseLevel::LOW)),
-                new Qualifier(static::instantiateWord('Joli', WordGender::AUTO, Lang::FR, OffenseLevel::MEDIUM), QualifierPosition::BEFORE),
+                new Subject(self::instantiateWord('Sacripan', WordGender::M, Lang::FR, OffenseLevel::LOW)),
+                new Qualifier(self::instantiateWord('Joli', WordGender::AUTO, Lang::FR, OffenseLevel::MEDIUM), QualifierPosition::BEFORE),
                 Lang::FR,
                 1,
                 'Joli Sacripan',
             ],
             [
-                new Subject(static::instantiateWord('Sacripan', WordGender::M, Lang::FR, OffenseLevel::MEDIUM)),
-                new Qualifier(static::instantiateWord('Elégant', WordGender::AUTO, Lang::FR, OffenseLevel::HIGH), QualifierPosition::AFTER),
+                new Subject(self::instantiateWord('Sacripan', WordGender::M, Lang::FR, OffenseLevel::MEDIUM)),
+                new Qualifier(self::instantiateWord('Elégant', WordGender::AUTO, Lang::FR, OffenseLevel::HIGH), QualifierPosition::AFTER),
                 Lang::FR,
                 1,
                 'Sacripan Elégant',
             ],
             [
-                new Subject(static::instantiateWord('Girl', WordGender::F, Lang::EN, OffenseLevel::LOW)),
-                new Qualifier(static::instantiateWord('Nice', WordGender::AUTO, Lang::EN, OffenseLevel::MAX), QualifierPosition::BEFORE),
+                new Subject(self::instantiateWord('Girl', WordGender::F, Lang::EN, OffenseLevel::LOW)),
+                new Qualifier(self::instantiateWord('Nice', WordGender::AUTO, Lang::EN, OffenseLevel::MAX), QualifierPosition::BEFORE),
                 Lang::EN,
                 0,
                 'Nice Girl',
             ],
             [
-                new Subject(static::instantiateWord('Girl', WordGender::F, Lang::EN, OffenseLevel::MEDIUM)),
-                new Qualifier(static::instantiateWord('with a hat', WordGender::AUTO, Lang::EN, OffenseLevel::MAX), QualifierPosition::AFTER),
+                new Subject(self::instantiateWord('Girl', WordGender::F, Lang::EN, OffenseLevel::MEDIUM)),
+                new Qualifier(self::instantiateWord('with a hat', WordGender::AUTO, Lang::EN, OffenseLevel::MAX), QualifierPosition::AFTER),
                 Lang::EN,
                 0,
                 'Girl with a hat',

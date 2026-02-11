@@ -2,7 +2,6 @@
 
 namespace App\Service\Data;
 
-
 use App\Entity\Notification;
 use App\Entity\NotificationLog;
 use App\Service\Notification\Dispatcher\NotificationDispatchResult;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Tests\Unit\Repository;
+namespace App\Tests\Unit\Specification;
 
+use App\Enum\Enum;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
@@ -17,7 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class WordCriteriaServiceTest extends TestCase
+class WordCriteriaBuilderTest extends TestCase
 {
     private WordCriteriaBuilder $underTest;
 
@@ -54,6 +55,9 @@ class WordCriteriaServiceTest extends TestCase
         self::assertEquals(Lang::EN, $queryBuilder->getParameters()['lang']);
     }
 
+    /**
+     * @return list<array{WordCriteria, list<string>, list<string>, list<Lang|list<Enum>>}>
+     */
     public static function wordCriteriaProvider(): array
     {
         return [
@@ -92,6 +96,11 @@ class WordCriteriaServiceTest extends TestCase
         ];
     }
 
+    /**
+     * @param list<string>          $expectedWHere
+     * @param list<string>          $expectedParameterNames
+     * @param list<Lang|list<Enum>> $expectedValues
+     */
     #[Test]
     #[DataProvider('wordCriteriaProvider')]
     public function shouldApplyWordCriteria(

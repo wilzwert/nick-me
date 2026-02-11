@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
  */
 class OffenseLevelTest extends TestCase
 {
+    /**
+     * @return list<array{int, string}>
+     */
     public static function fromStringTests(): array
     {
         return [

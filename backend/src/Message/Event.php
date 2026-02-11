@@ -7,5 +7,4 @@ namespace App\Message;
  */
 abstract class Event extends Message
 {
-
 }

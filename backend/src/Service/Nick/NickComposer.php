@@ -2,7 +2,6 @@
 
 namespace App\Service\Nick;
 
-use App\Dto\Result\GeneratedNickWord;
 use App\Dto\Result\GeneratedNickWords;
 use App\Entity\GrammaticalRole;
 use App\Entity\Qualifier;

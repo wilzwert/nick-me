@@ -43,6 +43,7 @@ class WordFormatter implements WordFormatterInterface
     public function format(GrammaticalRole $grammaticalRole, WordGender $gender): GeneratedNickWord
     {
         $word = $grammaticalRole->getWord();
+
         return $this->applyCommonFormat(
             isset($this->wordRules[$word->getLang()->value]) ?
                 $this->wordRules[$word->getLang()->value]->resolve($grammaticalRole, $gender) :

@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class NickControllerIT extends AltchaWebTestCase
 {
+    /**
+     * @return list<array{string, list<int>, list<string>}>
+     */
     public static function provideValidUrlQueryFoNewNick(): array
     {
         // we do not include the AUTO gender, because it cannot be a result of a nick generation, only a parameter
@@ -33,6 +36,10 @@ class NickControllerIT extends AltchaWebTestCase
         ];
     }
 
+    /**
+     * @param list<int>    $expectedOffenseLevels
+     * @param list<string> $expectedGenders
+     */
     #[Test]
     #[DataProvider('provideValidUrlQueryFoNewNick')]
     public function shouldGenerateNick(string $query, array $expectedOffenseLevels, array $expectedGenders): void
@@ -53,7 +60,12 @@ class NickControllerIT extends AltchaWebTestCase
     #[Test]
     public function shouldUpdateNick(): void
     {
-        $this->requestWithValidAltcha(new TestRequestParameters('GET', ApiUrl::build(ApiUrl::NICK_ENDPOINT, 'previousId=1&replaceRole=subject')));
+        $this->requestWithValidAltcha(
+            new TestRequestParameters(
+                'GET',
+                ApiUrl::build(ApiUrl::NICK_ENDPOINT, 'previousId=1&replaceRole=subject')
+            )
+        );
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();

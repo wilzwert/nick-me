@@ -2,8 +2,6 @@
 
 namespace App\Dto\Command;
 
-use App\Service\Data\NotificationServiceInterface;
-
 /**
  * @author Wilhelm Zwertvaegher
  */

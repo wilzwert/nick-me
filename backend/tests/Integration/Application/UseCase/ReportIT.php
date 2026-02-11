@@ -28,7 +28,6 @@ class ReportIT extends KernelTestCase
         $reason = 'Report reason';
         $nickId = AppTestData::EXISTING_NICK_ID;
 
-
         self::bootKernel();
         $mockClock = new MockClock($now);
         self::getContainer()->set(ClockInterface::class, $mockClock);

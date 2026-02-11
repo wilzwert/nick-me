@@ -93,6 +93,7 @@ class Notification
             $this->status = $status;
             $this->statusUpdatedAt = $statusUpdatedAt;
         }
+
         return $this;
     }
 

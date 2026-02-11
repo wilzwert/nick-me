@@ -37,6 +37,9 @@ class FrenchWordRulesTest extends TestCase
         self::assertEquals(Lang::FR, $this->rules->getLang());
     }
 
+    /**
+     * @return list<array{GrammaticalRoleType, string, WordGender, WordGender, string}>
+     */
     public static function getTestData(): array
     {
         return [

@@ -12,7 +12,6 @@ use App\Service\Notification\Sender\NotificationSenderResult;
  */
 class FakeErrorSender implements NotificationSenderInterface
 {
-
     public function supports(Notification $notification): bool
     {
         return true;

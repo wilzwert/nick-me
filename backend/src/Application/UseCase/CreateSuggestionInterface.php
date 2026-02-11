@@ -11,5 +11,4 @@ use App\Entity\Suggestion;
 interface CreateSuggestionInterface
 {
     public function __invoke(CreateSuggestionCommand $command): Suggestion;
-
 }

@@ -60,31 +60,34 @@ class WordFormatterTest extends TestCase
         return $word;
     }
 
+    /**
+     * @return list<array{GrammaticalRole, int, string, GrammaticalRoleType}>
+     */
     public static function getTestData(): array
     {
         // gender having no effect on the specific logic implemented by the NickComposer and tested here,
         // values passed to instantiateWord could be randomly chosen
         return [
             [
-                new Subject(static::instantiateWord('bOIT-SaNs-SOIF ', WordGender::M, Lang::FR, OffenseLevel::LOW)),
+                new Subject(self::instantiateWord('bOIT-SaNs-SOIF ', WordGender::M, Lang::FR, OffenseLevel::LOW)),
                 1,
                 'Boit-sans-soif',
                 GrammaticalRoleType::SUBJECT,
             ],
             [
-                new Qualifier(static::instantiateWord('ElégaNt', WordGender::AUTO, Lang::FR, OffenseLevel::HIGH), QualifierPosition::AFTER),
+                new Qualifier(self::instantiateWord('ElégaNt', WordGender::AUTO, Lang::FR, OffenseLevel::HIGH), QualifierPosition::AFTER),
                 1,
                 'Elégant',
                 GrammaticalRoleType::QUALIFIER,
             ],
             [
-                new Subject(static::instantiateWord('VOdka ON the RoCks', WordGender::F, Lang::EN, OffenseLevel::LOW)),
+                new Subject(self::instantiateWord('VOdka ON the RoCks', WordGender::F, Lang::EN, OffenseLevel::LOW)),
                 0,
                 'Vodka on the rocks',
                 GrammaticalRoleType::SUBJECT,
             ],
             [
-                new Qualifier(static::instantiateWord('wiTh A Hat', WordGender::AUTO, Lang::EN, OffenseLevel::MAX), QualifierPosition::AFTER),
+                new Qualifier(self::instantiateWord('wiTh A Hat', WordGender::AUTO, Lang::EN, OffenseLevel::MAX), QualifierPosition::AFTER),
                 0,
                 'With a hat',
                 GrammaticalRoleType::QUALIFIER,

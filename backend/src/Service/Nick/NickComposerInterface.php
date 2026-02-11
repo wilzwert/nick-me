@@ -16,12 +16,5 @@ use App\Enum\WordGender;
  */
 interface NickComposerInterface
 {
-    /**
-     * @param Subject $subject
-     * @param Qualifier $qualifier
-     * @param Lang $lang
-     * @param WordGender $targetGender
-     * @return GeneratedNickWords
-     */
     public function compose(Subject $subject, Qualifier $qualifier, Lang $lang, WordGender $targetGender): GeneratedNickWords;
 }

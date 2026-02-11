@@ -11,5 +11,4 @@ use App\Entity\Contact;
 interface CreateContactInterface
 {
     public function __invoke(CreateContactCommand $command): Contact;
-
 }

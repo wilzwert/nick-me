@@ -7,6 +7,7 @@ use App\Tests\Support\ApiUrl;
 use App\Tests\Support\TestRequestParameters;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
+
 use function PHPUnit\Framework\assertNotEmpty;
 
 /**

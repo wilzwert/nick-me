@@ -4,6 +4,7 @@ namespace App\Tests\Support;
 
 use App\Security\Service\AltchaServiceInterface;
 use App\Tests\Support\Stub\FakeAltchaService;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -12,6 +13,10 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 abstract class AltchaWebTestCase extends WebTestCase
 {
+    protected KernelBrowser $client;
+
+    private string $altchaHeaderPayloadKey;
+
     protected function setUp(): void
     {
         $this->client = static::createClient();

@@ -22,10 +22,6 @@ readonly class ContactNotificationPropsBuilder implements NotificationPropsBuild
         return Contact::class;
     }
 
-    /**
-     * @param object $source
-     * @return NotificationProps
-     */
     public function buildProps(object $source): NotificationProps
     {
         if (!is_a($source, Contact::class)) {

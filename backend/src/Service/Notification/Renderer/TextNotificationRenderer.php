@@ -11,19 +11,17 @@ use Twig\Environment;
  */
 class TextNotificationRenderer implements NotificationRendererInterface
 {
-
     public function __construct(
         private Environment $twig,
-    )
-    {
+    ) {
     }
 
     public function render(Notification $notification, NotificationSenderInterface $sender): string
     {
         return $this->twig->render(
             'notifications/'
-            . $sender->getName() . '/'
-            . $notification->getType()->value . '.txt.twig',
+            .$sender->getName().'/'
+            .$notification->getType()->value.'.txt.twig',
             ['content' => $notification->getContent(), 'date' => $notification->getCreatedAt()]
         );
     }

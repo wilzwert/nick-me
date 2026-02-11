@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\NotificationLog;
 use App\Enum\NotificationLogStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

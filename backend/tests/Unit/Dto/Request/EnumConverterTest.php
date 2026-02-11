@@ -25,6 +25,9 @@ class EnumConverterTest extends TestCase
         $this->underTest = new EnumConverter();
     }
 
+    /**
+     * @return list<array{class-string<Enum>, string, Enum}>
+     */
     public static function successDataProvider(): array
     {
         return [
@@ -42,6 +45,9 @@ class EnumConverterTest extends TestCase
         ];
     }
 
+    /**
+     * @param class-string<Enum> $className
+     */
     #[Test]
     #[DataProvider('successDataProvider')]
     public function shouldConvert(string $className, string $value, Enum $expectedEnumCase): void
@@ -49,6 +55,9 @@ class EnumConverterTest extends TestCase
         self::assertEquals($expectedEnumCase, $this->underTest->convert($className, $value));
     }
 
+    /**
+     * @return list<array{class-string<Enum>, string}>
+     */
     public static function errorDataProvider(): array
     {
         return [
@@ -59,6 +68,9 @@ class EnumConverterTest extends TestCase
         ];
     }
 
+    /**
+     * @param class-string<Enum> $className
+     */
     #[Test]
     #[DataProvider('errorDataProvider')]
     public function shouldThrowValueError(string $className, string $value): void

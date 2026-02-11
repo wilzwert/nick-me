@@ -34,7 +34,7 @@ class GenerateNicksCommandIT extends KernelTestCase
 
         self::getContainer()->set(GenerateNickInterface::class,
             new class(new MockClock()) implements GenerateNickInterface {
-                private static $counter = 0;
+                private static int $counter = 0;
 
                 public function __construct(private readonly ClockInterface $clock)
                 {

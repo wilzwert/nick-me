@@ -11,5 +11,4 @@ use App\Entity\Report;
 interface CreateReportInterface
 {
     public function __invoke(CreateReportCommand $command): Report;
-
 }

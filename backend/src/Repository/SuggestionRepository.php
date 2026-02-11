@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Contact;
 use App\Entity\Suggestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

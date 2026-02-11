@@ -2,7 +2,6 @@
 
 namespace App\Application\Handler;
 
-
 use App\Message\SendNotificationCommand;
 
 /**

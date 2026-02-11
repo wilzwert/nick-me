@@ -27,6 +27,9 @@ class MaintainWordIT extends KernelTestCase
         $this->underTest = static::getContainer()->get(MaintainWordInterface::class);
     }
 
+    /**
+     * @return list<array{string, string, Lang, WordGender, OffenseLevel, WordStatus, bool, ?QualifierPosition, bool, ?int}>
+     */
     public static function maintainWordDataProvider(): array
     {
         // $label, $expectedLabel, $lang, $gender, $offenseLevel, $status, $shouldBeQualifier, $qualifierPosition, $shouldBeSubject, $wordId
@@ -69,7 +72,6 @@ class MaintainWordIT extends KernelTestCase
 
         $result = ($this->underTest)($command);
 
-        self::assertNotNull($result->id);
         if (null !== $wordId) {
             self::assertEquals($wordId, $result->id);
         }

@@ -15,6 +15,7 @@ readonly class SendNotificationCommandHandler implements CommandHandler
     public function __construct(private SendNotificationCommandHandlerInterface $notificationCommandHandler)
     {
     }
+
     public function __invoke(SendNotificationCommand $command): void
     {
         ($this->notificationCommandHandler)($command);

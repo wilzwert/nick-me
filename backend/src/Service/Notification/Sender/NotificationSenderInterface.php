@@ -13,10 +13,6 @@ interface NotificationSenderInterface
 {
     public function supports(Notification $notification): bool;
 
-    /**
-     * @param Notification $notification
-     * @return NotificationSenderResult
-     */
     public function send(Notification $notification): NotificationSenderResult;
 
     public function getName(): string;
