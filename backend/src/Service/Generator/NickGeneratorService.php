@@ -5,13 +5,11 @@ namespace App\Service\Generator;
 use App\Dto\Command\GenerateNickCommand;
 use App\Dto\Command\GetWordCommand;
 use App\Dto\Result\GeneratedNickData;
-use App\Dto\Result\GeneratedNickWord;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
-use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
 use App\Exception\NickNotFoundException;
 use App\Exception\NoQualifierFoundException;
@@ -19,7 +17,7 @@ use App\Exception\NoSubjectFoundException;
 use App\Service\Data\NickServiceInterface;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
-use App\Service\Formatter\WordFormatterInterface;
+use App\Service\Nick\NickComposerInterface;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;
 use App\Specification\Criterion\OffenseConstraintType;
@@ -37,7 +35,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
     public function __construct(
         private readonly SubjectServiceInterface $subjectService,
         private readonly QualifierServiceInterface $qualifierService,
-        private readonly WordFormatterInterface $formatter,
+        private readonly NickComposerInterface $nickComposer,
         private readonly NickServiceInterface $nickService,
         private readonly WordFinderInterface $wordFinder,
     ) {
@@ -75,41 +73,26 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         };
     }
 
+    /**
+     * Compose the final Nick and retrieve it from system (i.e. get or create).
+     */
     private function buildGeneratedNick(Subject $subject, Qualifier $qualifier, WordGender $targetGender): GeneratedNickData
     {
-        // build the generated nick data
-        $words = [
-            new GeneratedNickWord(
-                $subject->getWord()->getId(),
-                $this->formatter->formatLabel($subject->getWord(), $targetGender),
-                GrammaticalRoleType::fromClass($subject::class)
-            ),
-        ];
-        $qualifierWord = new GeneratedNickWord(
-            $qualifier->getWord()->getId(),
-            $this->formatter->formatLabel($qualifier->getWord(), $targetGender),
-            GrammaticalRoleType::fromClass($qualifier::class)
-        );
-        if (QualifierPosition::AFTER === $qualifier->getPosition()) {
-            $words[] = $qualifierWord;
-        } else {
-            array_unshift($words, $qualifierWord);
-        }
+        $generatedNickWords = $this->nickComposer->compose($subject, $qualifier, $subject->getWord()->getLang(), $targetGender);
 
-        $label = implode(' ', array_map(fn (GeneratedNickWord $word) => $word->label, $words));
         $nick = $this->nickService->getOrCreate(
             $subject,
             $qualifier,
             $targetGender,
             $subject->getWord()->getOffenseLevel(),
-            $label
+            $generatedNickWords->getFinalLabel()
         );
 
         return new GeneratedNickData(
             $nick->getTargetGender(),
             $nick->getOffenseLevel(),
             $nick,
-            $words
+            $generatedNickWords->getWords()
         );
     }
 
@@ -170,10 +153,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
     }
 
     /**
-     * @param GenerateNickCommand $command
-     * @return GeneratedNickData
-     * @throws NoQualifierFoundException
-     * @throws NoSubjectFoundException
+     * @throws NoQualifierFoundException|NoSubjectFoundException|RandomException
      */
     private function createNick(GenerateNickCommand $command): GeneratedNickData
     {
@@ -229,11 +209,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
     }
 
     /**
-     * @param GenerateNickCommand $command
-     * @return GeneratedNickData
-     * @throws NickNotFoundException
-     * @throws NoQualifierFoundException
-     * @throws NoSubjectFoundException
+     * @throws NickNotFoundException|NoQualifierFoundException|NoSubjectFoundException|RandomException
      */
     public function generateNick(GenerateNickCommand $command): GeneratedNickData
     {

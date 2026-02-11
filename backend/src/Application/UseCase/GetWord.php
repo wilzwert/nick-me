@@ -7,7 +7,7 @@ use App\Dto\Response\NickWordDto;
 use App\Entity\GrammaticalRole;
 use App\Enum\GrammaticalRoleType;
 use App\Service\Data\GrammaticalRoleServiceInterface;
-use App\Service\Formatter\WordFormatterInterface;
+use App\Service\Nick\WordFormatterInterface;
 use App\Service\Generator\WordFinderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
@@ -48,11 +48,12 @@ readonly class GetWord implements GetWordInterface
         $this->entityManager->flush();
         // build the nick word dto
         $targetGender = $command->getGender();
+        $generatedNickWord = $this->formatter->format($new, $targetGender);
 
         return new NickWordDto(
             $new->getWord()->getId(),
-            $this->formatter->formatLabel($new->getWord(), $targetGender),
-            GrammaticalRoleType::fromClass($new::class)
+            $generatedNickWord->label,
+            $generatedNickWord->type
         );
     }
 }
