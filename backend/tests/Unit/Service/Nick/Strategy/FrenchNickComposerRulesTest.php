@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Service\Nick;
+namespace App\Tests\Unit\Service\Nick\Strategy;
 
 use App\Dto\Result\GeneratedNickWord;
 use App\Dto\Result\GeneratedNickWords;
