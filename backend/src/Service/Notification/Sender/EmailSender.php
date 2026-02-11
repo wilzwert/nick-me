@@ -9,6 +9,7 @@ use App\Service\Notification\Renderer\NotificationRendererInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
 /**
@@ -16,15 +17,16 @@ use Symfony\Component\Mime\Email;
  */
 final readonly class EmailSender implements NotificationSenderInterface
 {
-
     private const string NAME = 'email';
 
     public function __construct(
         #[Autowire('%email.sender%')]
         private string $emailSender,
-        private MailerInterface             $mailer,
-        private NotificationRendererInterface         $renderer,
-        private NotificationRendererInterface         $textRenderer
+        #[Autowire('%app.name%')]
+        private string $appName,
+        private MailerInterface $mailer,
+        private NotificationRendererInterface $renderer,
+        private NotificationRendererInterface $textRenderer,
     ) {
     }
 
@@ -38,7 +40,7 @@ final readonly class EmailSender implements NotificationSenderInterface
         $content = $this->renderer->render($notification, $this);
 
         $email = new Email()
-            ->from($this->emailSender)
+            ->from(new Address($this->emailSender, $this->appName))
             ->to($notification->getRecipientEmail())
             ->priority(Email::PRIORITY_HIGH)
             ->subject($notification->getSubject())
@@ -47,9 +49,10 @@ final readonly class EmailSender implements NotificationSenderInterface
 
         try {
             $this->mailer->send($email);
+
             return new NotificationSenderResult(NotificationLogStatus::SENT, 'Email sent');
         } catch (TransportExceptionInterface $exception) {
-            return new NotificationSenderResult(NotificationLogStatus::ERROR, 'Email could not be sent ' . $exception->getMessage());
+            return new NotificationSenderResult(NotificationLogStatus::ERROR, 'Email could not be sent '.$exception->getMessage());
         }
     }
 

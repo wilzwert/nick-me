@@ -18,7 +18,6 @@ abstract class ExceptionNormalizer implements NormalizerInterface
     {
     }
 
-
     /**
      * @return array<string, array<string, string[]|int[]>>
      */

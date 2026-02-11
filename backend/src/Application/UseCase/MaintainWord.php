@@ -55,12 +55,12 @@ class MaintainWord implements MaintainWordInterface
                     $spec->getQualifierPosition()
                 )
             );
-        } else {
+        } elseif ($maintainWordCommand->isHandleDeletion()) {
             $this->qualifierService->deleteIfExists($word->getId());
         }
         if ($spec->isAsSubject()) {
             $subject = $this->subjectService->createOrUpdate($word);
-        } else {
+        } elseif ($maintainWordCommand->isHandleDeletion()) {
             $this->subjectService->deleteIfExists($word->getId());
         }
 

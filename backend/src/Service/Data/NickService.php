@@ -18,8 +18,8 @@ readonly class NickService implements NickServiceInterface
 {
     public function __construct(
         private NickRepositoryInterface $repository,
-        private EntityManagerInterface  $entityManager,
-        private ClockInterface          $clock,
+        private EntityManagerInterface $entityManager,
+        private ClockInterface $clock,
     ) {
     }
 
@@ -53,6 +53,7 @@ readonly class NickService implements NickServiceInterface
             );
             $this->save($nick);
         }
+
         return $nick;
     }
 }

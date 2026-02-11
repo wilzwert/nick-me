@@ -28,6 +28,7 @@ class MaintainWordCommand
         private readonly bool $asQualifier = false,
         private readonly ?QualifierPosition $qualifierPosition = null,
         private ?int $wordId = null,
+        private readonly bool $handleDeletion = true,
     ) {
     }
 
@@ -86,6 +87,11 @@ class MaintainWordCommand
     public function isAsQualifier(): bool
     {
         return $this->asQualifier;
+    }
+
+    public function isHandleDeletion(): bool
+    {
+        return $this->handleDeletion;
     }
 
     public function getQualifierPosition(): ?QualifierPosition

@@ -22,10 +22,6 @@ readonly class ReportNotificationPropsBuilder implements NotificationPropsBuilde
         return Report::class;
     }
 
-    /**
-     * @param object $source
-     * @return NotificationProps
-     */
     public function buildProps(object $source): NotificationProps
     {
         if (!is_a($source, Report::class)) {

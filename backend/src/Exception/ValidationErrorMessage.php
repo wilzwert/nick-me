@@ -2,7 +2,6 @@
 
 namespace App\Exception;
 
-
 /**
  * @author Wilhelm Zwertvaegher
  */

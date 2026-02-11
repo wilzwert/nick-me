@@ -9,7 +9,13 @@ use App\Specification\QueryBuilderInterface;
  */
 class FakeQueryBuilder implements QueryBuilderInterface
 {
+    /**
+     * @var list<string>
+     */
     private array $where = [];
+    /**
+     * @var array<string, mixed>
+     */
     private array $parameters = [];
 
     private int $firstResult = 0;
@@ -58,11 +64,17 @@ class FakeQueryBuilder implements QueryBuilderInterface
         return $this->expectedCount;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getWhere(): array
     {
         return $this->where;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParameters(): array
     {
         return $this->parameters;

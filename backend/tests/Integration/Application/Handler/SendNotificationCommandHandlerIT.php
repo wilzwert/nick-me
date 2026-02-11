@@ -8,6 +8,7 @@ use App\Enum\NotificationLogStatus;
 use App\Exception\NotificationNotFoundException;
 use App\Message\SendNotificationCommand;
 use App\Repository\NotificationLogRepositoryInterface;
+use App\Service\Notification\Dispatcher\NotificationDispatcher;
 use App\Service\Notification\Dispatcher\NotificationDispatcherInterface;
 use App\Service\Notification\Sender\EmailSender;
 use App\Tests\Support\AppTestData;
@@ -99,7 +100,7 @@ class SendNotificationCommandHandlerIT extends KernelTestCase
         $container = self::getContainer();
 
         // get the real dispatcher to add a test sender
-        /** @var NotificationDispatcherInterface $dispatcher */
+        /** @var NotificationDispatcher $dispatcher */
         $dispatcher = $container->get(NotificationDispatcherInterface::class);
         $errorSender = new FakeErrorSender();
         $dispatcher->addSender($errorSender);

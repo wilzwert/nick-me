@@ -15,7 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class WordControllerIT extends AltchaWebTestCase
 {
-    public static function provideValidUrlQueryFoNewWord(): array
+    /**
+     * @return list<list<string>>
+     */
+    public static function provideValidUrlQueryForNewWord(): array
     {
         return [
             ['previousId=3&role=subject&gender=NEUTRAL&offenseLevel='.OffenseLevel::MEDIUM->value],
@@ -24,7 +27,7 @@ class WordControllerIT extends AltchaWebTestCase
     }
 
     #[Test]
-    #[DataProvider('provideValidUrlQueryFoNewWord')]
+    #[DataProvider('provideValidUrlQueryForNewWord')]
     public function shouldGetWord(string $query): void
     {
         $this->requestWithValidAltcha(new TestRequestParameters('GET', ApiUrl::build(ApiUrl::WORD_ENDPOINT, $query)));

@@ -14,7 +14,7 @@ class ApiUrl
 
     public const string REPORT_ENDPOINT = '/api/report';
 
-    public static function build($endpoint, $query = ''): string
+    public static function build(string $endpoint, string $query = ''): string
     {
         return sprintf('%s?%s', $endpoint, $query);
     }

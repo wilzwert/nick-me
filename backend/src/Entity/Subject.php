@@ -44,7 +44,6 @@ class Subject implements GrammaticalRole
     {
         ++$this->usageCount;
         $this->lastUsedAt = $usedAt;
-
     }
 
     public function getLastUsedAt(): ?\DateTimeImmutable

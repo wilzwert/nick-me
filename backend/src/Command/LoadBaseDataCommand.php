@@ -54,12 +54,13 @@ class LoadBaseDataCommand extends Command
         foreach ($reader->getRecordsAsObject(CsvSubject::class) as $record) {
             $fullWordDto = ($this->maintainWord)(
                 new MaintainWordCommand(
-                    trim($record->label),
-                    WordGender::fromString($record->gender),
-                    Lang::FR,
-                    OffenseLevel::fromString($record->offenseLevel ?? 'MEDIUM'),
-                    WordStatus::APPROVED,
-                    true
+                    label: trim($record->label),
+                    gender: WordGender::fromString($record->gender),
+                    lang: Lang::FR,
+                    offenseLevel: OffenseLevel::fromString($record->offenseLevel ?? 'MEDIUM'),
+                    status: WordStatus::APPROVED,
+                    asSubject: true,
+                    handleDeletion: false
                 )
             );
             $output->writeln("Created subject {$fullWordDto->label} with word_id {$fullWordDto->id}");
@@ -76,14 +77,15 @@ class LoadBaseDataCommand extends Command
 
             $fullWordDto = ($this->maintainWord)(
                 new MaintainWordCommand(
-                    trim($record->label),
-                    WordGender::fromString($record->gender ?? 'AUTO'),
-                    Lang::FR,
-                    OffenseLevel::fromString($record->offenseLevel ?? 'MEDIUM'),
-                    WordStatus::APPROVED,
-                    in_array($slug, $subjectsSlugs),
-                    true,
-                    QualifierPosition::from($record->position ?? 'after')
+                    label: trim($record->label),
+                    gender: WordGender::fromString($record->gender ?? 'AUTO'),
+                    lang: Lang::FR,
+                    offenseLevel: OffenseLevel::fromString($record->offenseLevel ?? 'MEDIUM'),
+                    status: WordStatus::APPROVED,
+                    asSubject: in_array($slug, $subjectsSlugs),
+                    asQualifier: true,
+                    qualifierPosition: QualifierPosition::from(trim($record->position) ?? 'after'),
+                    handleDeletion: false
                 )
             );
             $output->writeln("Created qualifier {$fullWordDto->label} with id {$fullWordDto->id}");

@@ -36,7 +36,6 @@ class NotificationDispatcher implements NotificationDispatcherInterface
     }
 
     /**
-     * @param Notification $notification
      * @return array<NotificationDispatchResult>
      */
     public function dispatch(Notification $notification): array

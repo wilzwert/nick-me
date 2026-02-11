@@ -14,8 +14,6 @@ use App\Exception\NoSubjectFoundException;
 interface NickGeneratorServiceInterface
 {
     /**
-     * @param GenerateNickCommand $command
-     * @return GeneratedNickData
      * @throws NickNotFoundException
      * @throws NoQualifierFoundException
      * @throws NoSubjectFoundException

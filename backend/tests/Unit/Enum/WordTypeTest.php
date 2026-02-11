@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
  */
 class WordTypeTest extends TestCase
 {
+    /**
+     * @return list<array{string, class-string}>
+     */
     public static function fromClassTests(): array
     {
         return [
@@ -22,6 +25,9 @@ class WordTypeTest extends TestCase
         ];
     }
 
+    /**
+     * @param class-string $className
+     */
     #[DataProvider('fromClassTests')]
     #[Test]
     public function shouldFindForClass(string $expectedValue, string $className): void
@@ -33,6 +39,6 @@ class WordTypeTest extends TestCase
     public function whenUnknownWordTypeThenShouldThrowInvalidArgumentException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        GrammaticalRoleType::fromClass('unknown');
+        GrammaticalRoleType::fromClass(\stdClass::class);
     }
 }

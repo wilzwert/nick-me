@@ -30,5 +30,4 @@ readonly class NotificationDispatchResult
     {
         return $this->message;
     }
-
 }

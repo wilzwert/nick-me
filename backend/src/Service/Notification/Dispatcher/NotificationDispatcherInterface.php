@@ -10,7 +10,6 @@ use App\Entity\Notification;
 interface NotificationDispatcherInterface
 {
     /**
-     * @param Notification $notification
      * @return array<NotificationDispatchResult>
      */
     public function dispatch(Notification $notification): array;

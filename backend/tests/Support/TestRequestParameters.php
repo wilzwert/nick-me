@@ -7,6 +7,11 @@ namespace App\Tests\Support;
  */
 class TestRequestParameters
 {
+    /**
+     * @param array<string, mixed>  $parameters
+     * @param array<mixed>          $files
+     * @param array<string, string> $server
+     */
     public function __construct(
         private readonly string $method,
         private readonly string $uri,
@@ -28,16 +33,25 @@ class TestRequestParameters
         return $this->uri;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getFiles(): array
     {
         return $this->files;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getServer(): array
     {
         return $this->server;
@@ -53,17 +67,17 @@ class TestRequestParameters
         return $this->changeHistory;
     }
 
-    public function setParameter($key, $value): void
+    public function setParameter(string $key, mixed $value): void
     {
         $this->parameters[$key] = $value;
     }
 
-    public function setFile(string $key, $value): void
+    public function setFile(string $key, mixed $value): void
     {
         $this->files[$key] = $value;
     }
 
-    public function setServer(string $key, $value): void
+    public function setServer(string $key, string $value): void
     {
         $this->server[$key] = $value;
     }

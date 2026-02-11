@@ -7,5 +7,4 @@ namespace App\MessageHandler;
  */
 interface EventHandler
 {
-
 }

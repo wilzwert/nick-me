@@ -15,6 +15,7 @@ parameters:
     altcha.token_expiry_seconds: '%env(ALTCHA_TOKEN_EXPIRY_SECONDS)%'
     recipient.admin: '%env(RECIPIENT_ADMIN)%'
     email.sender: '%env(EMAIL_SENDER)%'
+    app.name: 'NickMe'
 
 services:
     # default configuration for services in *this* file

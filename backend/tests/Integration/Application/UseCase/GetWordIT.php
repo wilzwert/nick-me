@@ -4,6 +4,7 @@ namespace App\Tests\Integration\Application\UseCase;
 
 use App\Application\UseCase\GetWordInterface;
 use App\Dto\Command\GetWordCommand;
+use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
@@ -28,7 +29,7 @@ class GetWordIT extends KernelTestCase
      * Provides data for single random Subject commands
      * For each case, we provide : previous word id, target gender, offense level, expected label.
      *
-     * @return array[]
+     * @return list<array{int, WordGender, OffenseLevel, string}>
      */
     public static function randomGenderedSubjectDataProvider(): array
     {
@@ -41,7 +42,7 @@ class GetWordIT extends KernelTestCase
 
     #[Test]
     #[DataProvider('randomGenderedSubjectDataProvider')]
-    public function shouldGetGenderedSubject(int $previousId, WordGender $targetGender, OffenseLevel $offenseLevel, $expectedLabel): void
+    public function shouldGetGenderedSubject(int $previousId, WordGender $targetGender, OffenseLevel $offenseLevel, string $expectedLabel): void
     {
         $result = ($this->underTest)(new GetWordCommand(
             role: GrammaticalRoleType::SUBJECT,
@@ -58,7 +59,7 @@ class GetWordIT extends KernelTestCase
      * Provides data for single random Qualifier requests
      * For each case, we provide : previous word id, target gender, offense level, expected label, exclusions if needed.
      *
-     * @return array[]
+     * @return list<array{int, WordGender, OffenseLevel, list<int>, string}>
      */
     public static function randomGenderedQualifierDataProvider(): array
     {
@@ -75,6 +76,9 @@ class GetWordIT extends KernelTestCase
         ];
     }
 
+    /**
+     * @param list<int> $exclusions
+     */
     #[Test]
     #[DataProvider('randomGenderedQualifierDataProvider')]
     public function shouldGetGenderedQualifier(
@@ -96,6 +100,9 @@ class GetWordIT extends KernelTestCase
         self::assertEquals($expectedLabel, $result->label);
     }
 
+    /**
+     * @return list<array{WordGender, list<string>}>
+     */
     public static function randomQualifierDataProvider(): array
     {
         return [
@@ -104,6 +111,9 @@ class GetWordIT extends KernelTestCase
         ];
     }
 
+    /**
+     * @param list<string> $expectedLabels
+     */
     #[Test]
     #[DataProvider('randomQualifierDataProvider')]
     public function shouldRandomlyPickGenderedOrAutoQualifier(WordGender $targetGender, array $expectedLabels): void

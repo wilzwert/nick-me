@@ -13,10 +13,5 @@ interface QualifierRepositoryInterface
 {
     public function findByWordId(int $wordId): ?Qualifier;
 
-    /**
-     * @param WordCriteria $criteria
-     * @param Sort $sort
-     * @return Qualifier|null
-     */
     public function findOne(WordCriteria $criteria, Sort $sort = Sort::RANDOM): ?Qualifier;
 }

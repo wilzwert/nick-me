@@ -9,7 +9,6 @@ use App\Enum\GrammaticalRoleType;
 use App\Repository\SubjectRepositoryInterface;
 use App\Specification\Criterion\ValueCriterion;
 use App\Specification\Criterion\ValueCriterionCheck;
-use App\Specification\Sort;
 use App\Specification\WordCriteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;

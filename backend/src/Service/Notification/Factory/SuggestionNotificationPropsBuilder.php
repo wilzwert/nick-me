@@ -22,10 +22,6 @@ readonly class SuggestionNotificationPropsBuilder implements NotificationPropsBu
         return Suggestion::class;
     }
 
-    /**
-     * @param object $source
-     * @return NotificationProps
-     */
     public function buildProps(object $source): NotificationProps
     {
         if (!is_a($source, Suggestion::class)) {

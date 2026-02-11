@@ -2,7 +2,7 @@ parameters:
     level: 6
     paths:
         - src
-        # TODO - tests
+        - tests
     excludePaths:
         analyse:
             - tests/bootstrap.php

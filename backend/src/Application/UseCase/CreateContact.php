@@ -32,6 +32,7 @@ readonly class CreateContact implements CreateContactInterface
         $notification = $this->notificationService->create($notificationProps);
         $this->entityManager->flush();
         $this->commandBus->dispatch(new SendNotificationCommand($notification->getId()));
+
         return $contact;
     }
 }

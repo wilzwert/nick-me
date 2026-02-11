@@ -33,13 +33,6 @@ class NotificationLog
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
 
-    /**
-     * @param Notification $notification
-     * @param string $sender
-     * @param NotificationLogStatus $status
-     * @param string $statusMessage
-     * @param \DateTimeImmutable $createdAt
-     */
     public function __construct(Notification $notification, string $sender, NotificationLogStatus $status, string $statusMessage, \DateTimeImmutable $createdAt)
     {
         $this->notification = $notification;
