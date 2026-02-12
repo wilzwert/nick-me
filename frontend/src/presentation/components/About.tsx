@@ -1,21 +1,34 @@
 import { ActionIcon, Modal, Stack } from "@mantine/core";
 import { useState } from "react";
 import { ContactForm } from "./ContactForm";
-import { IconMail } from "@tabler/icons-react";
+import { IconBulb, IconMail } from "@tabler/icons-react";
+import { SuggestionForm } from "./SuggestionForm";
 
 export function About() {
     const [contactOpen, setContactOpen] = useState(false);
+    const [suggestionOpen, setSuggestionOpen] = useState(false);
 
     const contact  =<ActionIcon variant="subtle" size="lg" component="a" onClick={() => setContactOpen(true)}>
                   <IconMail size={20} title="Contact"/>
               </ActionIcon>;
 
+
+    const suggestion  =<ActionIcon variant="subtle" size="lg" component="a" onClick={() => setSuggestionOpen(true)}>
+                  <IconBulb size={20} title="Suggérer un mot"/>
+              </ActionIcon>;
+
+    
+
     return (
         <>
             <Stack gap={20}>
             <div>
-                NickMe est un générateur de pseudos aléatoires rigolos et parfois offensants, créé avec ❤️.
+                <p>NickMe est un générateur de pseudos aléatoires rigolos et parfois offensants, créé avec ❤️.</p>
+                <p>Un pseudo est constitué de 2 mots assemblés au hasard selon le genre et le niveau d'offense demandé.</p>
+                <p>Pour m'aider à enrichir la liste de mots disponibles, c'est par ici : {suggestion}</p>
             </div>
+
+            <div>Ci-dessous du blabla légal probablement pas très utile ;)</div>
 
             <div>
                 <h2>Mentions légales & Politique de confidentialité</h2>
@@ -123,7 +136,10 @@ export function About() {
 
             </Stack>
             <Modal opened={contactOpen} onClose={() => setContactOpen(false)} title="Contact">
-            <ContactForm onClose={() => setContactOpen(false)} />
+                <ContactForm onClose={() => setContactOpen(false)} />
+            </Modal>
+            <Modal opened={suggestionOpen} onClose={() => setSuggestionOpen(false)} title="Suggérer un mot">
+                <SuggestionForm onClose={() => setSuggestionOpen(false)} />
             </Modal>
         </>
     )

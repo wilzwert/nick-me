@@ -27,6 +27,7 @@ export function ReportForm({ nickId, onClose }: { nickId: number; onClose?: () =
     <Card>
     <Box pos="relative">
       <LoadingOverlay visible={isPending || isSubmitted} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
+      <p>C'est sans doute inévitable que certains pseudos générés avec le niveau d'offense maximum soient un peu agressifs. N'hésitez à me signaler ceux qui dépassent vraiment les bornes&nbsp;!</p>
       <form onSubmit={form.onSubmit((values) => {
           setSubmitted(true);
           executeWithAltcha(() => {

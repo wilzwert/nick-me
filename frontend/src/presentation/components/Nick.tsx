@@ -3,10 +3,11 @@ import { type Word } from '../../domain/model/Word';
 import { useReplaceWord } from '../../application/replaceWord';
 import { CopyNickButton } from './CopyNickButton';
 import { useExecuteWithAltcha } from '../../infrastructure/altcha.service';
-import { Box, Button, Card, Group, LoadingOverlay, Paper, Text } from '@mantine/core';
+import { ActionIcon, Box, Card, Group, LoadingOverlay, Paper, Text } from '@mantine/core';
 import { IconReload } from '@tabler/icons-react';
 import { useState } from 'react';
 import { ReportNickButton } from './ReportNickButton';
+import styles from './Nick.module.css';
 
 export function Nick() {
   const nick = useNickStore(s => s.nick);
@@ -53,28 +54,30 @@ export function Nick() {
 
       
       <Group aria-label="Mots du pseudo" gap={30} align="center" justify="center">
-      {nick.words.map(word => (
-        <Paper key={word.id} p={16}>
+        <Paper p={16} className={styles.nickWords}>
+        {nick.words.map(word => (
+          <span key={word.label} className={styles.nickWord}>
+            <Text component='span' className='nick-word'>{word.label}</Text>
 
-          <Text component='span' className='nick-word'>{word.label}</Text>
-
-          <Button size="xs"
-            onClick={() => {
-              setIsReloading(true);
-              executeWithAltcha(() => {
-                handleReloadWord(word);
-              })
-            }}
-            variant="subtle"
-            disabled={reloadingWord}
-            aria-label={`Remplacer le mot ${word.label}`}
-            aria-disabled={reloadingWord}
-            aria-busy={reloadingWord}
-          >
-            <span aria-hidden="true"><IconReload/></span>
-          </Button>
-        </Paper>
+            <ActionIcon size="xs"
+              onClick={() => {
+                setIsReloading(true);
+                executeWithAltcha(() => {
+                  handleReloadWord(word);
+                })
+              }}
+              variant="subtle"
+              disabled={reloadingWord}
+              aria-label={`Remplacer le mot ${word.label}`}
+              aria-disabled={reloadingWord}
+              aria-busy={reloadingWord}
+              className={styles.reloadWordAction}
+            >
+              <IconReload/>
+            </ActionIcon>
+          </span>
       ))}
+      </Paper>
     
     {reloadingWord && (
         <p role="status" aria-live="polite" className="sr-only">

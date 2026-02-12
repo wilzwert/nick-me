@@ -26,6 +26,7 @@ export function ContactForm({ onClose }: { onClose?: () => void }) {
     <Card>
     <Box pos="relative">
       <LoadingOverlay visible={isPending || isSubmitted} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
+      <p>Une suggestion ? Une question ? N'hésitez pas à me contacter !</p>
       <form onSubmit={form.onSubmit((values) => {
           setSubmitted(true);
           executeWithAltcha(() => {
