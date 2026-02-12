@@ -20,94 +20,93 @@ brave,before,NEUTRAL,MEDIUM
 périmé ,after,AUTO,HIGH
 moisi,after,AUTO,MAX
 défraîchi ,after,AUTO,MAX
-mou,after,M,
-molle,after,F,
-coulant ,after,,
-hésitant ,after,,
-irradié ,after,,
+mou,after,M,LOW
+molle,after,F,LOW
+coulant ,after,AUTO,MEDIUM
+hésitant ,after,AUTO,LOW
+irradié ,after,AUTO,MEDIUM
 nucléaire ,after,NEUTRAL,MAX
-récalcitrant ,after,,
-usagé ,after,,MAX
-biscornu ,after,,
-puant,after,,
-vérolé ,after,,
+récalcitrant ,after,AUTO,MEDIUM
+usagé ,after,AUTO,MAX
+biscornu ,after,AUTO,HIGH
+puant,after,AUTO,VERY_HIGH
+vérolé ,after,AUTO,MAX
 humide ,after,NEUTRAL,HIGH
-poussiéreux ,after,,HIGH
-dégoulinant ,after,,
-couinant,after,M,
-suitant,after,,VERY_HIGH
-déplumé ,after,,
-empaillé ,after,,
-magique,after,NEUTRAL,
-lyrique,after,NEUTRAL,
-désopilant,after,,LOW
-luxuriant,after,,LOW
-poilu,after,,MEDIUM
-moulu,after,,MEDIUM
-cuit,after,,
-mollasson,after,,HIGH
-paresseux,after,,
-énergique,after,NEUTRAL,
-prolifique,after,NEUTRAL,
-bavard,after,,
+poussiéreux ,after,AUTO,HIGH
+dégoulinant ,after,AUTO,HIGH
+couinant,after,AUTO,LOW
+suitant,after,AUTO,VERY_HIGH
+déplumé ,after,AUTO,MEDIUM
+empaillé ,after,AUTO,HIGH
+magique,after,NEUTRAL,LOW
+lyrique,after,NEUTRAL,LOW
+désopilant,after,AUTO,LOW
+luxuriant,after,AUTO,LOW
+poilu,after,AUTO,MEDIUM
+moulu,after,AUTO,MEDIUM
+cuit,after,AUTO,LOW
+mollasson,after,AUTO,HIGH
+paresseux,after,AUTO,MEDIUM
+énergique,after,NEUTRAL,LOW
+prolifique,after,NEUTRAL,LOW
+bavard,after,AUTO,LOW
 chauve,after,NEUTRAL,MEDIUM
 velu,after,AUTO,MEDIUM
 flétri,after,AUTO,MEDIUM
-frit,after,,
+frit,after,AUTO,LOW
 fondu,after,AUTO,LOW
 cocu,after,AUTO,VERY_HIGH
 inutile,after,NEUTRAL,VERY_HIGH
 fou,after,M,HIGH
 folle,after,F,HIGH
 dégénéré,after,AUTO,VERY_HIGH
-pileux,after,,
+pileux,after,AUTO,HIGH
 rebondi,after,AUTO,MEDIUM
 redondant,after,AUTO,MEDIUM
 fossilisé,after,AUTO,MEDIUM
-joueur,after,,
+joueur,after,AUTO,LOW
 sous ecsta,after,NEUTRAL,VERY_HIGH
 putride,after,NEUTRAL,VERY_HIGH
 incontrôlable,after,NEUTRAL,VERY_HIGH
 révolté,after,AUTO,HIGH
 incendiaire,after,NEUTRAL,HIGH
 incandescent,after,AUTO,LOW
-malin,after,M,
-maligne,after,F,
+malin,after,M,LOW
+maligne,after,F,LOW
 futé,after,AUTO,LOW
 scintillant,after,AUTO,LOW
 dodu,after,AUTO,HIGH
 fatigué,after,AUTO,LOW
-vif,after,,
-grincheux,after,,
+vif,after,AUTO,LOW
+grincheux,after,AUTO,HIGH
 satanique,after,NEUTRAL,HIGH
 buté,after,AUTO,MEDIUM
 enthousiaste,after,NEUTRAL,LOW
 raté ,after,AUTO,HIGH
-scandaleux,after,,
+scandaleux,after,AUTO,HIGH
 zinzin,after,NEUTRAL,MEDIUM
 maniaque,after,NEUTRAL,HIGH
-coquet,after,,
+coquet,after,AUTO,LOW
 doré,after,AUTO,LOW
-précieux,after,,
+précieux,after,AUTO,LOW
 fantasque,after,NEUTRAL,LOW
 déprimé,after,AUTO,MEDIUM
-pleureur,after,,
-plaintif,after,,
+pleureur,after,AUTO,HIGH
+plaintif,after,AUTO,HIGH
 charismatique,after,NEUTRAL,LOW
 fantasmagorique,after,NEUTRAL,LOW
-bigleux,after,M,
+bigleux,after,AUTO,VERY_HIGH
 fascinant,after,AUTO,LOW
-boîteux,after,M,HIGH
-passif,after,M,LOW
+boîteux,after,AUTO,HIGH
+passif,after,AUTO,LOW
 contrarié,after,AUTO,LOW
 lunatique,after,NEUTRAL,MEDIUM
 solaire,after,NEUTRAL,LOW
 coincé,after,AUTO,MEDIUM
-mignon,after,M,LOW
-mignonne,after,F,LOW
+mignon,after,AUTO,LOW
 hautain,after,AUTO,HIGH
 arrogant,after,AUTO,HIGH
-dédaigneux,after,M,MEDIUM
+dédaigneux,after,AUTO,MEDIUM
 acharné,after,AUTO,LOW
 célèbre,after,NEUTRAL,LOW
 surdoué,after,AUTO,LOW
@@ -119,33 +118,33 @@ notoire,after,NEUTRAL,MEDIUM
 éloquent,after,AUTO,LOW
 indiscret ,after,M,LOW
 indiscrète,after,F,LOW
-chétif ,after,,MEDIUM
+chétif ,after,AUTO,MEDIUM
 à lunettes,after,NEUTRAL,LOW
-ultracrépidarien,after,M,HIGH
+ultracrépidarien,after,AUTO,HIGH
 potelé,after,AUTO,MEDIUM
 relou,after,AUTO,HIGH
-hypertrophié,after,,
+hypertrophié,after,AUTO,HIGH
 bouffi,after,AUTO,HIGH
 pédant,after,AUTO,HIGH
 pétomane,after,NEUTRAL,HIGH
 courtois,after,AUTO,LOW
 romantique,after,NEUTRAL,LOW
-astucieux,after,,
+astucieux,after,AUTO,LOW
 optimisé,after,AUTO,LOW
 optimiste,after,NEUTRAL,LOW
 défaitiste,after,NEUTRAL,LOW
 fataliste,after,NEUTRAL,LOW
 interrogateur,after,M,LOW
 interrogatrice,after,F,LOW
-douteux,after,,MEDIUM
+douteux,after,AUTO,MEDIUM
 louche,after,NEUTRAL,MEDIUM
 circonspect,after,AUTO,LOW
-dubitatif,after,,LOW
+dubitatif,after,AUTO,LOW
 étrange,after,NEUTRAL,LOW
 bizarre,after,NEUTRAL,LOW
 bizzaroïde,after,NEUTRAL,LOW
 purulent,after,AUTO,MEDIUM
-mafieux,after,,HIGH
+mafieux,after,AUTO,HIGH
 de Paimpol,after,NEUTRAL,LOW
 ridé,after,AUTO,HIGH
 deshydraté,after,AUTO,MEDIUM
@@ -153,11 +152,11 @@ inconscient,after,AUTO,HIGH
 illégitime,after,NEUTRAL,HIGH
 mythomane,after,NEUTRAL,MAX
 sournois,after,AUTO,HIGH
-frimeur,after,,HIGH
+frimeur,after,AUTO,HIGH
 stupide,after,NEUTRAL,VERY_HIGH
 imbécile,after,NEUTRAL,VERY_HIGH
 incohérent,after,AUTO,MEDIUM
-miteux,after,,
+miteux,after,AUTO,VERY_HIGH
 pourri,after,AUTO,HIGH
 véreux,after,M,VERY_HIGH
 momifié,after,AUTO,HIGH
@@ -165,15 +164,15 @@ brillant,after,AUTO,LOW
 tuméfié,after,AUTO,HIGH
 triste,after,NEUTRAL,LOW
 espiègle,after,NEUTRAL,LOW
-Cucurbitacé,after,,
-Invertébré,after,,
-Troglodyte,after,NEUTRAL,
+Cucurbitacé,after,AUTO,MEDIUM
+Invertébré,after,AUTO,HIGH
+Troglodyte,after,NEUTRAL,MEDIUM
 barbare,after,NEUTRAL,HIGH
 poisseux,after,AUTO,HIGH
 incroyable,before,NEUTRAL,LOW
 de droite,after,NEUTRAL,HIGH
 communiste,after,NEUTRAL,HIGH
-anal,after,AUTO,HIGH
+anal,after,AUTO,MAX
 je-sais-tout,after,NEUTRAL,MEDIUM
 capitaliste,after,NEUTRAL,HIGH
 en mousse,after,NEUTRAL,LOW
@@ -181,7 +180,7 @@ en carton,after,NEUTRAL,LOW
 de winchester,after,NEUTRAL,LOW
 incontinent,after,AUTO,MAX
 patibulaire,after,NEUTRAL,MEDIUM
-farceur,after,,LOW
+farceur,after,AUTO,LOW
 neurasthénique,after,NEUTRAL,MEDIUM
 innocent,after,AUTO,LOW
 pathétique,after,NEUTRAL,HIGH
@@ -205,6 +204,7 @@ sans personnalité,after,NEUTRAL,HIGH
 soumis,after,AUTO,VERY_HIGH
 salé,after,AUTO,MEDIUM
 amer,after,M,MEDIUM
+amère,after,F,MEDIUM
 cynique,after,NEUTRAL,MEDIUM
 aigri,after,AUTO,HIGH
 diabolique,after,NEUTRAL,MEDIUM
@@ -250,7 +250,7 @@ pompette,after,NEUTRAL,MEDIUM
 irrationnel,after,M,MEDIUM
 irrationnelle,after,F,MEDIUM
 dingo,after,NEUTRAL,HIGH
-lucratif,after,M,MEDIUM
+lucratif,after,AUTO,MEDIUM
 imbitable,after,NEUTRAL,VERY_HIGH
 millionnaire,after,NEUTRAL,LOW
 friqué,after,AUTO,MEDIUM
@@ -273,10 +273,11 @@ bordélique,after,NEUTRAL,HIGH
 pataud,after,AUTO,MEDIUM
 sans allure,after,NEUTRAL,MEDIUM
 empoté,after,AUTO,MEDIUM
-manchot,after,M,MAX
+manchot,after,AUTO,MAX
 unijambiste,after,NEUTRAL,MAX
 démoniaque,after,NEUTRAL,HIGH
 outrancier,after,M,MEDIUM
+outrancière,after,F,MEDIUM
 outrageux,after,AUTO,MEDIUM
 estropié,after,AUTO,MAX
 répugnant,after,AUTO,HIGH
@@ -289,13 +290,12 @@ folklorique,after,NEUTRAL,LOW
 nyctalope,after,NEUTRAL,LOW
 fuyant,after,AUTO,MEDIUM
 décérébré,after,AUTO,HIGH
-inattentif,after,M,MEDIUM
+inattentif,after,AUTO,MEDIUM
 surnaturel,after,M,LOW
 surnaturelle,after,F,LOW
-végétatif,after,M,MAX
+végétatif,after,AUTO,MAX
 élitiste,after,NEUTRAL,HIGH
-créatif,after,M,LOW
-créative,after,F,LOW
+créatif,after,AUTO,LOW
 timbré,after,NEUTRAL,HIGH
 affranchi,after,AUTO,MEDIUM
 indépendant,after,AUTO,LOW
@@ -304,8 +304,7 @@ toxique,after,NEUTRAL,MAX
 intoxiqué,after,AUTO,VERY_HIGH
 méfiant,after,AUTO,LOW
 malade,after,NEUTRAL,HIGH
-craintif,after,M,MEDIUM
-craintive,after,F,MEDIUM
+craintif,after,AUTO,MEDIUM
 misérable,after,NEUTRAL,HIGH
 fini à la pisse,after,M,MAX
 finie à la pisse,after,F,MAX
@@ -322,7 +321,7 @@ moralement flexible,after,NEUTRAL,HIGH
 ripou,after,M,VERY_HIGH
 corrompu,after,AUTO,VERY_HIGH
 vicieux,after,AUTO,VERY_HIGH
-moqueur,after,,MEDIUM
+moqueur,after,AUTO,MEDIUM
 indécent,after,AUTO,HIGH
 imposant,after,AUTO,HIGH
 belliqueux,after,AUTO,HIGH
