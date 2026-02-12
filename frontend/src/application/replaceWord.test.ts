@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useNickStore } from '../presentation/stores/nick.store';
 import { useNickHistoryStore } from '../presentation/stores/nick-history.store';
 import type { Nick } from '../domain/model/Nick';
@@ -45,12 +45,14 @@ describe('useReplaceWord', () => {
     const { result } = renderHook(() => useReplaceWord(), { wrapper: createTestWrapper() });
 
 
-    await act(async () => {
+    act(() => {
       // explicitly trigger the mutation
       result.current.mutate({ role: 'qualifier', gender: 'F', offenseLevel: 10, previousId: 2 });
     });
     
-    expect(useNickStore.getState().nick).toEqual(mockNewNick);
-    expect(useNickHistoryStore.getState().history[0]).toEqual(mockNewNick);
+    await waitFor(() => {
+      expect(useNickStore.getState().nick).toEqual(mockNewNick);
+      expect(useNickHistoryStore.getState().history[0]).toEqual(mockNewNick);
+    })
   });
 });

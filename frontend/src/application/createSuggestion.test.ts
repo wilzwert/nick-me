@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useToastStore } from '../presentation/stores/toast.store';
 import { createSuggestion } from '../infrastructure/suggestion.api';
 import { useCreateSuggestion } from './createSuggestion';
@@ -19,14 +19,15 @@ describe('useCreateSuggestion', () => {
 
     const { result } = renderHook(() => useCreateSuggestion(), { wrapper: createTestWrapper() });
 
-    await act(async () => {
+    act(() => {
       // explicitly trigger the mutation
       result.current.mutate({ label: 'Word', senderEmail: 'test@example.com' });
     });
 
-
-    expect(useToastStore.getState().toasts).toHaveLength(1);
-    expect(useToastStore.getState().toasts[0].type).toBe('success');
-    expect(useToastStore.getState().toasts[0].message).toBe('Suggestion enregistrée !');
+    await waitFor(() => {
+      expect(useToastStore.getState().toasts).toHaveLength(1);
+      expect(useToastStore.getState().toasts[0].type).toBe('success');
+      expect(useToastStore.getState().toasts[0].message).toBe('Suggestion enregistrée !');
+    })
   });
 });

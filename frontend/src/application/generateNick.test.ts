@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useGenerateNick } from './generateNick';
 import { generateNick } from '../infrastructure/nick.api';
 import { useNickStore } from '../presentation/stores/nick.store';
@@ -29,12 +29,14 @@ describe('useGenerateNick', () => {
 
     const { result } = renderHook(() => useGenerateNick(), { wrapper: createTestWrapper() });
 
-    await act(async () => {
+    act(() => {
       // explicitly trigger the mutation
       result.current.mutate({ gender: 'M', offenseLevel: 10 });
     });
 
-    expect(useNickStore.getState().nick).toEqual(mockNick);
-    expect(useNickHistoryStore.getState().history[0]).toEqual(mockNick);
+    await waitFor(() => {
+      expect(useNickStore.getState().nick).toEqual(mockNick);
+      expect(useNickHistoryStore.getState().history[0]).toEqual(mockNick);
+    })
   });
 });
