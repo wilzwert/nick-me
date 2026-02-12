@@ -145,7 +145,8 @@
 <a name='L80'></a><a href='#L80'>80</a>
 <a name='L81'></a><a href='#L81'>81</a>
 <a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,6 +182,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -256,57 +258,58 @@ export function NickHistoryElement({ nick }: Props) {
     };
 &nbsp;
     return (
-        &lt;Group className={menuOpened ? styles.selected : ''}&gt;
-              &lt;Paper
-                component="button"
-                type="button"
-                onClick={
-                () =&gt; {
-                    setNick(nick);
-                }
-              }
-                radius="sm"
-                p="xs"
-                shadow="xs"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  cursor: 'pointer', 
-                  border: 'none',
-                }}
-              &gt;
-            &lt;Text&gt;
-              {nick.words.map(w =&gt; w.label).join(' ')}
-            &lt;/Text&gt;
-            &lt;/Paper&gt;
+      &lt;Group wrap="nowrap" className={menuOpened ? styles.selected : ''}&gt;
+        &lt;Paper
+          component="button"
+          type="button"
+          onClick={
+          () =&gt; {
+              setNick(nick);
+          }
+        }
+          radius="sm"
+          p="xs"
+          shadow="xs"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            cursor: 'pointer', 
+            border: 'none',
+            whiteSpace: 'normal'
+          }}
+        &gt;
+        &lt;Text&gt;
+          {nick.words.map(w =&gt; w.label).join(' ')}
+        &lt;/Text&gt;
+      &lt;/Paper&gt;
               
-            &lt;Menu 
-                shadow="md" 
-                width={220} 
-                position="bottom-end" 
-                opened={menuOpened} 
-                onChange={setMenuOpened}
-                menuItemTabIndex={0}
-                id={'nick'+nick.id}
-                withinPortal={import.meta.env.MODE === 'test' ? false  : <span class="branch-1 cbranch-no" title="branch not covered" >undefined}</span>
-            &gt;
-              &lt;Menu.Target&gt;
-                &lt;Button variant="subtle"&gt;
-                  &lt;IconDotsVertical size={16} aria-label="Actions sur le pseudo"/&gt;
-                &lt;/Button&gt;
-              &lt;/Menu.Target&gt;
+      &lt;Menu 
+          shadow="md" 
+          width={220} 
+          position="bottom-end" 
+          opened={menuOpened} 
+          onChange={setMenuOpened}
+          menuItemTabIndex={0}
+          id={'nick'+nick.id}
+          withinPortal={import.meta.env.MODE === 'test' ? false  : <span class="branch-1 cbranch-no" title="branch not covered" >undefined}</span>
+      &gt;
+        &lt;Menu.Target&gt;
+          &lt;Button variant="subtle" aria-label="Actions sur le pseudo" style={{flexShrink: 0}}&gt;
+            &lt;IconDotsVertical size={16}/&gt;
+          &lt;/Button&gt;
+        &lt;/Menu.Target&gt;
 &nbsp;
-              &lt;Menu.Dropdown&gt;
-                &lt;Stack gap="xs"&gt;
-                  &lt;CopyNickButton onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>loseMenu(1000)} n</span>ick={nick} /&gt;
-                  &lt;RemoveNickFromHistoryButton onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>loseMenu(null)} n</span>ick={nick} /&gt;
-                  &lt;ReportNickButton onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>loseMenu(null)} n</span>ick={nick} /&gt;
-                  &lt;/Stack&gt;
-              &lt;/Menu.Dropdown&gt;
-            &lt;/Menu&gt;
-            &lt;/Group&gt;
-    )
+        &lt;Menu.Dropdown&gt;
+          &lt;Stack gap="xs"&gt;
+            &lt;CopyNickButton onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>loseMenu(1000)} n</span>ick={nick} /&gt;
+            &lt;RemoveNickFromHistoryButton onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>loseMenu(null)} n</span>ick={nick} /&gt;
+            &lt;ReportNickButton onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>loseMenu(null)} n</span>ick={nick} /&gt;
+            &lt;/Stack&gt;
+        &lt;/Menu.Dropdown&gt;
+      &lt;/Menu&gt;
+    &lt;/Group&gt;
+  )
 &nbsp;
 &nbsp;
 }</pre></td></tr></table></pre>
@@ -316,7 +319,7 @@ export function NickHistoryElement({ nick }: Props) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-11T15:00:15.353Z
+                at 2026-02-12T10:43:56.455Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
