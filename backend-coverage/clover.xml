@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1770893527">
-  <project timestamp="1770893527" name="Clover Coverage">
+<coverage generated="1770894508">
+  <project timestamp="1770894508" name="Clover Coverage">
     <package name="App\Application\Handler">
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Application/Handler/SendNotificationCommandHandler.php">
         <class name="App\Application\Handler\SendNotificationCommandHandler" namespace="App\Application\Handler">
@@ -1975,7 +1975,7 @@
         </class>
         <line num="35" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="15"/>
         <line num="42" type="stmt" count="15"/>
-        <line num="59" type="method" name="computeTargetGender" visibility="private" complexity="6" crap="13.15" count="12"/>
+        <line num="59" type="method" name="computeTargetGender" visibility="private" complexity="6" crap="16.67" count="12"/>
         <line num="62" type="stmt" count="12"/>
         <line num="63" type="stmt" count="7"/>
         <line num="67" type="stmt" count="5"/>
@@ -2220,21 +2220,21 @@
         <line num="21" type="stmt" count="28"/>
         <line num="24" type="method" name="getLabel" visibility="private" complexity="5" crap="6.97" count="35"/>
         <line num="27" type="stmt" count="35"/>
-        <line num="28" type="stmt" count="21"/>
-        <line num="31" type="stmt" count="14"/>
-        <line num="32" type="stmt" count="5"/>
-        <line num="35" type="stmt" count="11"/>
-        <line num="36" type="stmt" count="11"/>
-        <line num="37" type="stmt" count="11"/>
-        <line num="38" type="stmt" count="11"/>
-        <line num="39" type="stmt" count="11"/>
-        <line num="40" type="stmt" count="11"/>
-        <line num="41" type="stmt" count="11"/>
-        <line num="42" type="stmt" count="11"/>
-        <line num="43" type="stmt" count="11"/>
-        <line num="44" type="stmt" count="11"/>
-        <line num="45" type="stmt" count="11"/>
-        <line num="49" type="stmt" count="2"/>
+        <line num="28" type="stmt" count="17"/>
+        <line num="31" type="stmt" count="18"/>
+        <line num="32" type="stmt" count="11"/>
+        <line num="35" type="stmt" count="14"/>
+        <line num="36" type="stmt" count="14"/>
+        <line num="37" type="stmt" count="14"/>
+        <line num="38" type="stmt" count="14"/>
+        <line num="39" type="stmt" count="14"/>
+        <line num="40" type="stmt" count="14"/>
+        <line num="41" type="stmt" count="14"/>
+        <line num="42" type="stmt" count="14"/>
+        <line num="43" type="stmt" count="14"/>
+        <line num="44" type="stmt" count="14"/>
+        <line num="45" type="stmt" count="13"/>
+        <line num="49" type="stmt" count="1"/>
         <line num="52" type="method" name="resolve" visibility="public" complexity="1" crap="1" count="35"/>
         <line num="54" type="stmt" count="35"/>
         <line num="56" type="stmt" count="35"/>
@@ -2528,10 +2528,10 @@
         <line num="31" type="stmt" count="9"/>
         <line num="35" type="stmt" count="20"/>
         <line num="36" type="stmt" count="20"/>
-        <line num="37" type="stmt" count="17"/>
-        <line num="38" type="stmt" count="3"/>
-        <line num="39" type="stmt" count="3"/>
-        <line num="40" type="stmt" count="3"/>
+        <line num="37" type="stmt" count="13"/>
+        <line num="38" type="stmt" count="4"/>
+        <line num="39" type="stmt" count="4"/>
+        <line num="40" type="stmt" count="4"/>
         <line num="41" type="stmt" count="20"/>
         <line num="43" type="stmt" count="20"/>
         <line num="45" type="stmt" count="20"/>
