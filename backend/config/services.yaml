@@ -16,6 +16,9 @@ parameters:
     recipient.admin: '%env(RECIPIENT_ADMIN)%'
     email.sender: '%env(EMAIL_SENDER)%'
     app.name: 'NickMe'
+    client.api_key: '%env(CLIENT_API_KEY)%'
+    client.api_key_header: 'X-Api-Key'
+
 
 services:
     # default configuration for services in *this* file
