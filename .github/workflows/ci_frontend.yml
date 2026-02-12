@@ -83,7 +83,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./frontend/coverage/unit
-          destination_dir: ./coverage-frontend
+          destination_dir: ./frontend-coverage
 
       # we only update codecov if code has actually been pushed to main branch, or if workflow is run manually on main branch
       - name: Upload frontend coverage report to Codecov
