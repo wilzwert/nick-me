@@ -1,7 +1,7 @@
-import { ActionIcon, Card, Group, List, Popover, Stack, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Card, Group, List, Popover, Stack, Text } from "@mantine/core";
 import { useNickHistoryStore } from "../stores/nick-history.store";
 import { NickHistoryElement } from "./NickHistoryElement";
-import { IconInfoCircle, IconInfoSmall, IconInfoSquareRoundedFilled, IconReload } from "@tabler/icons-react";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 export function NickHistory() {
   const history = useNickHistoryStore(s => s.history);
