@@ -25,7 +25,7 @@ RUN npm run build
 FROM nginx:alpine
 
 ARG UID=1000
-ARG GID=1000--progress=plain
+ARG GID=1000
 ARG APP_USER=nickme
 
 ENV UID=${UID} \
