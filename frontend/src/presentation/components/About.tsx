@@ -8,13 +8,13 @@ export function About() {
     const [contactOpen, setContactOpen] = useState(false);
     const [suggestionOpen, setSuggestionOpen] = useState(false);
 
-    const contact  =<ActionIcon variant="subtle" size="lg" component="a" onClick={() => setContactOpen(true)}>
-                  <IconMail size={20} title="Contact"/>
+    const contact  =<ActionIcon variant="subtle" size="lg" onClick={() => setContactOpen(true)} aria-label="Ouvrir le formulaire de contact">
+                  <IconMail size={20} aria-hidden="true" />
               </ActionIcon>;
 
 
-    const suggestion  =<ActionIcon variant="subtle" size="lg" component="a" onClick={() => setSuggestionOpen(true)}>
-                  <IconBulb size={20} title="Suggérer un mot"/>
+    const suggestion  =<ActionIcon variant="subtle" size="lg" onClick={() => setSuggestionOpen(true)} aria-label="Suggérer un mot">
+                  <IconBulb size={20} aria-hidden="true" />
               </ActionIcon>;
 
     
@@ -41,8 +41,8 @@ export function About() {
                 Statut : Particulier
                 Contact : {contact}
                 </p>
-                <p>
                 <h4>Hébergement</h4>
+                <p>
                 Hébergeur :Infomaniak
                 Adresse : Infomaniak Network SA, Rue Eugène Marziano 25, 1227 Les Acacias (GE), Suisse
                 Site web : https://www.infomaniak.com/
