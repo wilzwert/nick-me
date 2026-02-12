@@ -25,6 +25,7 @@ export function SuggestionForm({ onClose }: { onClose?: () => void }) {
     <Card>
     <Box pos="relative">
       <LoadingOverlay visible={isPending || isSubmitted} zIndex={1000} color='pink' overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }} />
+      <p>NickMe est basé sur une liste prédéfinie de mots. Si vous avez des idées pour m'aider à l'enrichir, n'hésitez pas !</p>
       <form onSubmit={form.onSubmit((values) => {
           setSubmitted(true);
           executeWithAltcha(() => {

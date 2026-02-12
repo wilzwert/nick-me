@@ -1,12 +1,19 @@
 .nickWords {
   display: flex;
-  gap: 0.5rem;
+  gap: 1.75em 0.75em;
   padding: 0;
   list-style: none;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .nickWord {
   display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
+  align-items: baseline;
+  gap: 0.25em;
+}
+
+.reloadWordAction {
+  position: relative;
+  top: 0.75em;
 }

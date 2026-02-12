@@ -27,57 +27,58 @@ export function NickHistoryElement({ nick }: Props) {
     };
 
     return (
-        <Group className={menuOpened ? styles.selected : ''}>
-              <Paper
-                component="button"
-                type="button"
-                onClick={
-                () => {
-                    setNick(nick);
-                }
-              }
-                radius="sm"
-                p="xs"
-                shadow="xs"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  cursor: 'pointer', 
-                  border: 'none',
-                }}
-              >
-            <Text>
-              {nick.words.map(w => w.label).join(' ')}
-            </Text>
-            </Paper>
+      <Group wrap="nowrap" className={menuOpened ? styles.selected : ''}>
+        <Paper
+          component="button"
+          type="button"
+          onClick={
+          () => {
+              setNick(nick);
+          }
+        }
+          radius="sm"
+          p="xs"
+          shadow="xs"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            cursor: 'pointer', 
+            border: 'none',
+            whiteSpace: 'normal'
+          }}
+        >
+        <Text>
+          {nick.words.map(w => w.label).join(' ')}
+        </Text>
+      </Paper>
               
-            <Menu 
-                shadow="md" 
-                width={220} 
-                position="bottom-end" 
-                opened={menuOpened} 
-                onChange={setMenuOpened}
-                menuItemTabIndex={0}
-                id={'nick'+nick.id}
-                withinPortal={import.meta.env.MODE === 'test' ? false  : undefined}
-            >
-              <Menu.Target>
-                <Button variant="subtle">
-                  <IconDotsVertical size={16} aria-label="Actions sur le pseudo"/>
-                </Button>
-              </Menu.Target>
+      <Menu 
+          shadow="md" 
+          width={220} 
+          position="bottom-end" 
+          opened={menuOpened} 
+          onChange={setMenuOpened}
+          menuItemTabIndex={0}
+          id={'nick'+nick.id}
+          withinPortal={import.meta.env.MODE === 'test' ? false  : undefined}
+      >
+        <Menu.Target>
+          <Button variant="subtle" aria-label="Actions sur le pseudo" style={{flexShrink: 0}}>
+            <IconDotsVertical size={16}/>
+          </Button>
+        </Menu.Target>
 
-              <Menu.Dropdown>
-                <Stack gap="xs">
-                  <CopyNickButton onClick={() => closeMenu(1000)} nick={nick} />
-                  <RemoveNickFromHistoryButton onClick={() => closeMenu(null)} nick={nick} />
-                  <ReportNickButton onClick={() => closeMenu(null)} nick={nick} />
-                  </Stack>
-              </Menu.Dropdown>
-            </Menu>
-            </Group>
-    )
+        <Menu.Dropdown>
+          <Stack gap="xs">
+            <CopyNickButton onClick={() => closeMenu(1000)} nick={nick} />
+            <RemoveNickFromHistoryButton onClick={() => closeMenu(null)} nick={nick} />
+            <ReportNickButton onClick={() => closeMenu(null)} nick={nick} />
+            </Stack>
+        </Menu.Dropdown>
+      </Menu>
+    </Group>
+  )
 
 
 }
