@@ -50,3 +50,8 @@ backend/tests
 backend/sonar-project.properties
 backend/.scannerwork
 backend/sonar.bat
+
+
+# Discord
+discord/node_modules
+discord/.env
