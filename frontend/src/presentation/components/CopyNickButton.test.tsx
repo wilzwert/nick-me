@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '../../../test-utils/index'
 import { CopyNickButton } from './CopyNickButton';
 import { type Nick } from '../../domain/model/Nick';
+import { act } from 'react';
 
 describe('CopyNickButton', () => {
   const mockNick: Nick = {
@@ -27,7 +28,7 @@ describe('CopyNickButton', () => {
     render(<CopyNickButton nick={mockNick} onClick={onClick} />);
 
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+    act(() => fireEvent.click(button));
 
     expect(onClick).toHaveBeenCalled();
   });
@@ -36,7 +37,7 @@ describe('CopyNickButton', () => {
     render(<CopyNickButton nick={mockNick} />);
 
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+    act(() => fireEvent.click(button));
 
     // text should update
     await waitFor(() => {
@@ -51,7 +52,7 @@ describe('CopyNickButton', () => {
 
     render(<CopyNickButton nick={mockNick} />);
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+    act(() => fireEvent.click(button));
 
     expect(writeTextSpy).toHaveBeenCalledWith('Super Nick');
     expect(await screen.findByText('Copié')).toBeInTheDocument();

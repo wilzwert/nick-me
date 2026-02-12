@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useToastStore } from '../presentation/stores/toast.store';
 import { createReport } from '../infrastructure/report.api';
 import { useCreateReport } from './createReport';
@@ -21,7 +21,7 @@ describe('useCreateReport', () => {
 
     await act(async () => {
       // explicitly trigger the mutation
-      result.current.mutate({ nickId: 1, senderEmail: 'test@example.com', reason: 'Inappropriate' });
+      await result.current.mutateAsync({ nickId: 1, senderEmail: 'test@example.com', reason: 'Inappropriate' });
     });
 
 
@@ -38,15 +38,16 @@ describe('useCreateReport', () => {
 
     const { result } = renderHook(() => useCreateReport(), { wrapper: createTestWrapper() });
 
-    await act(async () => {
+    act(() => {
       // explicitly trigger the mutation
       result.current.mutate({ nickId: 1, senderEmail: 'test@example.com', reason: 'Inappropriate' });
     });
 
-
-    expect(useToastStore.getState().toasts).toHaveLength(1);
-    expect(useToastStore.getState().toasts[0].type).toBe('error');
-    expect(useToastStore.getState().toasts[0].message).toBe("Erreur lors de l'envoi");
+    await waitFor(() => {
+      expect(useToastStore.getState().toasts).toHaveLength(1);
+      expect(useToastStore.getState().toasts[0].type).toBe('error');
+      expect(useToastStore.getState().toasts[0].message).toBe("Erreur lors de l'envoi");
+    });
   });
 
   it('updates stores on error with api error message', async () => {
@@ -57,14 +58,15 @@ describe('useCreateReport', () => {
 
     const { result } = renderHook(() => useCreateReport(), { wrapper: createTestWrapper() });
 
-    await act(async () => {
+    act(() => {
       // explicitly trigger the mutation
       result.current.mutate({ nickId: 1, senderEmail: 'test@example.com', reason: 'Inappropriate' });
     });
-
-
-    expect(useToastStore.getState().toasts).toHaveLength(1);
-    expect(useToastStore.getState().toasts[0].type).toBe('error');
-    expect(useToastStore.getState().toasts[0].message).toBe("API error");
+    
+    await waitFor(() => {
+      expect(useToastStore.getState().toasts).toHaveLength(1);
+      expect(useToastStore.getState().toasts[0].type).toBe('error');
+      expect(useToastStore.getState().toasts[0].message).toBe("API error");
+    })
   });
 });
