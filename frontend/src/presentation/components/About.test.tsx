@@ -1,4 +1,4 @@
-import { render, screen } from '../../../test-utils';
+import { render, screen, within } from '../../../test-utils';
 import userEvent from '@testing-library/user-event';
 import { About } from './About';
 import { describe, expect, it, vi } from 'vitest';
@@ -77,5 +77,53 @@ describe('About', () => {
     ).toBeInTheDocument();
 
     expect(screen.getByText('Suggestion form')).toBeInTheDocument();
+  });
+
+  it('closes contact modal when user clicks close', async () => {
+    const user = userEvent.setup();
+    render(<About />);
+
+    const suggestionIcon = screen.getAllByRole('button', {name: /contact/i})[0];
+    await user.click(suggestionIcon);
+
+    const dialog = screen.queryByRole('dialog', { name: 'Contact' });
+    const closeButton = within(dialog!).queryAllByRole('button')[0];
+
+    await user.click(closeButton);
+
+    expect(
+      screen.queryByRole('dialog', { name: 'Contact' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('closes suggestion modal when form triggers close', async () => {
+    const user = userEvent.setup();
+    render(<About />);
+
+    const suggestionIcon = screen.getAllByRole('button', {name: /suggérer/i})[0];
+    await user.click(suggestionIcon);
+
+    await user.click(screen.getByText('Close suggestion'));
+
+    expect(
+      screen.queryByRole('dialog', { name: 'Suggérer un mot' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('closes suggestion modal when user clicks close', async () => {
+    const user = userEvent.setup();
+    render(<About />);
+
+    const suggestionIcon = screen.getAllByRole('button', {name: /suggérer/i})[0];
+    await user.click(suggestionIcon);
+
+    const dialog = screen.queryByRole('dialog', { name: 'Suggérer un mot' });
+    const closeButton = within(dialog!).queryAllByRole('button')[0];
+
+    await user.click(closeButton);
+
+    expect(
+      screen.queryByRole('dialog', { name: 'Suggérer un mot' })
+    ).not.toBeInTheDocument();
   });
 });
