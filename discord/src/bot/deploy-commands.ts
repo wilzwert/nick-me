@@ -1,8 +1,8 @@
 import { REST, Routes } from 'discord.js';
 import { config } from 'dotenv';
 import { commands } from './commands/commands';
-import { deployGuildCommands } from './utils/deployGuildCommands';
-import { logger } from './utils/logger';
+import { deployGuildCommands } from './services/deployGuildCommands';
+import { logger } from './services/logger';
 
 config(); // charge .env
 

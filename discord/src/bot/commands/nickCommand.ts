@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction, GuildMember, SlashCommandBuilder } from 'discord.js';
-import { generateNickname } from '../utils/apiClient';
+import { generateNickname } from '../services/apiClient';
 import { NickRequestContext } from '../model/NickRequestContext';
 import { allowedGenders, Gender } from '../model/Gender';
-import { logger } from '../utils/logger';
+import { logger } from '../services/logger';
 
 export const nickCommand = {
     data: new SlashCommandBuilder()
