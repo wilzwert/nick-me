@@ -1,3 +1,18 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+COPY discord/package*.json ./
+
+# install dependencies
+RUN npm ci
+
+# copy source code
+COPY discord/ .
+
+RUN npm run build
+
+
 FROM node:20-alpine
 
 WORKDIR /app
@@ -14,17 +29,12 @@ ENV UID=${UID} \
 RUN addgroup --gid ${GID} ${APP_USER} \
  && adduser -D -u ${UID} -G ${APP_USER} ${APP_USER}
 
-# Copier package.json / package-lock.json
-COPY discord/package*.json ./
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./
 
-# Installer les dépendances
-RUN npm ci
+RUN npm ci --omit=dev \
+    && npm cache clean --force
 
-# Copier le code
-COPY discord/ .
-
-# Compiler TypeScript
-RUN npm run build
 
 RUN chown -R ${APP_USER}:${APP_USER} .
 
@@ -33,4 +43,4 @@ ENV NODE_ENV=production
 
 USER ${APP_USER}
 
-CMD ["node", "dist/bot/bot.js"]
+CMD ["node", "bot/bot.js"]
