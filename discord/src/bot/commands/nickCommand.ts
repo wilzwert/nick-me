@@ -4,6 +4,7 @@ import { NickRequestContext } from '../model/NickRequestContext';
 import { allowedGenders, Gender } from '../model/Gender';
 import { logger } from '../services/logger';
 import { OFFENSE_LEVEL_CHOICES } from '../model/OffenseLevel';
+import { retrieveOrCreateKey } from '../services/retrieveOrCreateApiKey';
 
 export const nickCommand = {
     data: new SlashCommandBuilder()
@@ -42,7 +43,8 @@ export const nickCommand = {
                 userId: interaction.user.id,
                 guildId: interaction.guildId!,
                 offense: interaction.options.getInteger('offense') ?? 10,
-                gender
+                gender,
+                apiKey: await retrieveOrCreateKey(interaction.guildId!)
             };
 
             const nickname = await generateNickname(ctx);

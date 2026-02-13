@@ -9,7 +9,7 @@ export async function deployGuildCommands(guildId: string): Promise<void>
     const rest = new REST({ version: '10' }).setToken(DISCORD_TOKEN);
     await rest.put(
         Routes.applicationGuildCommands(CLIENT_ID, guildId),
-        { body: commands }
+        { body: Array.from(commands.values()).map(cmd => cmd.data.toJSON()) }
     );
     logger.info({event: `Test guild commands deployment successful for ${guildId}`});
 }

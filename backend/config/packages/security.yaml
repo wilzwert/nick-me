@@ -13,11 +13,11 @@ security:
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
         main:
+            stateless: true
             lazy: true
-            provider: users_in_memory
-
             custom_authenticators:
                 - App\Security\Authenticator\AltchaAuthenticator
+                - App\Security\Authenticator\InternalAppAuthenticator
                 - App\Security\Authenticator\ClientAuthenticator
 
             # Activate different ways to authenticate:
@@ -28,6 +28,7 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
+        - { path: ^/api/key, roles: [ ROLE_FRONTEND, ROLE_INTERNAL ] }
         - { path: ^/api, roles: [ROLE_FRONTEND, ROLE_CLIENT] }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

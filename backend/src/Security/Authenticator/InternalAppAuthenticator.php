@@ -4,7 +4,6 @@ namespace App\Security\Authenticator;
 
 use App\Security\ApiUser;
 use App\Security\Service\AltchaServiceInterface;
-use App\Service\Data\ApiKeyServiceInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,36 +18,32 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 /**
  * @author Wilhelm Zwertvaegher
  */
-class ClientAuthenticator extends AbstractAuthenticator
+class InternalAppAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
-        #[Autowire('%client.api_key_header%')]
-        private readonly string $clientApiKeyHeader,
-        private readonly ApiKeyServiceInterface $apiKeyService,
+        #[Autowire('%internal_app.key_header%')]
+        private readonly string $internalAppKeyHeader,
+        #[Autowire('%internal_app.key%')]
+        private readonly string $internalAppKey,
     ) {
     }
 
     public function authenticate(Request $request): Passport
     {
-        $clientApiKey = $request->headers->get($this->clientApiKeyHeader);
+        $appKey = $request->headers->get($this->internalAppKeyHeader);
 
-        if (!$clientApiKey) {
-            throw new AuthenticationException('Invalid api key');
-        }
-
-        $apiKey = $this->apiKeyService->findValidKey($clientApiKey);
-        if (!$apiKey) {
-            throw new AuthenticationException('Invalid api key');
+        if (!$appKey || $appKey !== $this->internalAppKey) {
+            throw new AuthenticationException('Invalid app key');
         }
 
         return new SelfValidatingPassport(
-            new UserBadge('client', fn (string $userIdentifier) => new ApiUser($userIdentifier, ['ROLE_CLIENT']))
+            new UserBadge('internal', fn (string $userIdentifier) => new ApiUser($userIdentifier, ['ROLE_INTERNAL'])),
         );
     }
 
     public function supports(Request $request): ?bool
     {
-        return $request->headers->has($this->clientApiKeyHeader);
+        return $request->headers->has($this->internalAppKeyHeader);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response

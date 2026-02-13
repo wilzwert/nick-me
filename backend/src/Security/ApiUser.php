@@ -5,7 +5,7 @@ namespace App\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @phpstan-type UserRole 'ROLE_FRONTEND'|'ROLE_CLIENT'|'ROLE_ADMIN'
+ * @phpstan-type UserRole 'ROLE_FRONTEND'|'ROLE_CLIENT'|'ROLE_ADMIN'|'ROLE_INTERNAL')
  *
  * @author Wilhelm Zwertvaegher
  */

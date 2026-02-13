@@ -4,10 +4,12 @@ import { logger } from './services/logger';
 import { commands } from './commands/commands';
 import { handleInteraction } from './handlers/handleInteraction';
 import { guildCreate } from './handlers/guildCreate';
+import { initDB } from './services/db';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once('clientReady', () => {
+    initDB();
     logger.info({event: 'client_connected', message: `Connected as ${client.user?.tag}`});
 });
 
