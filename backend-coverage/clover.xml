@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1770988295">
-  <project timestamp="1770988295" name="Clover Coverage">
+<coverage generated="1770989479">
+  <project timestamp="1770989479" name="Clover Coverage">
     <package name="App\Application\Handler">
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Application/Handler/SendNotificationCommandHandler.php">
         <class name="App\Application\Handler\SendNotificationCommandHandler" namespace="App\Application\Handler">
@@ -886,14 +886,14 @@
         <class name="App\Entity\Nick" namespace="App\Entity">
           <metrics complexity="11" methods="11" coveredmethods="9" conditionals="11" coveredconditionals="9" statements="17" coveredstatements="15" elements="39" coveredelements="33"/>
         </class>
-        <line num="46" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="16"/>
-        <line num="55" type="stmt" count="16"/>
-        <line num="56" type="stmt" count="16"/>
-        <line num="57" type="stmt" count="16"/>
-        <line num="58" type="stmt" count="16"/>
-        <line num="59" type="stmt" count="16"/>
-        <line num="60" type="stmt" count="16"/>
-        <line num="61" type="stmt" count="16"/>
+        <line num="46" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="15"/>
+        <line num="55" type="stmt" count="15"/>
+        <line num="56" type="stmt" count="15"/>
+        <line num="57" type="stmt" count="15"/>
+        <line num="58" type="stmt" count="15"/>
+        <line num="59" type="stmt" count="15"/>
+        <line num="60" type="stmt" count="15"/>
+        <line num="61" type="stmt" count="15"/>
         <line num="64" type="method" name="getId" visibility="public" complexity="1" crap="1" count="11"/>
         <line num="66" type="stmt" count="11"/>
         <line num="69" type="method" name="getLabel" visibility="public" complexity="1" crap="1" count="3"/>
@@ -1733,18 +1733,18 @@
         <line num="36" type="method" name="incrementUsageCount" visibility="public" complexity="1" crap="1" count="15"/>
         <line num="38" type="stmt" count="15"/>
         <line num="39" type="stmt" count="15"/>
-        <line num="42" type="method" name="getOrCreate" visibility="public" complexity="2" crap="2.50" count="15"/>
+        <line num="42" type="method" name="getOrCreate" visibility="public" complexity="2" crap="2" count="15"/>
         <line num="44" type="stmt" count="15"/>
-        <line num="45" type="stmt" count="15"/>
-        <line num="46" type="stmt" count="15"/>
-        <line num="47" type="stmt" count="15"/>
-        <line num="48" type="stmt" count="15"/>
-        <line num="49" type="stmt" count="15"/>
-        <line num="50" type="stmt" count="15"/>
-        <line num="51" type="stmt" count="15"/>
-        <line num="52" type="stmt" count="15"/>
-        <line num="53" type="stmt" count="15"/>
-        <line num="54" type="stmt" count="15"/>
+        <line num="45" type="stmt" count="14"/>
+        <line num="46" type="stmt" count="14"/>
+        <line num="47" type="stmt" count="14"/>
+        <line num="48" type="stmt" count="14"/>
+        <line num="49" type="stmt" count="14"/>
+        <line num="50" type="stmt" count="14"/>
+        <line num="51" type="stmt" count="14"/>
+        <line num="52" type="stmt" count="14"/>
+        <line num="53" type="stmt" count="14"/>
+        <line num="54" type="stmt" count="14"/>
         <line num="57" type="stmt" count="15"/>
         <metrics loc="60" ncloc="57" classes="1" methods="5" coveredmethods="5" conditionals="7" coveredconditionals="7" statements="17" coveredstatements="17" elements="29" coveredelements="29"/>
       </file>
@@ -2212,12 +2212,12 @@
         <line num="21" type="stmt" count="19"/>
         <line num="22" type="stmt" count="19"/>
         <line num="23" type="stmt" count="18"/>
-        <line num="24" type="stmt" count="4"/>
-        <line num="25" type="stmt" count="4"/>
-        <line num="26" type="stmt" count="4"/>
-        <line num="27" type="stmt" count="4"/>
-        <line num="28" type="stmt" count="4"/>
-        <line num="29" type="stmt" count="4"/>
+        <line num="24" type="stmt" count="5"/>
+        <line num="25" type="stmt" count="5"/>
+        <line num="26" type="stmt" count="5"/>
+        <line num="27" type="stmt" count="5"/>
+        <line num="28" type="stmt" count="5"/>
+        <line num="29" type="stmt" count="5"/>
         <line num="32" type="stmt" count="18"/>
         <line num="33" type="stmt" count="19"/>
         <line num="34" type="stmt" count="19"/>
@@ -2238,27 +2238,27 @@
       </file>
       <file name="/home/runner/work/nick-me/nick-me/backend/src/Service/Nick/Strategy/FrenchWordRules.php">
         <class name="App\Service\Nick\Strategy\FrenchWordRules" namespace="App\Service\Nick\Strategy">
-          <metrics complexity="7" methods="3" coveredmethods="2" conditionals="15" coveredconditionals="14" statements="23" coveredstatements="23" elements="41" coveredelements="39"/>
+          <metrics complexity="7" methods="3" coveredmethods="2" conditionals="15" coveredconditionals="13" statements="23" coveredstatements="22" elements="41" coveredelements="37"/>
         </class>
         <line num="19" type="method" name="getLang" visibility="public" complexity="1" crap="1" count="28"/>
         <line num="21" type="stmt" count="28"/>
-        <line num="24" type="method" name="getLabel" visibility="private" complexity="5" crap="6.97" count="35"/>
+        <line num="24" type="method" name="getLabel" visibility="private" complexity="5" crap="9.66" count="35"/>
         <line num="27" type="stmt" count="35"/>
         <line num="28" type="stmt" count="20"/>
         <line num="31" type="stmt" count="15"/>
-        <line num="32" type="stmt" count="7"/>
-        <line num="35" type="stmt" count="11"/>
-        <line num="36" type="stmt" count="11"/>
-        <line num="37" type="stmt" count="11"/>
-        <line num="38" type="stmt" count="11"/>
-        <line num="39" type="stmt" count="11"/>
-        <line num="40" type="stmt" count="11"/>
-        <line num="41" type="stmt" count="11"/>
-        <line num="42" type="stmt" count="11"/>
-        <line num="43" type="stmt" count="11"/>
-        <line num="44" type="stmt" count="11"/>
-        <line num="45" type="stmt" count="11"/>
-        <line num="49" type="stmt" count="1"/>
+        <line num="32" type="stmt" count="8"/>
+        <line num="35" type="stmt" count="12"/>
+        <line num="36" type="stmt" count="12"/>
+        <line num="37" type="stmt" count="12"/>
+        <line num="38" type="stmt" count="12"/>
+        <line num="39" type="stmt" count="12"/>
+        <line num="40" type="stmt" count="12"/>
+        <line num="41" type="stmt" count="12"/>
+        <line num="42" type="stmt" count="12"/>
+        <line num="43" type="stmt" count="12"/>
+        <line num="44" type="stmt" count="12"/>
+        <line num="45" type="stmt" count="12"/>
+        <line num="49" type="stmt" count="0"/>
         <line num="52" type="method" name="resolve" visibility="public" complexity="1" crap="1" count="35"/>
         <line num="54" type="stmt" count="35"/>
         <line num="56" type="stmt" count="35"/>
@@ -2266,7 +2266,7 @@
         <line num="58" type="stmt" count="35"/>
         <line num="59" type="stmt" count="35"/>
         <line num="60" type="stmt" count="35"/>
-        <metrics loc="63" ncloc="59" classes="1" methods="3" coveredmethods="2" conditionals="15" coveredconditionals="14" statements="23" coveredstatements="23" elements="41" coveredelements="39"/>
+        <metrics loc="63" ncloc="59" classes="1" methods="3" coveredmethods="2" conditionals="15" coveredconditionals="13" statements="23" coveredstatements="22" elements="41" coveredelements="37"/>
       </file>
     </package>
     <file name="/home/runner/work/nick-me/nick-me/backend/src/Service/Nick/Strategy/NickComposerRules.php">
@@ -2552,10 +2552,10 @@
         <line num="31" type="stmt" count="9"/>
         <line num="35" type="stmt" count="20"/>
         <line num="36" type="stmt" count="20"/>
-        <line num="37" type="stmt" count="16"/>
-        <line num="38" type="stmt" count="5"/>
-        <line num="39" type="stmt" count="5"/>
-        <line num="40" type="stmt" count="5"/>
+        <line num="37" type="stmt" count="15"/>
+        <line num="38" type="stmt" count="4"/>
+        <line num="39" type="stmt" count="4"/>
+        <line num="40" type="stmt" count="4"/>
         <line num="41" type="stmt" count="20"/>
         <line num="43" type="stmt" count="20"/>
         <line num="45" type="stmt" count="20"/>
@@ -2754,6 +2754,6 @@
     <file name="/home/runner/work/nick-me/nick-me/backend/src/Translation/TranslatorInterface.php">
       <metrics loc="12" ncloc="9" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="188" loc="7117" ncloc="6134" classes="124" methods="429" coveredmethods="359" conditionals="807" coveredconditionals="658" statements="1280" coveredstatements="1163" elements="2516" coveredelements="2180"/>
+    <metrics files="188" loc="7117" ncloc="6134" classes="124" methods="429" coveredmethods="359" conditionals="807" coveredconditionals="657" statements="1280" coveredstatements="1162" elements="2516" coveredelements="2178"/>
   </project>
 </coverage>
