@@ -26,11 +26,11 @@ COPY discord/ .
 # Compiler TypeScript
 RUN npm run build
 
-RUN chown -R ${APP_USER}:${APP_USER} /app
+RUN chown -R ${APP_USER}:${APP_USER} .
 
 # Variables d'environnement définies via docker-compose ou docker run
 ENV NODE_ENV=production
 
 USER ${APP_USER}
 
-CMD ["node", "dist/bot.js"]
+CMD ["node", "dist/bot/bot.js"]
