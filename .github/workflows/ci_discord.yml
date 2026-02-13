@@ -21,6 +21,12 @@ jobs:
     defaults:
       run:
         working-directory: ./discord
+    env:
+      DISCORD_TOKEN: test-token
+      CLIENT_ID: 1234
+      DEPLOY_GLOBAL: false
+      API_KEY: test-api-key
+      API_URL: http://localhost
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
