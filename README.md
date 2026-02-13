@@ -38,6 +38,9 @@ Backend :
 - word suggestion form
 - merge About / Legal info content
 
+Discord bot :
+- slash command /nickme to change a user's nickname (WIP)
+
 ## Roadmap
 Backend :
 
@@ -46,9 +49,6 @@ Backend :
 
 Frontend :
 - create a basic admin zone
-
-Other
-- create a Discord Bot
 
 ## Usage
 
@@ -99,6 +99,14 @@ To run e2e tests (by default, altcha is disabled and api is mocked, see frontend
 `npm run test:e2e`
 
 Or with UI : `npm run test:e2e:ui`
+
+### Discord bot
+
+To run unit tests : 
+
+`cd discord`
+
+`npm run test`
 
 ## Quality
 
