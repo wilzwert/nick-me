@@ -5,4 +5,5 @@ export interface NickRequestContext {
     userId: string,
     offense: number;
     gender: Gender;
+    apiKey: string;
 }

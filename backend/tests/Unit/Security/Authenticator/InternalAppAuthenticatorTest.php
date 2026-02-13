@@ -21,7 +21,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 /**
  * @author Wilhelm Zwertvaegher
  */
-class ClientAuthenticatorTest extends TestCase
+class InternalAppAuthenticatorTest extends TestCase
 {
     private InternalAppAuthenticator $authenticator;
 
@@ -29,14 +29,14 @@ class ClientAuthenticatorTest extends TestCase
     {
         parent::setUp();
 
-        $this->authenticator = new InternalAppAuthenticator(AppTestData::CLIENT_API_KEY_HEADER, AppTestData::CLIENT_API_KEY);
+        $this->authenticator = new InternalAppAuthenticator(AppTestData::INTERNAL_APP_KEY_HEADER, AppTestData::INTERNAL_APP_KEY);
     }
 
     #[Test]
     public function shouldSupportRequestWhenPayloadHeaderExists(): void
     {
         $request = new Request();
-        $request->headers->set(AppTestData::CLIENT_API_KEY_HEADER, AppTestData::CLIENT_INVALID_API_KEY);
+        $request->headers->set(AppTestData::INTERNAL_APP_KEY_HEADER, AppTestData::INTERNAL_APP_INVALID_KEY);
         self::assertTrue($this->authenticator->supports($request));
     }
 
@@ -51,25 +51,25 @@ class ClientAuthenticatorTest extends TestCase
     public function shouldAuthenticateAndReturnPassportWhenPayloadIsValid(): void
     {
         $request = new Request();
-        $request->headers->set(AppTestData::CLIENT_API_KEY_HEADER, AppTestData::CLIENT_API_KEY);
+        $request->headers->set(AppTestData::INTERNAL_APP_KEY_HEADER, AppTestData::INTERNAL_APP_KEY);
 
         $passport = $this->authenticator->authenticate($request);
 
         self::assertInstanceOf(SelfValidatingPassport::class, $passport);
         $userBadge = $passport->getBadge(UserBadge::class);
         self::assertInstanceOf(UserBadge::class, $userBadge);
-        $user = ($userBadge->getUserLoader())('client');
+        $user = ($userBadge->getUserLoader())('internal');
         self::assertInstanceOf(ApiUser::class, $user);
-        self::assertEquals(['ROLE_CLIENT'], $user->getRoles());
+        self::assertEquals(['ROLE_INTERNAL'], $user->getRoles());
     }
 
     #[Test]
     public function whenInvalidThenShouldThrowException(): void
     {
         $request = new Request();
-        $request->headers->set(AppTestData::CLIENT_API_KEY_HEADER, AppTestData::CLIENT_INVALID_API_KEY);
+        $request->headers->set(AppTestData::INTERNAL_APP_KEY_HEADER, AppTestData::INTERNAL_APP_INVALID_KEY);
         $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage('Invalid api key');
+        $this->expectExceptionMessage('Invalid app key');
 
         $this->authenticator->authenticate($request);
     }
@@ -78,13 +78,13 @@ class ClientAuthenticatorTest extends TestCase
     public function onAuthenticationFailureShouldReturnJsonResponseWithUnauthorized(): void
     {
         $request = new Request();
-        $exception = new AuthenticationException('Invalid api key');
+        $exception = new AuthenticationException('Invalid app key');
 
         $response = $this->authenticator->onAuthenticationFailure($request, $exception);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
-        self::assertEquals(['message' => 'Invalid api key'], json_decode($response->getContent(), true));
+        self::assertEquals(['message' => 'Invalid app key'], json_decode($response->getContent(), true));
     }
 
     #[Test]
