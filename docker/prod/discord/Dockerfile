@@ -17,6 +17,8 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+RUN mkdir -p /app/data
+
 ARG UID=1000
 ARG GID=1000
 ARG APP_USER=nickme

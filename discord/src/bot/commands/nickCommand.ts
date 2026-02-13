@@ -1,12 +1,12 @@
-import { ChatInputCommandInteraction, GuildMember, SlashCommandBuilder } from 'discord.js';
-import { generateNickname } from '../services/apiClient';
+import { ChatInputCommandInteraction, GuildMember, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { NickRequestContext } from '../model/NickRequestContext';
 import { allowedGenders, Gender } from '../model/Gender';
 import { logger } from '../services/logger';
 import { OFFENSE_LEVEL_CHOICES } from '../model/OffenseLevel';
-import { retrieveOrCreateKey } from '../services/retrieveOrCreateApiKey';
+import { GenerateNicknameHandler } from '../handlers/GenerateNicknameHandler';
+import { BotCommand } from '../model/BotCommand';
 
-export const nickCommand = {
+export const nickCommand = (nicknameHandler: GenerateNicknameHandler): BotCommand => ({
     data: new SlashCommandBuilder()
         .setName('nickme')
         .setDescription('Renomme un utilisateur avec un pseudo généré')
@@ -38,16 +38,15 @@ export const nickCommand = {
             const rawGender = interaction.options.getString('genre');
             const gender: Gender = allowedGenders.includes(rawGender as Gender) ? (rawGender as Gender) : 'auto';
 
-
             const ctx: NickRequestContext = {
                 userId: interaction.user.id,
                 guildId: interaction.guildId!,
                 offense: interaction.options.getInteger('offense') ?? 10,
-                gender,
-                apiKey: await retrieveOrCreateKey(interaction.guildId!)
+                gender
             };
 
-            const nickname = await generateNickname(ctx);
+            const nickname = await nicknameHandler.handle(ctx);
+            logger.info({event: 'nick_generaged', nickname});
 
             // target user
             const targetUserIsCurrentUser = interaction.options.getUser('cible') === null;
@@ -58,7 +57,7 @@ export const nickCommand = {
             if (!member) {
                 await interaction.reply({
                     content: `Impossible de trouver cet utilisateur sur ce serveur, mais "${nickname}" aurait été un pseudo parfait.`,
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
                 return;
             }
@@ -67,8 +66,7 @@ export const nickCommand = {
                 // attempt at changing nick
                 await member.setNickname(nickname, `Ordonné par ${interaction.user.tag}`);
                 await interaction.reply({
-                    content: `Le pseudo de **${targetUser.tag}** a été changé en **${nickname}**`,
-                    ephemeral: false
+                    content: `Le pseudo de **${targetUser.tag}** a été changé en **${nickname}**`
                 });
             } catch (err) {
                 logger.info({event: 'nick_change', message: 'Unable to change nick' })
@@ -81,8 +79,8 @@ export const nickCommand = {
             logger.error({event: 'nick_generation', err});
             await interaction.reply({
                 content: `Erreur lors de la génération du pseudo`,
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
         }
     }
-};
+});
