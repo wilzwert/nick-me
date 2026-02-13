@@ -113,3 +113,45 @@ jobs:
           script: |
             cd /opt/deploy-tools
             ./deploy.sh ${{ secrets.HOST_FRONTEND_APP_NAME }} sha-${{ github.sha }}
+
+
+  deploy-discord:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Login to registry
+        run: |
+          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY_HOST }} \
+            -u "${{ secrets.REGISTRY_USERNAME }}" \
+            --password-stdin
+
+      # Build + tag discord Docker image
+      - name: Build discord bot Docker image
+        run: |
+          docker build \
+            -f docker/prod/discord/Dockerfile \
+            --progress=plain \
+            --build-arg UID=${{ secrets.DOCKER_BUILD_UID }} --build-arg GID=${{ secrets.DOCKER_BUILD_GID }} --build-arg APP_USER=${{ secrets.DOCKER_BUILD_USER }} \
+            -t ${{ secrets.REGISTRY_HOST }}/${{ secrets.DISCORD_IMAGE_NAME }}:sha-${{ github.sha }} \
+            .
+
+      - name: Push discord Docker image
+        run: |
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.DISCORD_IMAGE_NAME }}:sha-${{ github.sha }}
+          docker tag ${{ secrets.REGISTRY_HOST }}/${{ secrets.DISCORD_IMAGE_NAME }}:sha-${{ github.sha }} ${{ secrets.REGISTRY_HOST }}/${{ secrets.DISCORD_IMAGE_NAME }}:latest
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ secrets.DISCORD_IMAGE_NAME }}:latest
+
+      - name: Deploy discord bot
+        uses: appleboy/ssh-action@v1.2.4
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.HOST_SSH_PORT }}
+          username: ${{ secrets.HOST_SSH_USERNAME }}
+          key: ${{ secrets.HOST_SSH_KEY }}
+          script: |
+            cd /opt/deploy-tools
+            ./deploy.sh ${{ secrets.HOST_DISCORD_APP_NAME }} sha-${{ github.sha }}
