@@ -3,6 +3,7 @@ import { generateNickname } from '../services/apiClient';
 import { NickRequestContext } from '../model/NickRequestContext';
 import { allowedGenders, Gender } from '../model/Gender';
 import { logger } from '../services/logger';
+import { OFFENSE_LEVEL_CHOICES } from '../model/OffenseLevel';
 
 export const nickCommand = {
     data: new SlashCommandBuilder()
@@ -18,11 +19,7 @@ export const nickCommand = {
                   .setDescription('Degré d\'offense')
                   .setRequired(false)
                   .addChoices(
-                      { name: '1', value: 1 },
-                      { name: '5', value: 5 },
-                      { name: '10', value: 10 },
-                      { name: '15', value: 15 },
-                      { name: '20', value: 20 }
+                      ...OFFENSE_LEVEL_CHOICES
                   ))
         .addStringOption(option =>
             option.setName('genre')
