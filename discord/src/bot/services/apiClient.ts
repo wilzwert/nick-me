@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { API_URL, API_KEY } from '../config/dotenv';
 import { NickRequestContext } from '../model/NickRequestContext';
-import { Nick } from '../model/Nick ';
+import { Nick } from '../model/Nick';
 
 export async function generateNickname(ctx: NickRequestContext): Promise<string> {
     const url = new URL(API_URL);
