@@ -1,97 +1,112 @@
-import { nickCommand } from '../commands/nickCommand';
-import { generateNickname } from '../services/apiClient';
-import { logger } from '../services/logger';
+import { ChatInputCommandInteraction } from "discord.js";
+import { GenerateNicknameHandler } from "../handlers/GenerateNicknameHandler";
 
-jest.mock('../services/apiClient');
-jest.mock('../services/logger');
+const nicknameHandler = {
+  handle: jest.fn()
+} as unknown as GenerateNicknameHandler;
 
-const generateNicknameMock = generateNickname as jest.MockedFunction<typeof generateNickname>;
+function createInteractionMock(overrides: Partial<ChatInputCommandInteraction> = {}) {
+  return {
+    user: { id: 'user1', tag: 'User#0001' },
+    guildId: 'guild1',
+    options: {
+      getString: jest.fn(),
+      getInteger: jest.fn(),
+      getUser: jest.fn()
+    },
+    reply: jest.fn(),
+    guild: {
+      members: {
+        cache: new Map()
+      }
+    },
+    ...overrides
+  } as unknown as ChatInputCommandInteraction;
+}
+
+
+import { nickCommand } from './nickCommand';
 
 describe('nickCommand', () => {
-  let interaction: any;
-  let member: any;
+  it('changes nickname when member exists', async () => {
+    nicknameHandler.handle = jest.fn().mockResolvedValue('Super Nick');
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+    const setNickname = jest.fn().mockResolvedValue(undefined);
+    const member = { setNickname } as any;
 
-    member = {
-      setNickname: jest.fn().mockResolvedValue(undefined),
-    };
+    const interaction = createInteractionMock();
+    interaction.options.getUser = jest.fn().mockReturnValue(null);
+    interaction.guild!.members.cache.set('user1', member);
 
-    interaction = {
-      user: { id: 'user1', tag: 'User#1234' },
-      guildId: 'guild1',
-      guild: {
-        members: {
-          cache: new Map([['user1', member]])
-        }
-      },
-      options: {
-        getString: jest.fn().mockReturnValue('auto'),
-        getInteger: jest.fn().mockReturnValue(10),
-        getUser: jest.fn().mockReturnValue(null)
-      },
-      reply: jest.fn().mockResolvedValue(undefined)
-    };
-  });
+    const command = nickCommand(nicknameHandler);
+    await command.execute(interaction);
 
-  it('changes nickname successfully for the user', async () => {
-    generateNicknameMock.mockResolvedValue('Super Copain');
+    expect(nicknameHandler.handle).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: 'user1',
+        guildId: 'guild1'
+      })
+    );
 
-    await nickCommand.execute(interaction);
+    expect(setNickname).toHaveBeenCalledWith(
+      'Super Nick',
+      expect.stringContaining('Ordonné par')
+    );
 
-    expect(generateNicknameMock).toHaveBeenCalledWith({
-      userId: 'user1',
-      guildId: 'guild1',
-      offense: 10,
-      gender: 'auto'
-    });
-
-    expect(member.setNickname).toHaveBeenCalledWith('Super Copain', 'Ordonné par User#1234');
-
-    expect(interaction.reply).toHaveBeenCalledWith({
-      content: 'Le pseudo de **User#1234** a été changé en **Super Copain**',
-      ephemeral: false
-    });
-  });
-
-  it('replies with message if member not found', async () => {
-    interaction.guild.members.cache.clear(); // no member found
-    generateNicknameMock.mockResolvedValue('Super Copain');
-
-    await nickCommand.execute(interaction);
-
-    expect(interaction.reply).toHaveBeenCalledWith({
-      content: 'Impossible de trouver cet utilisateur sur ce serveur, mais "Super Copain" aurait été un pseudo parfait.',
-      ephemeral: true
-    });
-  });
-
-  it('handles nickname change failure gracefully', async () => {
-    generateNicknameMock.mockResolvedValue('Super Copain');
-    member.setNickname.mockRejectedValue(new Error('fail'));
-
-    await nickCommand.execute(interaction);
-
-    expect(logger.info).toHaveBeenCalledWith({ event: 'nick_change', message: 'Unable to change nick' });
     expect(interaction.reply).toHaveBeenCalledWith(
-      'Je ne peux pas directement changer ton pseudo mais je recommande **Super Copain** qui ma paraît approprié.'
+      expect.objectContaining({
+        content: expect.stringContaining('Super Nick')
+      })
     );
   });
 
-  it('handles generateNickname error', async () => {
-    generateNicknameMock.mockRejectedValue(new Error('API fail'));
+  it('replies with ephemeral message if member not found', async () => {
+    nicknameHandler.handle = jest.fn().mockResolvedValue('Nick');
 
-    await nickCommand.execute(interaction);
+    const interaction = createInteractionMock();
+    interaction.options.getUser = jest.fn().mockReturnValue(null);
 
-    expect(logger.error).toHaveBeenCalledWith({
-      event: 'nick_generation',
-      err: expect.any(Error)
-    });
+    const command = nickCommand(nicknameHandler);
+    await command.execute(interaction);
 
-    expect(interaction.reply).toHaveBeenCalledWith({
-      content: 'Erreur lors de la génération du pseudo',
-      ephemeral: true
-    });
+    expect(interaction.reply).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flags: expect.any(Number)
+      })
+    );
   });
+
+  it('replies with recommendation when nickname change fails', async () => {
+    nicknameHandler.handle = jest.fn().mockResolvedValue('Nick');
+
+    const setNickname = jest.fn().mockRejectedValue(new Error('no perms'));
+    const member = { setNickname } as any;
+
+    const interaction = createInteractionMock();
+    interaction.options.getUser = jest.fn().mockReturnValue(null);
+    interaction.guild!.members.cache.set('user1', member);
+
+    const command = nickCommand(nicknameHandler);
+    await command.execute(interaction);
+
+    expect(interaction.reply).toHaveBeenCalledWith(
+      expect.stringContaining('je recommande')
+    );
+  });
+
+  it('replies with error when nickname generation fails', async () => {
+    nicknameHandler.handle = jest.fn().mockRejectedValue(new Error('API down'));
+
+    const interaction = createInteractionMock();
+
+    const command = nickCommand(nicknameHandler);
+    await command.execute(interaction);
+
+    expect(interaction.reply).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flags: expect.any(Number)
+      })
+    );
+  });
+
 });

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/bot/index.ts",
     "build": "tsc",
     "deploy": "ts-node src/bot/deploy-commands.ts",
     "start": "ts-node src/bot/bot.ts",
@@ -26,6 +27,7 @@
     "jest": "^30.2.0",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   }
 }

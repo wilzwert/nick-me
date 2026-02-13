@@ -55,3 +55,4 @@ backend/sonar.bat
 # Discord
 discord/node_modules
 discord/.env
+discord/data
