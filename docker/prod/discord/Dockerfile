@@ -45,4 +45,4 @@ ENV NODE_ENV=production
 
 USER ${APP_USER}
 
-CMD ["node", "bot/bot.js"]
+CMD ["node", "bot/index.js"]
