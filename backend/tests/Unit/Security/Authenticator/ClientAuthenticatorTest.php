@@ -2,13 +2,14 @@
 
 namespace App\Tests\Unit\Security\Authenticator;
 
+use App\Entity\ApiKey;
 use App\Security\ApiUser;
-use App\Security\Authenticator\AltchaAuthenticator;
-use App\Security\Authenticator\InternalAppAuthenticator;
-use App\Tests\Support\AltchaTestData;
+use App\Security\Authenticator\ClientAuthenticator;
+use App\Service\Data\ApiKeyServiceInterface;
 use App\Tests\Support\AppTestData;
-use App\Tests\Support\Stub\FakeAltchaService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,15 +22,21 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 /**
  * @author Wilhelm Zwertvaegher
  */
+
+#[AllowMockObjectsWithoutExpectations]
 class ClientAuthenticatorTest extends TestCase
 {
-    private InternalAppAuthenticator $authenticator;
+    private ApiKeyServiceInterface&MockObject $apiKeyService;
+
+    private ClientAuthenticator $authenticator;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->authenticator = new InternalAppAuthenticator(AppTestData::CLIENT_API_KEY_HEADER, AppTestData::CLIENT_API_KEY);
+        $this->apiKeyService = $this->createMock(ApiKeyServiceInterface::class);
+
+        $this->authenticator = new ClientAuthenticator(AppTestData::CLIENT_API_KEY_HEADER, $this->apiKeyService);
     }
 
     #[Test]
@@ -37,6 +44,7 @@ class ClientAuthenticatorTest extends TestCase
     {
         $request = new Request();
         $request->headers->set(AppTestData::CLIENT_API_KEY_HEADER, AppTestData::CLIENT_INVALID_API_KEY);
+        $this->apiKeyService->expects(self::never())->method('findValidKey');
         self::assertTrue($this->authenticator->supports($request));
     }
 
@@ -44,6 +52,7 @@ class ClientAuthenticatorTest extends TestCase
     public function shouldNotSupportRequestWhenPayloadHeaderMissing(): void
     {
         $request = new Request();
+        $this->apiKeyService->expects(self::never())->method('findValidKey');
         self::assertFalse($this->authenticator->supports($request));
     }
 
@@ -53,6 +62,7 @@ class ClientAuthenticatorTest extends TestCase
         $request = new Request();
         $request->headers->set(AppTestData::CLIENT_API_KEY_HEADER, AppTestData::CLIENT_API_KEY);
 
+        $this->apiKeyService->expects(self::once())->method('findValidKey')->willReturn($this->createStub(ApiKey::class));
         $passport = $this->authenticator->authenticate($request);
 
         self::assertInstanceOf(SelfValidatingPassport::class, $passport);
@@ -68,6 +78,7 @@ class ClientAuthenticatorTest extends TestCase
     {
         $request = new Request();
         $request->headers->set(AppTestData::CLIENT_API_KEY_HEADER, AppTestData::CLIENT_INVALID_API_KEY);
+        $this->apiKeyService->expects(self::once())->method('findValidKey')->willReturn(null);
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Invalid api key');
 
@@ -92,7 +103,6 @@ class ClientAuthenticatorTest extends TestCase
     {
         $request = new Request();
         $token = $this->createStub(TokenInterface::class);
-
         $response = $this->authenticator->onAuthenticationSuccess($request, $token, 'main');
 
         self::assertNull($response);

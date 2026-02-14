@@ -27,7 +27,7 @@ class ApiKey
     public function __construct(string $hash, \DateTimeImmutable $createdAt, ?\DateTimeImmutable $expiresAt = null)
     {
         $this->hash = $hash;
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = $createdAt;
         $this->expiresAt = $expiresAt;
     }
 
@@ -50,7 +50,4 @@ class ApiKey
     {
         return $this->expiresAt;
     }
-
-
-
 }
