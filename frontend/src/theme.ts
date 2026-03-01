@@ -1,4 +1,4 @@
-import { createTheme, type MantineTheme } from "@mantine/core";
+import { createTheme } from "@mantine/core";
 
 // theme.ts
 export const theme = createTheme({
