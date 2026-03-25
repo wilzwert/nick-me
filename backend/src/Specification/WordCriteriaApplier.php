@@ -7,7 +7,7 @@ use App\Entity\Subject;
 use App\Entity\Word;
 
 /**
- * Trait allowing WordCriteria to be applied on a QueryBuilder.
+ * Apply Criteria on a QueryBuilder for word, qualifier or subject retrieval.
  *
  * @author Wilhelm Zwertvaegher
  */
@@ -27,6 +27,7 @@ class WordCriteriaApplier implements WordCriteriaApplierInterface
 
         if (Sort::RANDOM !== $sort) {
             $qb->setMaxResults(1);
+
             return;
         }
 

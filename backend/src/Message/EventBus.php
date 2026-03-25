@@ -5,7 +5,8 @@ namespace App\Message;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
- * Global bus for messages.
+ * Global bus for events.
+ * Unused at the moment, but one use case could appear soon : a NickGeneratedEvent triggering a notification.
  *
  * @author Wilhelm Zwertvaegher
  */
