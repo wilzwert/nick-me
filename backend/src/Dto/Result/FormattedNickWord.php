@@ -7,7 +7,7 @@ use App\Enum\GrammaticalRoleType;
 /**
  * @author Wilhelm Zwertvaegher
  */
-readonly class GeneratedNickWord
+readonly class FormattedNickWord
 {
     public function __construct(
         public int $id,

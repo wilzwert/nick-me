@@ -2,7 +2,7 @@
 
 namespace App\Service\Nick\Strategy;
 
-use App\Dto\Result\GeneratedNickWord;
+use App\Dto\Result\FormattedNickWord;
 use App\Entity\GrammaticalRole;
 use App\Enum\Lang;
 use App\Enum\WordGender;
@@ -14,5 +14,5 @@ interface WordRules
 {
     public function getLang(): Lang;
 
-    public function resolve(GrammaticalRole $grammaticalRole, WordGender $targetGender): GeneratedNickWord;
+    public function resolve(GrammaticalRole $grammaticalRole, WordGender $targetGender): FormattedNickWord;
 }

@@ -2,7 +2,7 @@
 
 namespace App\Service\Nick\Strategy;
 
-use App\Dto\Result\GeneratedNickWords;
+use App\Dto\Result\ComposedNick;
 use App\Enum\Lang;
 use App\Enum\WordGender;
 
@@ -13,5 +13,5 @@ interface NickComposerRules
 {
     public function getLang(): Lang;
 
-    public function apply(GeneratedNickWords $generatedNickWords, WordGender $targetGender): GeneratedNickWords;
+    public function apply(ComposedNick $composedNick, WordGender $targetGender): ComposedNick;
 }

@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Service\Nick;
 
-use App\Dto\Result\GeneratedNickWord;
-use App\Dto\Result\GeneratedNickWords;
+use App\Dto\Result\FormattedNickWord;
+use App\Dto\Result\ComposedNick;
 use App\Entity\GrammaticalRole;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
@@ -48,7 +48,7 @@ class NickComposerTest extends TestCase
         // word formatter should be called twice in each test because nicks have 2 words
         $wordFormatter
             ->expects($this->exactly(2))->method('format')
-            ->willReturnCallback(fn (GrammaticalRole $grammaticalRole, WordGender $gender) => new GeneratedNickWord(
+            ->willReturnCallback(fn (GrammaticalRole $grammaticalRole, WordGender $gender) => new FormattedNickWord(
                 $grammaticalRole->getWord()->getId(),
                 $grammaticalRole->getWord()->getLabel(),
                 GrammaticalRoleType::fromClass($grammaticalRole::class)
@@ -120,7 +120,7 @@ class NickComposerTest extends TestCase
             $this->frNickComposerRules
                 ->expects(self::exactly($expectedComposerRulesCalls))
                 ->method('apply')
-                ->willReturnCallback(fn (GeneratedNickWords $generatedNickWords, WordGender $targetGender) => $generatedNickWords);
+                ->willReturnCallback(fn (ComposedNick $generatedNickWords, WordGender $targetGender) => $generatedNickWords);
         }
         $generatedNickWords = $this->nickComposer->compose($subject, $qualifier, $lang, WordGender::NEUTRAL);
         // check the final targetGender is the one passed to the composer

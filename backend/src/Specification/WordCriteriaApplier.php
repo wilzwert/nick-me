@@ -7,24 +7,21 @@ use App\Entity\Subject;
 use App\Entity\Word;
 
 /**
- * Trait allowing WordCriteria to be applied on a QueryBuilder.
+ * Apply Criteria on a QueryBuilder for word, qualifier or subject retrieval.
  *
  * @author Wilhelm Zwertvaegher
  */
-class WordCriteriaBuilder implements WordCriteriaBuilderInterface
+class WordCriteriaApplier implements WordCriteriaApplierInterface
 {
     public function __construct(private readonly CriterionConverter $criterionConverter)
     {
     }
 
-    public function applyWordCriteria(QueryBuilderInterface $qb, WordCriteria $criteria, Sort $sort = Sort::RANDOM, ?EntitiesAliases $aliases = null): void
+    public function applyWordCriteria(QueryBuilderInterface $qb, Criteria $criteria, Sort $sort = Sort::RANDOM, ?EntitiesAliases $aliases = null): void
     {
         if (null === $aliases) {
             $aliases = new EntitiesAliases(Word::class, 'word', Subject::class, 's', Qualifier::class, 'q');
         }
-
-        $qb->andWhere($aliases->getAlias(Word::class).'.lang = :lang')
-            ->setParameter('lang', $criteria->getLang());
 
         $this->criterionConverter->applyAll($qb, $criteria->getCriteria(), $aliases);
 

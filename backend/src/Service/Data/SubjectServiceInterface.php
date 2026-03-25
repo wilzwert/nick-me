@@ -4,7 +4,7 @@ namespace App\Service\Data;
 
 use App\Entity\Subject;
 use App\Entity\Word;
-use App\Specification\WordCriteria;
+use App\Specification\Criteria;
 
 /**
  * @extends GrammaticalRoleServiceInterface<Subject>
@@ -13,7 +13,7 @@ use App\Specification\WordCriteria;
  */
 interface SubjectServiceInterface extends GrammaticalRoleServiceInterface
 {
-    public function findOneRandomly(WordCriteria $criteria): ?Subject;
+    public function findOneRandomly(Criteria $criteria): ?Subject;
 
     public function createOrUpdate(Word $word): Subject;
 

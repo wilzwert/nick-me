@@ -6,6 +6,10 @@ use App\Exception\ErrorMessage;
 use App\Exception\ValidationErrorMessage;
 
 /**
+ * This sudo Translator mainly provides human-readable strings for error codes
+ * At the moment only one language is supported anyway, hence the very basic $messages static array.
+ * In the future we may improve this by using the current locale to provide actually translated messages.
+ *
  * @author Wilhelm Zwertvaegher
  */
 class Translator implements TranslatorInterface

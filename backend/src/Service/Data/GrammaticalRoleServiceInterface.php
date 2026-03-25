@@ -4,7 +4,7 @@ namespace App\Service\Data;
 
 use App\Entity\GrammaticalRole;
 use App\Enum\GrammaticalRoleType;
-use App\Specification\WordCriteria;
+use App\Specification\Criteria;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**
@@ -29,7 +29,7 @@ interface GrammaticalRoleServiceInterface
      *
      * @return ?T
      */
-    public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole;
+    public function findSimilar(GrammaticalRole $other, Criteria $criteria): ?GrammaticalRole;
 
     /**
      * Increments a grammatical role usages count.

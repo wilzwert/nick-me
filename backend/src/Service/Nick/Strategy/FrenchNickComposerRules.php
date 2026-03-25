@@ -2,8 +2,8 @@
 
 namespace App\Service\Nick\Strategy;
 
-use App\Dto\Result\GeneratedNickWord;
-use App\Dto\Result\GeneratedNickWords;
+use App\Dto\Result\FormattedNickWord;
+use App\Dto\Result\ComposedNick;
 use App\Enum\Lang;
 use App\Enum\WordGender;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -19,9 +19,9 @@ class FrenchNickComposerRules implements NickComposerRules
     public function __construct()
     {
         $this->rules = [
-            'apostrophe' => function (GeneratedNickWords $words, GeneratedNickWord $word, int $key, int $lastKey) {
+            'apostrophe' => function (ComposedNick $words, FormattedNickWord $word, int $key, int $lastKey) {
                 if ($key !== $lastKey && preg_match('/^[aeiouyàâäéèêëîïôöùûüÿ]/i', $words->getWords()[$key + 1]->label)) {
-                    return new GeneratedNickWord(
+                    return new FormattedNickWord(
                         $word->id,
                         preg_replace('/ ([dsl])e$/', " \\1'", $word->label),
                         $word->type,
@@ -39,23 +39,23 @@ class FrenchNickComposerRules implements NickComposerRules
         return Lang::FR;
     }
 
-    public function apply(GeneratedNickWords $generatedNickWords, WordGender $targetGender): GeneratedNickWords
+    public function apply(ComposedNick $composedNick, WordGender $targetGender): ComposedNick
     {
         /**
-         * @var array<GeneratedNickWord> $resultWords
+         * @var array<FormattedNickWord> $resultWords
          */
         $resultWords = [];
 
-        $lastKey = array_key_last($generatedNickWords->getWords());
-        foreach ($generatedNickWords->getWords() as $key => $word) {
+        $lastKey = array_key_last($composedNick->getWords());
+        foreach ($composedNick->getWords() as $key => $word) {
             foreach ($this->rules as $rule) {
-                $resultWords[$key] = $rule($generatedNickWords, $word, $key, $lastKey);
+                $resultWords[$key] = $rule($composedNick, $word, $key, $lastKey);
             }
         }
 
-        return new GeneratedNickWords(
-            $generatedNickWords->getTargetGender(),
-            $generatedNickWords->getTargetOffenseLevel(),
+        return new ComposedNick(
+            $composedNick->getTargetGender(),
+            $composedNick->getTargetOffenseLevel(),
             $resultWords
         );
     }

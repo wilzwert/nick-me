@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\Subject;
 use App\Specification\DoctrineQueryBuilder;
 use App\Specification\Sort;
-use App\Specification\WordCriteria;
-use App\Specification\WordCriteriaBuilder;
+use App\Specification\Criteria;
+use App\Specification\WordCriteriaApplier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SubjectRepository extends ServiceEntityRepository implements SubjectRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry, private readonly WordCriteriaBuilder $wordCriteriaService)
+    public function __construct(ManagerRegistry $registry, private readonly WordCriteriaApplier $wordCriteriaService)
     {
         parent::__construct($registry, Subject::class);
     }
@@ -27,7 +27,7 @@ class SubjectRepository extends ServiceEntityRepository implements SubjectReposi
         return parent::findOneBy(['word' => $wordId]);
     }
 
-    public function findOne(WordCriteria $criteria, Sort $sort = Sort::RANDOM): ?Subject
+    public function findOne(Criteria $criteria, Sort $sort = Sort::RANDOM): ?Subject
     {
         $qb = $this->createQueryBuilder('s')
             ->join('s.word', 'word');

@@ -5,7 +5,7 @@ namespace App\Tests\Integration\Command;
 use App\Application\UseCase\GenerateNickInterface;
 use App\Dto\Command\GenerateNickCommand;
 use App\Dto\Result\GeneratedNickData;
-use App\Dto\Result\GeneratedNickWord;
+use App\Dto\Result\FormattedNickWord;
 use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
@@ -83,8 +83,8 @@ class GenerateNicksCommandIT extends KernelTestCase
                             $now
                         ),
                         [
-                            new GeneratedNickWord(self::$counter, $subjectWord->getLabel(), GrammaticalRoleType::SUBJECT),
-                            new GeneratedNickWord(self::$counter, $qualifierWord->getLabel(), GrammaticalRoleType::QUALIFIER),
+                            new FormattedNickWord(self::$counter, $subjectWord->getLabel(), GrammaticalRoleType::SUBJECT),
+                            new FormattedNickWord(self::$counter, $qualifierWord->getLabel(), GrammaticalRoleType::QUALIFIER),
                         ]
                     );
 

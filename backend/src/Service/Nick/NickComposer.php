@@ -2,7 +2,7 @@
 
 namespace App\Service\Nick;
 
-use App\Dto\Result\GeneratedNickWords;
+use App\Dto\Result\ComposedNick;
 use App\Entity\GrammaticalRole;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
@@ -13,6 +13,8 @@ use App\Service\Nick\Strategy\NickComposerRules;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
+ * Nick composer
+ *
  * @author Wilhelm Zwertvaegher
  */
 class NickComposer implements NickComposerInterface
@@ -26,6 +28,7 @@ class NickComposer implements NickComposerInterface
      * @param iterable<NickComposerRules> $composerRules
      */
     public function __construct(
+        // TODO : could it be interesting to use a locator instead of AutowireIterator ?
         #[AutowireIterator('app.composer_rules')]
         iterable $composerRules,
         private readonly WordFormatterInterface $wordFormatter,
@@ -35,7 +38,16 @@ class NickComposer implements NickComposerInterface
         }
     }
 
-    public function compose(Subject $subject, Qualifier $qualifier, Lang $lang, WordGender $targetGender): GeneratedNickWords
+    /**
+     *  Build an actual Nick from a Subject, Qualifier, lang and gender
+     *  In this case, put words in the right order, delegate words formatting, and applying specific rules if available.
+     * @param Subject $subject
+     * @param Qualifier $qualifier
+     * @param Lang $lang
+     * @param WordGender $targetGender
+     * @return ComposedNick
+     */
+    public function compose(Subject $subject, Qualifier $qualifier, Lang $lang, WordGender $targetGender): ComposedNick
     {
         // put grammatical roles in the right order
         $grammaticalRoles = [$subject];
@@ -45,29 +57,25 @@ class NickComposer implements NickComposerInterface
             array_unshift($grammaticalRoles, $qualifier);
         }
 
-        // format words
-        $generatedWords = array_map(
+        // get an array of formated GeneratedNickWord
+        $formattedWords = array_map(
             fn (GrammaticalRole $grammaticalRole) => $this->wordFormatter->format($grammaticalRole, $targetGender),
             $grammaticalRoles
         );
 
-        // apply rules if available
-        $composer = $this->composerRules[$lang->value] ?? null;
-        if ($composer) {
-            return $composer->apply(
-                new GeneratedNickWords(
-                    $targetGender,
-                    $subject->getWord()->getOffenseLevel(),
-                    $generatedWords
-                ),
-                $targetGender
-            );
-        }
-
-        return new GeneratedNickWords(
+        // assemble formated GeneratedNickWord and metadata (gender and offense level)
+        $composedNick = new ComposedNick(
             $targetGender,
             $subject->getWord()->getOffenseLevel(),
-            $generatedWords
+            $formattedWords
         );
+
+        // apply composing rules if available before returning
+        $composer = $this->composerRules[$lang->value] ?? null;
+        if ($composer) {
+            return $composer->apply($composedNick, $targetGender);
+        }
+
+        return $composedNick;
     }
 }

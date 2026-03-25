@@ -9,11 +9,12 @@ use App\Enum\GrammaticalRoleType;
 use App\Service\Data\GrammaticalRoleServiceInterface;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;
+use App\Specification\Criterion\LangCriterion;
 use App\Specification\Criterion\OffenseConstraintType;
 use App\Specification\Criterion\OffenseLevelCriterion;
 use App\Specification\Criterion\ValuesCriterion;
 use App\Specification\Criterion\ValuesCriterionCheck;
-use App\Specification\WordCriteria;
+use App\Specification\Criteria;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
@@ -51,7 +52,7 @@ class WordFinder implements WordFinderInterface
             throw new \LogicException('Cannot get a word without a previous word');
         }
 
-        $criteria = [];
+        $criteria = [new LangCriterion($previous->getWord()->getLang())];
         $criteria[] = new GenderCriterion($command->getGender(), GenderConstraintType::EXACT);
         $criteria[] = new OffenseLevelCriterion(
             $command->getOffenseLevel(),
@@ -62,10 +63,7 @@ class WordFinder implements WordFinderInterface
             $criteria[] = new ValuesCriterion(Word::class, 'id', $command->getExclusions(), ValuesCriterionCheck::NOT_IN);
         }
 
-        $wordCriteria = new WordCriteria(
-            $previous->getWord()->getLang(),
-            $criteria
-        );
+        $wordCriteria = new Criteria($criteria);
 
         return $service->findSimilar($previous, $wordCriteria);
     }

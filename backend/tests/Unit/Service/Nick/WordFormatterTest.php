@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Service\Nick;
 
-use App\Dto\Result\GeneratedNickWord;
+use App\Dto\Result\FormattedNickWord;
 use App\Entity\GrammaticalRole;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
@@ -103,7 +103,7 @@ class WordFormatterTest extends TestCase
             $this->frWordRules
                 ->expects(self::exactly($expectedRulesCalls))
                 ->method('resolve')
-                ->willReturnCallback(fn (GrammaticalRole $grammaticalRole, WordGender $targetGender) => new GeneratedNickWord(
+                ->willReturnCallback(fn (GrammaticalRole $grammaticalRole, WordGender $targetGender) => new FormattedNickWord(
                     $grammaticalRole->getWord()->getId(),
                     $grammaticalRole->getWord()->getLabel(),
                     GrammaticalRoleType::fromClass($grammaticalRole::class)

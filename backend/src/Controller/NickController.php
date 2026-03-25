@@ -8,7 +8,7 @@ use App\Dto\Request\RandomNickRequest;
 use App\Dto\Request\RequestFromQuery;
 use App\Dto\Response\NickDto;
 use App\Dto\Response\NickWordDto;
-use App\Dto\Result\GeneratedNickWord;
+use App\Dto\Result\FormattedNickWord;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +43,7 @@ class NickController extends AbstractController
                 $generatedNickData->getTargetGender(),
                 $generatedNickData->getTargetOffenseLevel(),
                 array_map(
-                    fn (GeneratedNickWord $word) => new NickWordDto(
+                    fn (FormattedNickWord $word) => new NickWordDto(
                         $word->id,
                         $word->label,
                         $word->type
