@@ -8,10 +8,10 @@ use App\Enum\WordGender;
 /**
  * @author Wilhelm Zwertvaegher
  */
-readonly class GeneratedNickWords
+readonly class ComposedNick
 {
     /**
-     * @param list<GeneratedNickWord> $words
+     * @param list<FormattedNickWord> $words
      */
     public function __construct(
         private WordGender $targetGender,
@@ -31,7 +31,7 @@ readonly class GeneratedNickWords
     }
 
     /**
-     * @return list<GeneratedNickWord>
+     * @return list<FormattedNickWord>
      */
     public function getWords(): array
     {

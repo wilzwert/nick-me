@@ -12,7 +12,10 @@ use App\Enum\WordGender;
 readonly class GeneratedNickData
 {
     /**
-     * @param list<GeneratedNickWord> $words
+     * @param WordGender $targetGender
+     * @param OffenseLevel $targetOffenseLevel
+     * @param Nick $nick
+     * @param list<FormattedNickWord> $words
      */
     public function __construct(
         private WordGender $targetGender,
@@ -38,7 +41,7 @@ readonly class GeneratedNickData
     }
 
     /**
-     * @return list<GeneratedNickWord>
+     * @return list<FormattedNickWord>
      */
     public function getWords(): array
     {

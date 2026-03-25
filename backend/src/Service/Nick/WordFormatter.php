@@ -2,7 +2,7 @@
 
 namespace App\Service\Nick;
 
-use App\Dto\Result\GeneratedNickWord;
+use App\Dto\Result\FormattedNickWord;
 use App\Entity\GrammaticalRole;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\WordGender;
@@ -31,23 +31,26 @@ class WordFormatter implements WordFormatterInterface
         }
     }
 
-    private function applyCommonFormat(GeneratedNickWord $generatedNickWord): GeneratedNickWord
+    /**
+     * Apply common formatting on a GeneratedNickWord.
+     */
+    private function applyCommonFormat(FormattedNickWord $formattedNickWord): FormattedNickWord
     {
-        return new GeneratedNickWord(
-            $generatedNickWord->id,
-            trim(ucfirst(strtolower($generatedNickWord->label))),
-            $generatedNickWord->type
+        return new FormattedNickWord(
+            $formattedNickWord->id,
+            trim(ucfirst(strtolower($formattedNickWord->label))),
+            $formattedNickWord->type
         );
     }
 
-    public function format(GrammaticalRole $grammaticalRole, WordGender $gender): GeneratedNickWord
+    public function format(GrammaticalRole $grammaticalRole, WordGender $gender): FormattedNickWord
     {
         $word = $grammaticalRole->getWord();
 
         return $this->applyCommonFormat(
             isset($this->wordRules[$word->getLang()->value]) ?
                 $this->wordRules[$word->getLang()->value]->resolve($grammaticalRole, $gender) :
-                new GeneratedNickWord(
+                new FormattedNickWord(
                     $word->getId(),
                     $word->getLabel(),
                     GrammaticalRoleType::fromClass($grammaticalRole::class)

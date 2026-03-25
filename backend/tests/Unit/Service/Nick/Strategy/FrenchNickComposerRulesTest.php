@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Service\Nick\Strategy;
 
-use App\Dto\Result\GeneratedNickWord;
-use App\Dto\Result\GeneratedNickWords;
+use App\Dto\Result\FormattedNickWord;
+use App\Dto\Result\ComposedNick;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
@@ -59,12 +59,12 @@ class FrenchNickComposerRulesTest extends TestCase
         string $expectedLabel,
     ): void {
         $id = rand(0, 1000);
-        $words = new GeneratedNickWords(
+        $words = new ComposedNick(
             $targetGender,
             $targetOffenseLevel,
             [
-                new GeneratedNickWord($id, $firstLabel, $firstGrammaticalRoleType),
-                new GeneratedNickWord($id, $secondLabel, $secondGrammaticalRoleType),
+                new FormattedNickWord($id, $firstLabel, $firstGrammaticalRoleType),
+                new FormattedNickWord($id, $secondLabel, $secondGrammaticalRoleType),
             ]
         );
         $result = $this->rules->apply($words, $targetGender);

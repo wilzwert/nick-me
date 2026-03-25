@@ -2,7 +2,7 @@
 
 namespace App\Service\Nick\Strategy;
 
-use App\Dto\Result\GeneratedNickWord;
+use App\Dto\Result\FormattedNickWord;
 use App\Entity\GrammaticalRole;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
@@ -49,11 +49,11 @@ class FrenchWordRules implements WordRules
         return $word->getLabel().'e';
     }
 
-    public function resolve(GrammaticalRole $grammaticalRole, WordGender $targetGender): GeneratedNickWord
+    public function resolve(GrammaticalRole $grammaticalRole, WordGender $targetGender): FormattedNickWord
     {
         $word = $grammaticalRole->getWord();
 
-        return new GeneratedNickWord(
+        return new FormattedNickWord(
             $grammaticalRole->getWord()->getId(),
             $this->getLabel($word, $targetGender),
             GrammaticalRoleType::fromClass($grammaticalRole::class)

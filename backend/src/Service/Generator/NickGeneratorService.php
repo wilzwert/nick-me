@@ -76,25 +76,25 @@ class NickGeneratorService implements NickGeneratorServiceInterface
     }
 
     /**
-     * Compose the final Nick and retrieve it from system (i.e. get or create).
+     * Delegate the final Nick composition, and retrieve it from the system (i.e. get or create).
      */
     private function buildGeneratedNick(Subject $subject, Qualifier $qualifier, WordGender $targetGender): GeneratedNickData
     {
-        $generatedNickWords = $this->nickComposer->compose($subject, $qualifier, $subject->getWord()->getLang(), $targetGender);
+        $composedNick = $this->nickComposer->compose($subject, $qualifier, $subject->getWord()->getLang(), $targetGender);
 
         $nick = $this->nickService->getOrCreate(
             $subject,
             $qualifier,
             $targetGender,
             $subject->getWord()->getOffenseLevel(),
-            $generatedNickWords->getFinalLabel()
+            $composedNick->getFinalLabel()
         );
 
         return new GeneratedNickData(
             $nick->getTargetGender(),
             $nick->getOffenseLevel(),
             $nick,
-            $generatedNickWords->getWords()
+            $composedNick->getWords()
         );
     }
 

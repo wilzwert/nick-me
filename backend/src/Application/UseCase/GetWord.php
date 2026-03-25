@@ -46,12 +46,12 @@ readonly class GetWord implements GetWordInterface
         $this->entityManager->flush();
         // build the nick word dto
         $targetGender = $command->getGender();
-        $generatedNickWord = $this->formatter->format($new, $targetGender);
+        $formattedNickWord = $this->formatter->format($new, $targetGender);
 
         return new NickWordDto(
             $new->getWord()->getId(),
-            $generatedNickWord->label,
-            $generatedNickWord->type
+            $formattedNickWord->label,
+            $formattedNickWord->type
         );
     }
 }
