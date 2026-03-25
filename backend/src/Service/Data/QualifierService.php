@@ -10,7 +10,7 @@ use App\Enum\GrammaticalRoleType;
 use App\Repository\QualifierRepositoryInterface;
 use App\Specification\Criterion\ValueCriterion;
 use App\Specification\Criterion\ValueCriterionCheck;
-use App\Specification\WordCriteria;
+use App\Specification\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
 
@@ -52,7 +52,7 @@ class QualifierService implements QualifierServiceInterface
         $this->entityManager->persist($qualifier);
     }
 
-    public function findOneRandomly(WordCriteria $criteria): ?Qualifier
+    public function findOneRandomly(Criteria $criteria): ?Qualifier
     {
         return $this->repository->findOne($criteria);
     }
@@ -70,7 +70,7 @@ class QualifierService implements QualifierServiceInterface
         return $this->repository->findByWordId($wordId);
     }
 
-    public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
+    public function findSimilar(GrammaticalRole $other, Criteria $criteria): ?GrammaticalRole
     {
         if (!$other instanceof Qualifier) {
             throw new \LogicException('Cannot find another qualifier because $other param is not an instance of Qualifier');

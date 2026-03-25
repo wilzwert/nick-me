@@ -9,7 +9,7 @@ use App\Enum\GrammaticalRoleType;
 use App\Repository\SubjectRepositoryInterface;
 use App\Specification\Criterion\ValueCriterion;
 use App\Specification\Criterion\ValueCriterionCheck;
-use App\Specification\WordCriteria;
+use App\Specification\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
 
@@ -49,7 +49,7 @@ class SubjectService implements SubjectServiceInterface
         $this->entityManager->persist($subject);
     }
 
-    public function findOneRandomly(WordCriteria $criteria): ?Subject
+    public function findOneRandomly(Criteria $criteria): ?Subject
     {
         return $this->repository->findOne($criteria);
     }
@@ -67,7 +67,7 @@ class SubjectService implements SubjectServiceInterface
         return $this->repository->findByWordId($wordId);
     }
 
-    public function findSimilar(GrammaticalRole $other, WordCriteria $criteria): ?GrammaticalRole
+    public function findSimilar(GrammaticalRole $other, Criteria $criteria): ?GrammaticalRole
     {
         if (!$other instanceof Subject) {
             throw new \LogicException('Cannot find another subject because $other param is not an instance of Subject');

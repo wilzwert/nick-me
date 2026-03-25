@@ -8,16 +8,16 @@ use App\Entity\Word;
 /**
  * @author Wilhelm Zwertvaegher
  */
-readonly class ValueCriterion implements Criterion
+class ValueCriterion implements Criterion
 {
     /**
      * @param class-string<Word|GrammaticalRole> $targetEntity
      */
     public function __construct(
-        private string $targetEntity,
-        private string $field,
-        private mixed $value,
-        private ValueCriterionCheck $check,
+        private readonly string $targetEntity,
+        private readonly string $field,
+        private readonly mixed $value,
+        private readonly ValueCriterionCheck $check,
     ) {
     }
 

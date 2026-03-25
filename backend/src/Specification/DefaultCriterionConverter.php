@@ -25,7 +25,7 @@ class DefaultCriterionConverter implements CriterionConverter
                     ->setParameter("values{$criterionIndex}", $criterion->getAllowedValues());
             },
             ValueCriterion::class => function (QueryBuilderInterface $qb, ValueCriterion $criterion, int $criterionIndex, EntitiesAliases $aliases) {
-                $qb->andWhere($aliases->getAlias($criterion->getTargetEntity()).'.'.$criterion->getField().'  '.$criterion->getCheck()->value." :value{$criterionIndex}")
+                $qb->andWhere($aliases->getAlias($criterion->getTargetEntity()).'.'.$criterion->getField().' '.$criterion->getCheck()->value." :value{$criterionIndex}")
                     ->setParameter("value{$criterionIndex}", $criterion->getValue());
             },
             ValuesCriterion::class => function (QueryBuilderInterface $qb, ValuesCriterion $criterion, int $criterionIndex, EntitiesAliases $aliases) {

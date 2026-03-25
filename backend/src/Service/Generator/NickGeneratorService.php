@@ -20,11 +20,13 @@ use App\Service\Data\SubjectServiceInterface;
 use App\Service\Nick\NickComposerInterface;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;
+use App\Specification\Criterion\LangCriterion;
 use App\Specification\Criterion\OffenseConstraintType;
 use App\Specification\Criterion\OffenseLevelCriterion;
+use App\Specification\Criterion\ValueCriterion;
 use App\Specification\Criterion\ValuesCriterion;
 use App\Specification\Criterion\ValuesCriterionCheck;
-use App\Specification\WordCriteria;
+use App\Specification\Criteria;
 use Random\RandomException;
 
 /**
@@ -158,7 +160,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
     private function createNick(GenerateNickCommand $command): GeneratedNickData
     {
         // get a Subject according to OffenseLevel and Gender
-        $criteria = [];
+        $criteria = [new LangCriterion($command->getLang())];
         $criteria[] = new GenderCriterion(
             $command->getGender(),
             GenderConstraintType::EXACT
@@ -169,10 +171,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         }
 
         $subject = $this->subjectService->findOneRandomly(
-            new WordCriteria(
-                $command->getLang(),
-                $criteria
-            )
+            new Criteria($criteria)
         );
         if (null === $subject) {
             throw new NoSubjectFoundException();
@@ -183,6 +182,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
         $exclusions[] = $subject->getWord()->getId();
 
         $criteria = [
+            new LangCriterion($command->getLang()),
             new GenderCriterion(
                 $targetGender,
                 GenderConstraintType::RELAXED,
@@ -196,8 +196,7 @@ class NickGeneratorService implements NickGeneratorServiceInterface
 
         // get a Qualifier according to the Subject's OffenseLevel and Gender
         $qualifier = $this->qualifierService->findOneRandomly(
-            new WordCriteria(
-                $command->getLang(),
+            new Criteria(
                 $criteria
             )
         );

@@ -2,31 +2,19 @@
 
 namespace App\Specification;
 
-use App\Enum\Lang;
 use App\Specification\Criterion\Criterion;
 
 /**
  * @author Wilhelm Zwertvaegher
- * Parameters for random word / nick retrieval
- *  - Lang
- *  - OffenseLevel (maybe null)
- *  - WordGender (maybe null)
- *  - exclusions : a list a word ids to exclude
+ * Criteria collection
  */
-class WordCriteria
+class Criteria
 {
     /**
      * @param array<Criterion> $criteria
      */
-    public function __construct(
-        private readonly Lang $lang = Lang::FR,
-        private array $criteria = [],
-    ) {
-    }
-
-    public function getLang(): Lang
+    public function __construct(private array $criteria = [])
     {
-        return $this->lang;
     }
 
     /**

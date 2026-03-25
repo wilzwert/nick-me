@@ -6,13 +6,14 @@ use App\Enum\Enum;
 use App\Enum\Lang;
 use App\Enum\OffenseLevel;
 use App\Enum\WordGender;
+use App\Specification\Criteria;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;
+use App\Specification\Criterion\LangCriterion;
 use App\Specification\Criterion\OffenseConstraintType;
 use App\Specification\Criterion\OffenseLevelCriterion;
 use App\Specification\DefaultCriterionConverter;
-use App\Specification\WordCriteria;
-use App\Specification\WordCriteriaBuilder;
+use App\Specification\WordCriteriaApplier;
 use App\Tests\Support\Fake\FakeQueryBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -20,11 +21,11 @@ use PHPUnit\Framework\TestCase;
 
 class WordCriteriaBuilderTest extends TestCase
 {
-    private WordCriteriaBuilder $underTest;
+    private WordCriteriaApplier $underTest;
 
     protected function setUp(): void
     {
-        $this->underTest = new WordCriteriaBuilder(new DefaultCriterionConverter());
+        $this->underTest = new WordCriteriaApplier(new DefaultCriterionConverter());
     }
 
     #[Test]
@@ -33,12 +34,10 @@ class WordCriteriaBuilderTest extends TestCase
         $queryBuilder = new FakeQueryBuilder();
         $queryBuilder->setExpectedCount(4);
 
-        $this->underTest->applyWordCriteria($queryBuilder, new WordCriteria());
+        $this->underTest->applyWordCriteria($queryBuilder, new Criteria());
 
-        // by default, a WordCriteria only has a set lang, which is Lang::FR by default
-        self::assertCount(1, $queryBuilder->getWhere());
-        self::assertContains('word.lang = :lang', $queryBuilder->getWhere());
-        self::assertEquals(Lang::FR, $queryBuilder->getParameters()['lang']);
+        // by default, a Criteria has no criteria
+        self::assertCount(0, $queryBuilder->getWhere());
     }
 
     #[Test]
@@ -47,38 +46,39 @@ class WordCriteriaBuilderTest extends TestCase
         $queryBuilder = new FakeQueryBuilder();
         $queryBuilder->setExpectedCount(4);
 
-        $this->underTest->applyWordCriteria($queryBuilder, new WordCriteria(Lang::EN));
+        $this->underTest->applyWordCriteria($queryBuilder, new Criteria([new LangCriterion(Lang::EN)]));
 
         // by default, a WordCriteria only has a set lang, which is Lang::FR by default
         self::assertCount(1, $queryBuilder->getWhere());
-        self::assertContains('word.lang = :lang', $queryBuilder->getWhere());
-        self::assertEquals(Lang::EN, $queryBuilder->getParameters()['lang']);
+        var_dump($queryBuilder->getWhere());
+        self::assertContains('word.lang = :value0', $queryBuilder->getWhere());
+        self::assertEquals(Lang::EN, $queryBuilder->getParameters()['value0']);
     }
 
     /**
-     * @return list<array{WordCriteria, list<string>, list<string>, list<Lang|list<Enum>>}>
+     * @return list<array{Criteria, list<string>, list<string>, list<Lang|list<Enum>>}>
      */
     public static function wordCriteriaProvider(): array
     {
         return [
             [
-                new WordCriteria(
-                    Lang::FR,
+                new Criteria(
                     [
+                        new LangCriterion(Lang::FR),
                         new GenderCriterion(
                             WordGender::F,
                             GenderConstraintType::EXACT
                         ),
                     ]
                 ),
-                ['word.lang = :lang', 'word.gender IN (:values0)'],
-                ['lang', 'values0'],
+                ['word.lang = :value0', 'word.gender IN (:values1)'],
+                ['value0', 'values1'],
                 [Lang::FR, [WordGender::F, WordGender::AUTO]],
             ],
             [
-                new WordCriteria(
-                    Lang::EN,
+                new Criteria(
                     [
+                        new LangCriterion(Lang::EN),
                         new GenderCriterion(
                             WordGender::M,
                             GenderConstraintType::RELAXED
@@ -89,8 +89,8 @@ class WordCriteriaBuilderTest extends TestCase
                         ),
                     ]
                 ),
-                ['word.lang = :lang', 'word.gender IN (:values0)', 'word.offenseLevel IN (:values1)'],
-                ['lang', 'values0', 'values1'],
+                ['word.lang = :value0', 'word.gender IN (:values1)', 'word.offenseLevel IN (:values2)'],
+                ['value0', 'values1', 'values2'],
                 [Lang::EN, [WordGender::M, WordGender::AUTO, WordGender::NEUTRAL], [OffenseLevel::LOW, OffenseLevel::MEDIUM]],
             ],
         ];
@@ -104,7 +104,7 @@ class WordCriteriaBuilderTest extends TestCase
     #[Test]
     #[DataProvider('wordCriteriaProvider')]
     public function shouldApplyWordCriteria(
-        WordCriteria $wordCriteria,
+        Criteria $wordCriteria,
         array $expectedWHere,
         array $expectedParameterNames,
         array $expectedValues,
