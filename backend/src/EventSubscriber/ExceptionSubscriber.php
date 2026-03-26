@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Normalizer\ExceptionNormalizer;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -9,7 +10,6 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Handles exceptions to generate Json responses using custom normalizers
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 readonly class ExceptionSubscriber implements EventSubscriberInterface
 {
     /**
-     * @param iterable<NormalizerInterface> $normalizers
+     * @param iterable<ExceptionNormalizer> $normalizers
      */
     public function __construct(
         #[AutowireIterator('app.exception_normalizer')]

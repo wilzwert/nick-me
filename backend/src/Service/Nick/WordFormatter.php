@@ -6,29 +6,18 @@ use App\Dto\Result\FormattedNickWord;
 use App\Entity\GrammaticalRole;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\WordGender;
-use App\Service\Nick\Strategy\WordRules;
-use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
-class WordFormatter implements WordFormatterInterface
+readonly class WordFormatter implements WordFormatterInterface
 {
-    /**
-     * @var array<string, WordRules>
-     */
-    private array $wordRules;
-
-    /**
-     * @param iterable<WordRules> $wordRules
-     */
     public function __construct(
-        #[AutowireIterator('app.word_rules')]
-        iterable $wordRules,
+        #[AutowireLocator('app.word_rules', indexAttribute: 'index')]
+        private ContainerInterface $wordRules,
     ) {
-        foreach ($wordRules as $formatter) {
-            $this->wordRules[$formatter->getLang()->value] = $formatter;
-        }
     }
 
     /**
@@ -48,8 +37,8 @@ class WordFormatter implements WordFormatterInterface
         $word = $grammaticalRole->getWord();
 
         return $this->applyCommonFormat(
-            isset($this->wordRules[$word->getLang()->value]) ?
-                $this->wordRules[$word->getLang()->value]->resolve($grammaticalRole, $gender) :
+            $this->wordRules->has($word->getLang()->value) ?
+                $this->wordRules->get($word->getLang()->value)->resolve($grammaticalRole, $gender) :
                 new FormattedNickWord(
                     $word->getId(),
                     $word->getLabel(),

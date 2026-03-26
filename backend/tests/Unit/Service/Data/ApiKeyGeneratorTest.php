@@ -27,21 +27,21 @@ class ApiKeyGeneratorTest extends TestCase
     }
 
     #[Test]
-    public function whenLengthTooSmall_thenShouldThrowInvalidLengthException(): void
+    public function whenLengthTooSmallThenShouldThrowInvalidLengthException(): void
     {
         self::expectException(\InvalidArgumentException::class);
         $this->apiKeyGenerator->generate(14);
     }
 
     #[Test]
-    public function whenLengthTooBig_thenShouldThrowInvalidLengthException(): void
+    public function whenLengthTooBigThenShouldThrowInvalidLengthException(): void
     {
         self::expectException(\InvalidArgumentException::class);
         $this->apiKeyGenerator->generate(66);
     }
 
     #[Test]
-    public function whenLengthNotEven_thenShouldThrowInvalidLengthException(): void
+    public function whenLengthNotEvenThenShouldThrowInvalidLengthException(): void
     {
         self::expectException(\InvalidArgumentException::class);
         $this->apiKeyGenerator->generate(31);

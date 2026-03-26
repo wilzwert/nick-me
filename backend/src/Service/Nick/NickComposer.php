@@ -9,43 +9,26 @@ use App\Entity\Subject;
 use App\Enum\Lang;
 use App\Enum\QualifierPosition;
 use App\Enum\WordGender;
-use App\Service\Nick\Strategy\NickComposerRules;
-use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 
 /**
- * Nick composer
+ * Nick composer.
  *
  * @author Wilhelm Zwertvaegher
  */
-class NickComposer implements NickComposerInterface
+readonly class NickComposer implements NickComposerInterface
 {
-    /**
-     * @var array<string, NickComposerRules>
-     */
-    private array $composerRules;
-
-    /**
-     * @param iterable<NickComposerRules> $composerRules
-     */
     public function __construct(
-        // TODO : could it be interesting to use a locator instead of AutowireIterator ?
-        #[AutowireIterator('app.composer_rules')]
-        iterable $composerRules,
-        private readonly WordFormatterInterface $wordFormatter,
+        #[AutowireLocator('app.composer_rules', indexAttribute: 'index')]
+        private ContainerInterface $composerRules,
+        private WordFormatterInterface $wordFormatter,
     ) {
-        foreach ($composerRules as $rules) {
-            $this->composerRules[$rules->getLang()->value] = $rules;
-        }
     }
 
     /**
      *  Build an actual Nick from a Subject, Qualifier, lang and gender
      *  In this case, put words in the right order, delegate words formatting, and applying specific rules if available.
-     * @param Subject $subject
-     * @param Qualifier $qualifier
-     * @param Lang $lang
-     * @param WordGender $targetGender
-     * @return ComposedNick
      */
     public function compose(Subject $subject, Qualifier $qualifier, Lang $lang, WordGender $targetGender): ComposedNick
     {
@@ -71,7 +54,7 @@ class NickComposer implements NickComposerInterface
         );
 
         // apply composing rules if available before returning
-        $composer = $this->composerRules[$lang->value] ?? null;
+        $composer = $this->composerRules->has($lang->value) ? $this->composerRules->get($lang->value) : null;
         if ($composer) {
             return $composer->apply($composedNick, $targetGender);
         }

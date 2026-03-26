@@ -9,5 +9,4 @@ interface ApiKeyRepositoryInterface
     public function findById(int $id): ?ApiKey;
 
     public function findByHash(string $hash): ?ApiKey;
-
 }

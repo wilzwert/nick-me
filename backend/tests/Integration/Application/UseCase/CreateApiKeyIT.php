@@ -33,5 +33,4 @@ class CreateApiKeyIT extends KernelTestCase
         self::assertNotNull($apiKey);
         self::assertEquals($now, $apiKey->getCreatedAt());
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Service\Nick\Strategy;
 
-use App\Dto\Result\FormattedNickWord;
 use App\Dto\Result\ComposedNick;
+use App\Dto\Result\FormattedNickWord;
 use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;

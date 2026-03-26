@@ -4,22 +4,19 @@ namespace App\Service\Notification\Factory;
 
 use App\Entity\Contact;
 use App\Enum\NotificationType;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
+#[AsTaggedItem(index: Contact::class)]
 readonly class ContactNotificationPropsBuilder implements NotificationPropsBuilder
 {
     public function __construct(
         #[Autowire('%recipient.admin%')]
         private string $adminEmail,
     ) {
-    }
-
-    public function getSupportedClass(): string
-    {
-        return Contact::class;
     }
 
     public function buildProps(object $source): NotificationProps

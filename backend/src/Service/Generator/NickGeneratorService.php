@@ -18,15 +18,14 @@ use App\Service\Data\NickServiceInterface;
 use App\Service\Data\QualifierServiceInterface;
 use App\Service\Data\SubjectServiceInterface;
 use App\Service\Nick\NickComposerInterface;
+use App\Specification\Criteria;
 use App\Specification\Criterion\GenderConstraintType;
 use App\Specification\Criterion\GenderCriterion;
 use App\Specification\Criterion\LangCriterion;
 use App\Specification\Criterion\OffenseConstraintType;
 use App\Specification\Criterion\OffenseLevelCriterion;
-use App\Specification\Criterion\ValueCriterion;
 use App\Specification\Criterion\ValuesCriterion;
 use App\Specification\Criterion\ValuesCriterionCheck;
-use App\Specification\Criteria;
 use Random\RandomException;
 
 /**

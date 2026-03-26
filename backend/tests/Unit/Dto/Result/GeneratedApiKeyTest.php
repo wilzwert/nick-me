@@ -21,5 +21,4 @@ class GeneratedApiKeyTest extends TestCase
         self::assertSame($apiKey, $generatedApiKey->getApiKey());
         self::assertSame('rawApiKey', $generatedApiKey->getRawApiKey());
     }
-
 }

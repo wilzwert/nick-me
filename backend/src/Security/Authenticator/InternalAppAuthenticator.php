@@ -3,7 +3,6 @@
 namespace App\Security\Authenticator;
 
 use App\Security\ApiUser;
-use App\Security\Service\AltchaServiceInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

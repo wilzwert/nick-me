@@ -4,8 +4,8 @@ namespace App\Tests\Integration\Command;
 
 use App\Application\UseCase\GenerateNickInterface;
 use App\Dto\Command\GenerateNickCommand;
-use App\Dto\Result\GeneratedNickData;
 use App\Dto\Result\FormattedNickWord;
+use App\Dto\Result\GeneratedNickData;
 use App\Entity\Nick;
 use App\Entity\Qualifier;
 use App\Entity\Subject;

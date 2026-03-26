@@ -10,10 +10,5 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('app.notification_props_builder')]
 interface NotificationPropsBuilder
 {
-    /**
-     * @return class-string
-     */
-    public function getSupportedClass(): string;
-
     public function buildProps(object $source): NotificationProps;
 }

@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\ApiKey;
-use PHPUnit\Framework\Test;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,5 +25,4 @@ class ApiKeyTest extends TestCase
         self::assertEquals($now, $apiKey->getCreatedAt());
         self::assertEquals($now, $apiKey->getExpiresAt());
     }
-
 }

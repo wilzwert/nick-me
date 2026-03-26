@@ -17,5 +17,4 @@ class ApiKeyDtoTest extends TestCase
         $dto = new ApiKeyDto('raw');
         self::assertEquals('raw', $dto->key);
     }
-
 }

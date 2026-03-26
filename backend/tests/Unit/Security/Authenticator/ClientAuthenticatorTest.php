@@ -22,7 +22,6 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 /**
  * @author Wilhelm Zwertvaegher
  */
-
 #[AllowMockObjectsWithoutExpectations]
 class ClientAuthenticatorTest extends TestCase
 {

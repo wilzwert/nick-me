@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @author Wilhelm Zwertvaegher
  */
-
 #[ORM\Entity]
 #[ORM\Table(name: 'api_key')]
 class ApiKey

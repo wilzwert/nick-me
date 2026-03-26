@@ -8,12 +8,12 @@ use App\Entity\Word;
 use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
 use App\Enum\WordGender;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
-#[AutoconfigureTag('app.word_rules')]
+#[AsTaggedItem(index: Lang::FR->value)]
 class FrenchWordRules implements WordRules
 {
     public function getLang(): Lang
