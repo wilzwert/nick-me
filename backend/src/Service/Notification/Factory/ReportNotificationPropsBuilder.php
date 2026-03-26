@@ -4,22 +4,19 @@ namespace App\Service\Notification\Factory;
 
 use App\Entity\Report;
 use App\Enum\NotificationType;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
+#[AsTaggedItem(index: Report::class)]
 readonly class ReportNotificationPropsBuilder implements NotificationPropsBuilder
 {
     public function __construct(
         #[Autowire('%recipient.admin%')]
         private string $adminEmail,
     ) {
-    }
-
-    public function getSupportedClass(): string
-    {
-        return Report::class;
     }
 
     public function buildProps(object $source): NotificationProps

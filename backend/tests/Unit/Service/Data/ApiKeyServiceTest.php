@@ -9,6 +9,7 @@ use App\Service\Data\ApiKeyService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\Clock\MockClock;
@@ -19,8 +20,8 @@ use Symfony\Component\Clock\MockClock;
 #[AllowMockObjectsWithoutExpectations]
 final class ApiKeyServiceTest extends TestCase
 {
-    private ApiKeyRepositoryInterface $repositoryMock;
-    private EntityManagerInterface $entityManagerMock;
+    private ApiKeyRepositoryInterface&MockObject $repositoryMock;
+    private EntityManagerInterface&MockObject $entityManagerMock;
     private ClockInterface $clockMock;
     private ApiKeyService $service;
 
@@ -64,7 +65,7 @@ final class ApiKeyServiceTest extends TestCase
     public function shouldCreateKey(): void
     {
         $now = $this->now;
-        // on s'attend à ce que persist soit appelé une fois
+        // we expect persist to be called once
         $this->entityManagerMock
             ->expects($this->once())
             ->method('persist')
@@ -76,7 +77,6 @@ final class ApiKeyServiceTest extends TestCase
 
         $generated = $this->service->createKey();
 
-        self::assertInstanceOf(ApiKey::class, $generated->getApiKey());
         self::assertEquals($now, $generated->getApiKey()->getCreatedAt());
         self::assertNull($generated->getApiKey()->getExpiresAt());
         self::assertIsString($generated->getRawApiKey());

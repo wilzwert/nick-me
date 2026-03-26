@@ -84,7 +84,7 @@ class LoadBaseDataCommand extends Command
                     status: WordStatus::APPROVED,
                     asSubject: in_array($slug, $subjectsSlugs),
                     asQualifier: true,
-                    qualifierPosition: QualifierPosition::from(trim($record->position) ?? 'after'),
+                    qualifierPosition: QualifierPosition::from(trim($record->position) )?? 'after',
                     handleDeletion: false
                 )
             );

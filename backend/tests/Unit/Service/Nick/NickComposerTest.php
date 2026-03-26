@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Service\Nick;
 
-use App\Dto\Result\FormattedNickWord;
 use App\Dto\Result\ComposedNick;
+use App\Dto\Result\FormattedNickWord;
 use App\Entity\GrammaticalRole;
 use App\Entity\Qualifier;
 use App\Entity\Subject;
@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class NickComposerTest extends TestCase
 {
@@ -39,10 +40,10 @@ class NickComposerTest extends TestCase
         // We use mocks because we want to check the NickComposer calls the rules/formatter, as it is not just an
         // implementation detail but a mandatory behavior
         $this->frNickComposerRules = $this->createMock(NickComposerRules::class);
-        $this->frNickComposerRules
-            ->expects($this->once())
-            ->method('getLang')
-            ->willReturn(Lang::FR);
+
+        $locator = new ServiceLocator([
+            Lang::FR->value => fn () => $this->frNickComposerRules,
+        ]);
 
         $wordFormatter = $this->createMock(WordFormatterInterface::class);
         // word formatter should be called twice in each test because nicks have 2 words
@@ -54,7 +55,7 @@ class NickComposerTest extends TestCase
                 GrammaticalRoleType::fromClass($grammaticalRole::class)
             ));
 
-        $this->nickComposer = new NickComposer([$this->frNickComposerRules], $wordFormatter);
+        $this->nickComposer = new NickComposer($locator, $wordFormatter);
     }
 
     private static function instantiateWord(string $label, WordGender $gender, Lang $lang = Lang::FR, OffenseLevel $offenseLevel = OffenseLevel::MEDIUM): Word
@@ -121,6 +122,10 @@ class NickComposerTest extends TestCase
                 ->expects(self::exactly($expectedComposerRulesCalls))
                 ->method('apply')
                 ->willReturnCallback(fn (ComposedNick $generatedNickWords, WordGender $targetGender) => $generatedNickWords);
+        } else {
+            $this->frNickComposerRules
+                ->expects(self::never())
+                ->method('apply');
         }
         $generatedNickWords = $this->nickComposer->compose($subject, $qualifier, $lang, WordGender::NEUTRAL);
         // check the final targetGender is the one passed to the composer

@@ -5,11 +5,13 @@ namespace App\Normalizer;
 use App\Exception\ErrorCode;
 use App\Translation\TranslatorInterface;
 use Symfony\Component\Clock\ClockAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
+#[AutoconfigureTag('app.exception_normalizer')]
 abstract class ExceptionNormalizer implements NormalizerInterface
 {
     use ClockAwareTrait;

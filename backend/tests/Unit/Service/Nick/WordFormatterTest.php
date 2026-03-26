@@ -20,6 +20,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class WordFormatterTest extends TestCase
 {
@@ -36,12 +37,12 @@ class WordFormatterTest extends TestCase
         // We use mocks because we want to check the WordFormatter calls the rules, as it is not just an
         // implementation detail but a mandatory behavior
         $this->frWordRules = $this->createMock(WordRules::class);
-        $this->frWordRules
-            ->expects($this->once())
-            ->method('getLang')
-            ->willReturn(Lang::FR);
 
-        $this->wordFormatter = new WordFormatter([$this->frWordRules]);
+        $serviceLocator = new ServiceLocator([
+            Lang::FR->value => fn () => $this->frWordRules,
+        ]);
+
+        $this->wordFormatter = new WordFormatter($serviceLocator);
     }
 
     private static function instantiateWord(string $label, WordGender $gender, Lang $lang = Lang::FR, OffenseLevel $offenseLevel = OffenseLevel::MEDIUM): Word
@@ -107,8 +108,11 @@ class WordFormatterTest extends TestCase
                     $grammaticalRole->getWord()->getId(),
                     $grammaticalRole->getWord()->getLabel(),
                     GrammaticalRoleType::fromClass($grammaticalRole::class)
-                )
-                );
+                ));
+        } else {
+            $this->frWordRules
+                ->expects(self::never())
+                ->method('resolve');
         }
         $generatedNickWord = $this->wordFormatter->format($grammaticalRole, WordGender::NEUTRAL);
         self::assertEquals($grammaticalRole->getWord()->getId(), $generatedNickWord->id);

@@ -12,10 +12,12 @@ use App\Specification\Criterion\ValueCriterionCheck;
 use App\Specification\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
+#[AsTaggedItem(index: GrammaticalRoleType::SUBJECT->value)]
 class SubjectService implements SubjectServiceInterface
 {
     public function __construct(

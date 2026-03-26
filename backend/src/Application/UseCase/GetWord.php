@@ -4,45 +4,41 @@ namespace App\Application\UseCase;
 
 use App\Dto\Command\GetWordCommand;
 use App\Dto\Response\NickWordDto;
-use App\Entity\GrammaticalRole;
-use App\Service\Data\GrammaticalRoleServiceInterface;
 use App\Service\Generator\WordFinderInterface;
 use App\Service\Nick\WordFormatterInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+
 
 /**
  * @author Wilhelm Zwertvaegher
  */
 readonly class GetWord implements GetWordInterface
 {
-    /**
-     * @var array<string, GrammaticalRoleServiceInterface<GrammaticalRole>>
-     */
-    private array $services;
 
     /**
-     * @param iterable<GrammaticalRoleServiceInterface<GrammaticalRole>> $services
+     * @param ContainerInterface $services
+     * @param WordFinderInterface $wordFinder
+     * @param WordFormatterInterface $formatter
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        #[AutowireIterator('app.word_type_data_service')]
-        iterable $services,
+        #[AutowireLocator('app.word_type_data_service', indexAttribute: 'index')]
+        private ContainerInterface $services,
         private WordFinderInterface $wordFinder,
         private WordFormatterInterface $formatter,
         private EntityManagerInterface $entityManager,
     ) {
-        // FIXME : injecting services only to be able to increment usage count seems a bit overkill
-        $servicesByWordType = [];
-        foreach ($services as $service) {
-            $servicesByWordType[$service->getGrammaticalRole()->value] = $service;
-        }
-        $this->services = $servicesByWordType;
     }
 
     public function __invoke(GetWordCommand $command): NickWordDto
     {
         $new = $this->wordFinder->findSimilar($command);
-        $this->services[$command->getRole()->value]->incrementUsageCount($new);
+        if (!$this->services->has($command->getRole()->value)) {
+            throw new \LogicException('Command with role "'.$command->getRole()->value.'" has no matching GrammaticalRoleServiceInterface.');
+        }
+        $this->services->get($command->getRole()->value)->incrementUsageCount($new);
         $this->entityManager->flush();
         // build the nick word dto
         $targetGender = $command->getGender();

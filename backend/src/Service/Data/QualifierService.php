@@ -13,10 +13,12 @@ use App\Specification\Criterion\ValueCriterionCheck;
 use App\Specification\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 /**
  * @author Wilhelm Zwertvaegher
  */
+#[AsTaggedItem(index: GrammaticalRoleType::QUALIFIER->value)]
 class QualifierService implements QualifierServiceInterface
 {
     public function __construct(
