@@ -2,8 +2,8 @@
 
 namespace App\Service\Nick\Strategy;
 
-use App\Dto\Result\FormattedNickWord;
 use App\Dto\Result\ComposedNick;
+use App\Dto\Result\FormattedNickWord;
 use App\Enum\Lang;
 use App\Enum\WordGender;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;

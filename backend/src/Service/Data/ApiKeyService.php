@@ -2,10 +2,8 @@
 
 namespace App\Service\Data;
 
-use App\Dto\Command\CreateContactCommand;
 use App\Dto\Result\GeneratedApiKey;
 use App\Entity\ApiKey;
-use App\Entity\Contact;
 use App\Repository\ApiKeyRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;

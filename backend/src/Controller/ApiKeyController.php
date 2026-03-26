@@ -3,9 +3,6 @@
 namespace App\Controller;
 
 use App\Application\UseCase\CreateApiKeyInterface;
-use App\Application\UseCase\CreateContactInterface;
-use App\Dto\Command\CreateContactCommand;
-use App\Dto\Request\ContactRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

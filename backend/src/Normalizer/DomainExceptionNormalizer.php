@@ -5,7 +5,6 @@ namespace App\Normalizer;
 use App\Exception\DomainException;
 use App\Exception\ErrorCode;
 use App\Exception\WordAlreadyExistsException;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Response;
 
 class DomainExceptionNormalizer extends ExceptionNormalizer

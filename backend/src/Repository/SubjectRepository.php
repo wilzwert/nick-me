@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Subject;
+use App\Specification\Criteria;
 use App\Specification\DoctrineQueryBuilder;
 use App\Specification\Sort;
-use App\Specification\Criteria;
 use App\Specification\WordCriteriaApplier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

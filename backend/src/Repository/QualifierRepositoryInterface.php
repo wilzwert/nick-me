@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Qualifier;
-use App\Specification\Sort;
 use App\Specification\Criteria;
+use App\Specification\Sort;
 
 /**
  * @author Wilhelm Zwertvaegher

@@ -9,7 +9,6 @@ use App\Enum\GrammaticalRoleType;
 use App\Enum\Lang;
 use App\Enum\WordGender;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**
  * @author Wilhelm Zwertvaegher

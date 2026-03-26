@@ -22,9 +22,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
  */
 readonly class WordFinder implements WordFinderInterface
 {
-    /**
-     * @param ContainerInterface $services
-     */
     public function __construct(
         #[AutowireLocator('app.word_type_data_service', indexAttribute: 'index')]
         private ContainerInterface $services,

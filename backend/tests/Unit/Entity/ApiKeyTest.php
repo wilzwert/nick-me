@@ -25,5 +25,4 @@ class ApiKeyTest extends TestCase
         self::assertEquals($now, $apiKey->getCreatedAt());
         self::assertEquals($now, $apiKey->getExpiresAt());
     }
-
 }

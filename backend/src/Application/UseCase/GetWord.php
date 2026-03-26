@@ -10,19 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 
-
 /**
  * @author Wilhelm Zwertvaegher
  */
 readonly class GetWord implements GetWordInterface
 {
-
-    /**
-     * @param ContainerInterface $services
-     * @param WordFinderInterface $wordFinder
-     * @param WordFormatterInterface $formatter
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
         #[AutowireLocator('app.word_type_data_service', indexAttribute: 'index')]
         private ContainerInterface $services,

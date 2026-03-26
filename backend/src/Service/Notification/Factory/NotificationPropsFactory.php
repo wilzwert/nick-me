@@ -23,6 +23,7 @@ class NotificationPropsFactory implements NotificationPropsFactoryInterface
         }
 
         $builder = $this->builders->get($source::class);
+
         return $builder->buildProps($source);
     }
 }

@@ -5,8 +5,6 @@ namespace App\Normalizer;
 use App\Exception\ErrorCode;
 use App\Exception\ErrorMessage;
 use Symfony\Component\Clock\ClockAwareTrait;
-use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Constraint;
